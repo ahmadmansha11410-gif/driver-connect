@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Driver Connect</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#6E2A56">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maroon: #6E2A56;
+    --maroon-dark: #55203F;
+    --teal: #1B7A6E;
+    --cream: #FAF7F5;
+    --text: #2A2A2A;
+    --gray: #757575;
+    --border: #E4DEDC;
+    --danger: #B71C1C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: var(--cream);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text);
+  }
+  h1, h2, h3 { font-family: 'Poppins', 'Inter', sans-serif; margin: 0 0 6px; }
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(110,42,86,0.10);
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .brand-title { color: var(--maroon); font-size: 24px; font-weight: 700; }
+  .brand-sub { color: var(--gray); font-size: 13px; margin-bottom: 22px; }
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    background: #FCFAF9;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--maroon); }
+  textarea { resize: vertical; min-height: 70px; }
+  button {
+    width: 100%;
+    padding: 13px;
+    background: var(--maroon);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.15s;
+  }
+  button:hover { background: var(--maroon-dark); }
+  button.secondary { background: var(--teal); }
+  button.secondary:hover { background: #145a52; }
+  button.back-btn { background: #666; }
+  button.back-btn:hover { background: #4d4d4d; }
+  button.link-btn { background: none; color: var(--maroon); text-decoration: underline; font-weight: 500; width: auto; padding: 4px; margin-top: 12px; }
+  .msg { margin-top: 10px; font-size: 13.5px; min-height: 18px; }
+  .msg.error { color: var(--danger); }
+  .msg.success { color: var(--teal); font-weight: 600; }
+  .hidden { display: none !important; }
+  .field-label { text-align: left; font-size: 12.5px; color: var(--gray); margin-top: 8px; margin-bottom: -4px; font-weight: 500; }
+  .welcome { color: var(--maroon); font-size: 15px; margin-bottom: 18px; font-weight: 500; }
+  .menu-btn { background: var(--maroon); }
+
+  #splash {
+    text-align: center; color: var(--maroon);
+  }
+  #splash img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 4px 20px rgba(110,42,86,0.2); }
+
+  #gearBtn {
+    position: fixed; top: 16px; left: 16px; width: 46px; height: 46px;
+    background: var(--maroon); border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 20px; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(110,42,86,0.35); z-index: 200; color: white;
+  }
+  #gearPanel {
+    position: fixed; top: 68px; left: 16px; background: white; border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15); overflow: hidden; z-index: 200; width: 190px;
+  }
+  #gearPanel button {
+    width: 100%; margin: 0; border-radius: 0; background: white; color: var(--maroon);
+    text-align: left; padding: 13px 16px; font-weight: 500;
+  }
+  #gearPanel button:hover { background: var(--cream); }
+
+  .lang-btn { background: var(--maroon); }
+  .contact-box { background: var(--cream); border-radius: 10px; padding: 14px; text-align: left; font-size: 14px; margin-top: 12px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div id="splash" class="card">
+  <img src="icon-192.png" alt="Driver Connect">
+  <h2 style="margin-top:16px;">Driver Connect</h2>
+  <p style="color:var(--gray); font-size:13px;">Loading...</p>
+</div>
+
+<div id="gearBtn" class="hidden">&#9881;</div>
+<div id="gearPanel" class="hidden">
+  <button id="t_gearHome">Home</button>
+  <button id="t_gearLanguage">Change Language</button>
+  <button id="t_gearLogout">Logout</button>
+</div>
+
+<div class="card hidden" id="loginBox">
+  <div class="brand-title">Driver Connect</div>
+  <div class="brand-sub">Modern Bus Co. Ltd.</div>
+  <input type="text" id="empId" placeholder="Employee ID">
+  <input type="password" id="pass" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <div class="msg error" id="msg"></div>
+  <button class="link-btn" onclick="showContactBox()">Forgot Password?</button>
+</div>
+
+<div class="card hidden" id="contactBox">
+  <h3 style="color:var(--maroon);">Forgot Password?</h3>
+  <p style="color:var(--gray); font-size:14px;">Please contact the admin to reset your password:</p>
+  <div class="contact-box">
+    📱 <b>WhatsApp:</b> +966-XX-XXX-XXXX<br>
+    🏢 <b>Office:</b> Modern Bus Co. Ltd., Makkah, KSA
+  </div>
+  <button class="back-btn" onclick="backToLogin()">Back</button>
+</div>
+
+<div class="card hidden" id="langBox">
+  <h3 style="color:var(--maroon);">Select Language</h3>
+  <button class="lang-btn" onclick="selectLanguage('English')">English</button>
+  <button class="lang-btn" onclick="selectLanguage('Arabic')">العربية (Arabic)</button>
+  <button class="lang-btn" onclick="selectLanguage('Urdu')">اردو (Urdu)</button>
+  <button class="lang-btn" onclick="selectLanguage('Indonesian')">Bahasa Indonesia</button>
+  <button class="lang-btn" onclick="selectLanguage('Hindi')">हिन्दी (Hindi)</button>
+</div>
+
+<div class="card hidden" id="homeBox">
+  <div class="brand-title">Driver Connect</div>
+  <div class="welcome" id="welcomeText"></div>
+  <div id="menuArea"></div>
+</div>
+
+<script>
+var API_URL = "https://script.google.com/macros/s/AKfycbx8D7ucrF0YsCVbMoiBTs8M-DMpj943p9LXyWBwFZDzbE3tbaJzfFsxqauZCR51od8jlg/exec";
+var currentUser = null;
+
+function callAPI(action, data) {
+  var url = API_URL + "?action=" + encodeURIComponent(action) + "&data=" + encodeURIComponent(JSON.stringify(data || {}));
+  return fetch(url).then(function(r) { return r.json(); });
+}
+
+function saveSession() {
+  localStorage.setItem('driverConnectSession', JSON.stringify(currentUser));
+}
+function loadSession() {
+  var raw = localStorage.getItem('driverConnectSession');
+  return raw ? JSON.parse(raw) : null;
+}
+function clearSession() {
+  localStorage.removeItem('driverConnectSession');
+}
+
+function hideAllTop() {
+  ['splash','loginBox','contactBox','langBox','homeBox'].forEach(function(id) {
+    document.getElementById(id).classList.add('hidden');
+  });
+}
+
+window.addEventListener('load', function() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+  var session = loadSession();
+  if (session && session.empId) {
+    currentUser = session;
+    hideAllTop();
+    document.getElementById('gearBtn').classList.remove('hidden');
+    document.getElementById('homeBox').classList.remove('hidden');
+    document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
+    buildMenu(currentUser.role);
+  } else {
+    hideAllTop();
+    document.getElementById('loginBox').classList.remove('hidden');
+  }
+});
+
+function login() {
+  var empId = document.getElementById('empId').value;
+  var pass = document.getElementById('pass').value;
+  document.getElementById('msg').innerText = "Checking...";
+  callAPI('checkLogin', { empId: empId, password: pass }).then(function(result) {
+    if (result.success) {
+      currentUser = result;
+      hideAllTop();
+      document.getElementById('langBox').classList.remove('hidden');
+    } else {
+      document.getElementById('msg').innerText = "Invalid Employee ID or Password";
+    }
+  }).catch(function(err) {
+    document.getElementById('msg').innerText = "Connection error. Please try again.";
+  });
+}
+
+function showContactBox() { hideAllTop(); document.getElementById('contactBox').classList.remove('hidden'); }
+function backToLogin() { hideAllTop(); document.getElementById('loginBox').classList.remove('hidden'); }
+
+function selectLanguage(lang) {
+  currentUser.language = lang;
+  saveSession();
+  hideAllTop();
+  document.getElementById('gearBtn').classList.remove('hidden');
+  document.getElementById('homeBox').classList.remove('hidden');
+  document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
+  buildMenu(currentUser.role);
+}
+
+function buildMenu(role) {
+  var menu = document.getElementById('menuArea');
+  menu.innerHTML = "";
+  if (role === "Driver") {
+    menu.innerHTML += '<button class="menu-btn" onclick="alert(\'Complaint/Request forms coming in next step!\')">Complaint/Request</button>';
+    menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'Tracking coming in next step!\')">Track My Complaints & Requests</button>';
+  } else {
+    menu.innerHTML += '<button class="menu-btn" onclick="alert(\'Admin view coming soon!\')">View All Complaints</button>';
+  }
+}
+
+function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
+document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
+document.getElementById('t_gearHome').addEventListener('click', function() {
+  document.getElementById('gearPanel').classList.add('hidden');
+  hideAllTop();
+  document.getElementById('homeBox').classList.remove('hidden');
+});
+document.getElementById('t_gearLanguage').addEventListener('click', function() {
+  document.getElementById('gearPanel').classList.add('hidden');
+  hideAllTop();
+  document.getElementById('langBox').classList.remove('hidden');
+});
+document.getElementById('t_gearLogout').addEventListener('click', function() {
+  currentUser = null;
+  clearSession();
+  document.getElementById('gearBtn').classList.add('hidden');
+  document.getElementById('gearPanel').classList.add('hidden');
+  hideAllTop();
+  document.getElementById('empId').value = "";
+  document.getElementById('pass').value = "";
+  document.getElementById('loginBox').classList.remove('hidden');
+});
+</script>
+</body>
+</html>

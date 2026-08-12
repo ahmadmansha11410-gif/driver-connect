@@ -1,0 +1,24 @@
+{
+  "name": "Driver Connect",
+  "short_name": "Driver Connect",
+  "description": "Modern Bus Co. Ltd. - Driver Complaint & Request Portal",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F5",
+  "theme_color": "#6E2A56",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

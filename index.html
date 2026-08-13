@@ -28,7 +28,7 @@
     margin: 0;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 20px;
     color: var(--text);
@@ -39,16 +39,20 @@
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(110,42,86,0.10);
     width: 100%;
-    max-width: 400px;
-    padding: 32px 28px;
+    max-width: 420px;
+    padding: 30px 26px;
     text-align: center;
+    margin-top: 40px;
   }
+  .card.wide { max-width: 640px; }
+  .req-list { max-height: 68vh; overflow-y: auto; }
   .brand-title { color: var(--maroon); font-size: 24px; font-weight: 700; }
-  .brand-sub { color: var(--gray); font-size: 13px; margin-bottom: 22px; }
+  .brand-sub { color: var(--gray); font-size: 13px; margin-bottom: 20px; }
+  .form-title { color: var(--maroon); font-size: 19px; font-weight: 700; margin-bottom: 14px; }
   input, select, textarea {
     width: 100%;
     padding: 12px 14px;
-    margin: 8px 0;
+    margin: 7px 0;
     border: 1.5px solid var(--border);
     border-radius: 10px;
     font-size: 15px;
@@ -56,7 +60,7 @@
     background: #FCFAF9;
   }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--maroon); }
-  textarea { resize: vertical; min-height: 70px; }
+  textarea { resize: vertical; min-height: 68px; }
   button {
     width: 100%;
     padding: 13px;
@@ -68,7 +72,7 @@
     font-weight: 600;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 9px;
     transition: background 0.15s;
   }
   button:hover { background: var(--maroon-dark); }
@@ -77,17 +81,22 @@
   button.back-btn { background: #666; }
   button.back-btn:hover { background: #4d4d4d; }
   button.link-btn { background: none; color: var(--maroon); text-decoration: underline; font-weight: 500; width: auto; padding: 4px; margin-top: 12px; }
-  .msg { margin-top: 10px; font-size: 13.5px; min-height: 18px; }
+  .msg { margin-top: 8px; font-size: 13.5px; min-height: 18px; }
   .msg.error { color: var(--danger); }
   .msg.success { color: var(--teal); font-weight: 600; }
   .hidden { display: none !important; }
-  .field-label { text-align: left; font-size: 12.5px; color: var(--gray); margin-top: 8px; margin-bottom: -4px; font-weight: 500; }
+  .field-label { text-align: left; font-size: 12.5px; color: var(--gray); margin-top: 8px; margin-bottom: -2px; font-weight: 500; }
   .welcome { color: var(--maroon); font-size: 15px; margin-bottom: 18px; font-weight: 500; }
   .menu-btn { background: var(--maroon); }
+  .checkbox-row { text-align: left; font-size: 14.5px; margin: 10px 0; }
+  .checkbox-row input { width: auto; margin-right: 6px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+  th, td { border: 1px solid var(--border); padding: 6px; text-align: left; }
+  th { background: var(--maroon); color: white; }
+  .status-Pending { color: var(--danger); font-weight: bold; }
+  .status-Resolved { color: var(--teal); font-weight: bold; }
 
-  #splash {
-    text-align: center; color: var(--maroon);
-  }
+  #splash { text-align: center; color: var(--maroon); margin-top: 120px; }
   #splash img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 4px 20px rgba(110,42,86,0.2); }
 
   #gearBtn {
@@ -105,7 +114,6 @@
     text-align: left; padding: 13px 16px; font-weight: 500;
   }
   #gearPanel button:hover { background: var(--cream); }
-
   .lang-btn { background: var(--maroon); }
   .contact-box { background: var(--cream); border-radius: 10px; padding: 14px; text-align: left; font-size: 14px; margin-top: 12px; line-height: 1.6; }
 </style>
@@ -120,9 +128,9 @@
 
 <div id="gearBtn" class="hidden">&#9881;</div>
 <div id="gearPanel" class="hidden">
-  <button id="t_gearHome">Home</button>
-  <button id="t_gearLanguage">Change Language</button>
-  <button id="t_gearLogout">Logout</button>
+  <button id="gearHome">Home</button>
+  <button id="gearLanguage">Change Language</button>
+  <button id="gearLogout">Logout</button>
 </div>
 
 <div class="card hidden" id="loginBox">
@@ -160,46 +168,374 @@
   <div id="menuArea"></div>
 </div>
 
+<div class="card hidden" id="typeMenuBox">
+  <h3 style="color:var(--maroon);">Complaint or Request?</h3>
+  <button class="menu-btn" onclick="showComplaintCategory()">Complaint</button>
+  <button class="menu-btn secondary" onclick="showRequestCategory()">Request</button>
+  <button class="back-btn" onclick="goHome()">Back</button>
+</div>
+
+<div class="card hidden" id="complaintCategoryBox">
+  <h3 style="color:var(--maroon);">Select Complaint Category</h3>
+  <button class="menu-btn" onclick="selectComplaintCategory('Listener Team\'s Complaint')">Listener Team's Complaint</button>
+  <button class="menu-btn" onclick="selectComplaintCategory('Team Leader\'s Complaint')">Team Leader's Complaint</button>
+  <button class="back-btn" onclick="showTypeMenu()">Back</button>
+</div>
+
+<div class="card hidden" id="complaintFormBox">
+  <div class="form-title" id="complaintFormTitle"></div>
+  <div class="field-label">Location (Optional)</div>
+  <input type="text" id="cfLocation">
+  <div class="field-label">Date *</div>
+  <input type="date" id="cfDate">
+  <div class="field-label">Time *</div>
+  <input type="time" id="cfTime">
+  <div class="field-label">Select Complaint Against</div>
+  <select id="cfAgainst" onchange="toggleAgainstFields()">
+    <option value="">-- Select --</option>
+    <option value="Whole Department">Whole Department</option>
+    <option value="Specific Person">Specific Person</option>
+    <option value="Specific Shift">Specific Shift</option>
+  </select>
+  <input type="text" id="cfNameOpt" class="hidden" placeholder="Name (if known, optional)">
+  <input type="text" id="cfReason" placeholder="Complaint Reason">
+  <textarea id="cfDescription" placeholder="Write Description..."></textarea>
+  <button onclick="submitComplaintForm()">Submit</button>
+  <div class="msg" id="complaintFormMsg"></div>
+  <button class="back-btn" onclick="showComplaintCategory()">Back</button>
+</div>
+
+<div class="card hidden req-list" id="requestCategoryBox">
+  <h3 style="color:var(--maroon);">Select Request Category</h3>
+  <button class="menu-btn" onclick="showForm('routeShiftFormBox','rsEffectiveDate')">Route/Shift Change</button>
+  <button class="menu-btn" onclick="showForm('menameFormBox','mnIssueDate')">Mename Issue</button>
+  <button class="menu-btn" onclick="showForm('absenceFormBox','abAbsenceDate')">Absence Correction</button>
+  <button class="menu-btn" onclick="showForm('iqamaFormBox',null)">Iqama Issue/Iqama Renewal Request</button>
+  <button class="menu-btn" onclick="showForm('accommodationFormBox',null)">Accommodation Issue</button>
+  <button class="menu-btn" onclick="showForm('fingerprintFormBox',null)">Fingerprint Issue</button>
+  <button class="menu-btn" onclick="showForm('emergencyFormBox','emStartDate')">Emergency Leave Request</button>
+  <button class="menu-btn" onclick="showForm('vacationFormBox','vcOrigStart')">Vacation Postponement/Early Return/Extension/Cancellation</button>
+  <button class="menu-btn" onclick="showForm('contractFormBox',null)">Contract Renewal Request</button>
+  <button class="menu-btn" onclick="showForm('medicalFormBox',null)">Medical Insurance</button>
+  <button class="menu-btn" onclick="showForm('salaryReviewFormBox',null)">Salary Review</button>
+  <button class="menu-btn" onclick="showForm('salarySlipFormBox',null)">Salary Slip Request</button>
+  <button class="menu-btn" onclick="showForm('familyVisitFormBox','fvStart')">Family Visit Request</button>
+  <button class="menu-btn" onclick="showForm('uniformFormBox','unLastDate')">Uniform Eligibility</button>
+  <button class="menu-btn" onclick="showForm('performanceFormBox',null)">Driver Performance Review Request</button>
+  <button class="menu-btn" onclick="showForm('ticketFormBox','tkTravelDate')">Ticket Confirmation & Details</button>
+  <button class="menu-btn" onclick="showForm('exitReentryFormBox','exTravelDate')">Exit/Re-Entry Confirmation</button>
+  <button class="menu-btn" onclick="showForm('furtherFormBox',null)">Further Driver Request/Complaint</button>
+  <button class="back-btn" onclick="showTypeMenu()">Back</button>
+</div>
+
+<div class="card hidden" id="routeShiftFormBox">
+  <div class="form-title">Route/Shift Change</div>
+  <div class="field-label">Current Route (Optional, numbers/letters only)</div>
+  <input type="text" id="rsCurrentRoute">
+  <div class="field-label">Current Shift (Optional)</div>
+  <input type="time" id="rsCurrentShift">
+  <div class="field-label">Requested Route (Optional, numbers/letters only)</div>
+  <input type="text" id="rsRequestedRoute">
+  <div class="field-label">Requested Shift (Optional)</div>
+  <input type="time" id="rsRequestedShift">
+  <div class="field-label">Effective Date * (date you expect this resolved by)</div>
+  <input type="date" id="rsEffectiveDate">
+  <textarea id="rsReason" placeholder="Reason for Change"></textarea>
+  <button onclick="submitRouteShift()">Submit</button>
+  <div class="msg" id="rsFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="menameFormBox">
+  <div class="form-title">Mename Issue</div>
+  <input type="text" id="mnPassword" placeholder="Mename Password (Optional)">
+  <input type="text" id="mnIssueType" placeholder="Issue Type">
+  <textarea id="mnDescription" placeholder="Issue Description"></textarea>
+  <div class="field-label">Issue Date *</div>
+  <input type="date" id="mnIssueDate">
+  <input type="text" id="mnContact" placeholder="Contact Number">
+  <button onclick="submitMename()">Submit</button>
+  <div class="msg" id="mnFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="absenceFormBox">
+  <div class="form-title">Absence Correction</div>
+  <div class="field-label">Absence Date *</div>
+  <input type="date" id="abAbsenceDate">
+  <select id="abType">
+    <option value="">-- Select Status --</option>
+    <option>Present</option><option>Sick Leave</option><option>Annual Leave</option><option>Unpaid Leave</option>
+    <option>Death Leave</option><option>Emergency Leave</option><option>Marriage Leave</option>
+    <option>Compensatory Leave</option><option>Weekly Off</option><option>Other</option>
+  </select>
+  <textarea id="abReason" placeholder="Reason/Description"></textarea>
+  <button onclick="submitAbsence()">Submit</button>
+  <div class="msg" id="abFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="iqamaFormBox">
+  <div class="form-title">Iqama Issue/Iqama Renewal Request</div>
+  <input type="text" id="iqNumber" placeholder="Iqama Number (Numbers Only)">
+  <div class="field-label">Iqama Expiry Date *</div>
+  <input type="date" id="iqExpiry">
+  <select id="iqType">
+    <option value="">-- Request Type --</option>
+    <option>Renewal</option><option>Lost</option><option>Damaged</option><option>Other</option>
+  </select>
+  <textarea id="iqDescription" placeholder="Issue Description"></textarea>
+  <button onclick="submitIqama()">Submit</button>
+  <div class="msg" id="iqFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="accommodationFormBox">
+  <div class="form-title">Accommodation Issue</div>
+  <input type="text" id="acLocation" placeholder="Accommodation Location">
+  <input type="text" id="acRoom" placeholder="Room Number (Numbers Only)">
+  <select id="acCategory">
+    <option value="">-- Issue Category --</option>
+    <option>AC</option><option>Electricity</option><option>Water</option><option>Cleaning</option>
+    <option>Furniture</option><option>Internet</option><option>Other</option>
+  </select>
+  <textarea id="acDescription" placeholder="Issue Description"></textarea>
+  <button onclick="submitAccommodation()">Submit</button>
+  <div class="msg" id="acFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="fingerprintFormBox">
+  <div class="form-title">Fingerprint Issue</div>
+  <select id="fpType">
+    <option value="">-- Issue Type --</option>
+    <option>Not Registered</option><option>Failed Verification</option>
+  </select>
+  <textarea id="fpDescription" placeholder="Issue Description"></textarea>
+  <button onclick="submitFingerprint()">Submit</button>
+  <div class="msg" id="fpFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="emergencyFormBox">
+  <div class="form-title">Emergency Leave Request</div>
+  <div class="field-label">Leave Start Date *</div>
+  <input type="date" id="emStartDate">
+  <div class="field-label">Leave End Date *</div>
+  <input type="date" id="emEndDate">
+  <input type="text" id="emDays" placeholder="Number of Days (Numbers Only)">
+  <select id="emType">
+    <option value="">-- Emergency Type --</option>
+    <option>Family Emergency</option><option>Medical Emergency</option><option>Death Case</option><option>Other</option>
+  </select>
+  <textarea id="emDescription" placeholder="Request Description"></textarea>
+  <input type="text" id="emContact" placeholder="Contact Number (Numbers Only)">
+  <button onclick="submitEmergency()">Submit</button>
+  <div class="msg" id="emFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="vacationFormBox">
+  <div class="form-title">Vacation Postponement/Early Return/Extension/Cancellation</div>
+  <select id="vcType">
+    <option value="">-- Vacation Type --</option>
+    <option>Postpone</option><option>Early Return</option><option>Extension</option><option>Cancellation</option><option>Other</option>
+  </select>
+  <div class="field-label">Original Vacation Start Date *</div>
+  <input type="date" id="vcOrigStart">
+  <div class="field-label">Original Vacation End Date *</div>
+  <input type="date" id="vcOrigEnd">
+  <textarea id="vcReason" placeholder="Reason/Description"></textarea>
+  <div class="field-label">New Vacation Start Date (Optional)</div>
+  <input type="date" id="vcNewStart">
+  <div class="field-label">New Vacation End Date (Optional)</div>
+  <input type="date" id="vcNewEnd">
+  <button onclick="submitVacation()">Submit</button>
+  <div class="msg" id="vcFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="contractFormBox">
+  <div class="form-title">Contract Renewal Request</div>
+  <input type="text" id="crIqamaNumber" placeholder="Iqama Number (Numbers Only)">
+  <div class="field-label">Iqama Expiry Date *</div>
+  <input type="date" id="crIqamaExpiry">
+  <div class="field-label">Contract Expiry Date *</div>
+  <input type="date" id="crContractExpiry">
+  <textarea id="crDescription" placeholder="Request Description"></textarea>
+  <button onclick="submitContractRenewal()">Submit</button>
+  <div class="msg" id="crFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="medicalFormBox">
+  <div class="form-title">Medical Insurance</div>
+  <select id="miType">
+    <option value="">-- Request Type --</option>
+    <option>Policy Inquiry</option><option>Claim Issue</option><option>Card Request</option><option>Other</option>
+  </select>
+  <textarea id="miDescription" placeholder="Issue Description"></textarea>
+  <button onclick="submitMedicalInsurance()">Submit</button>
+  <div class="msg" id="miFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="salaryReviewFormBox">
+  <div class="form-title">Salary Review</div>
+  <select id="srReason">
+    <option value="">-- Review Reason --</option>
+    <option>Compensation</option><option>Other</option>
+  </select>
+  <textarea id="srDescription" placeholder="Description (Optional)"></textarea>
+  <button onclick="submitSalaryReview()">Submit</button>
+  <div class="msg" id="srFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="salarySlipFormBox">
+  <div class="form-title">Salary Slip Request</div>
+  <div class="field-label">Required Salary Month *</div>
+  <input type="month" id="ssMonth">
+  <textarea id="ssDescription" placeholder="Request Reason/Description"></textarea>
+  <button onclick="submitSalarySlip()">Submit</button>
+  <div class="msg" id="ssFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="familyVisitFormBox">
+  <div class="form-title">Family Visit Request</div>
+  <input type="text" id="fvName" placeholder="Visitor Full Name">
+  <input type="text" id="fvRelation" placeholder="Relationship With Visitor">
+  <input type="text" id="fvPassport" placeholder="Passport Number">
+  <div class="field-label">Visit Start Date *</div>
+  <input type="date" id="fvStart">
+  <div class="field-label">Visit End Date *</div>
+  <input type="date" id="fvEnd">
+  <textarea id="fvPurpose" placeholder="Purpose"></textarea>
+  <button onclick="submitFamilyVisit()">Submit</button>
+  <div class="msg" id="fvFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="uniformFormBox">
+  <div class="form-title">Uniform Eligibility</div>
+  <select id="unShirt">
+    <option value="">-- Shirt Size --</option>
+    <option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
+    <option>4XL</option><option>5XL</option><option>7XL</option><option>8XL</option><option>9XL</option><option>10XL</option>
+  </select>
+  <select id="unTrouser">
+    <option value="">-- Trouser Size --</option>
+    <option>38</option><option>40</option><option>42</option><option>44</option><option>46</option><option>48</option>
+    <option>50</option><option>52</option><option>54</option><option>56</option><option>58</option><option>60</option>
+    <option>62</option><option>64</option><option>66</option><option>68</option>
+  </select>
+  <div class="field-label">Last Receiving Date *</div>
+  <input type="date" id="unLastDate">
+  <input type="text" id="unQuantity" placeholder="Quantity Required (Numbers Only)">
+  <textarea id="unDescription" placeholder="Request Description"></textarea>
+  <button onclick="submitUniform()">Submit</button>
+  <div class="msg" id="unFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="performanceFormBox">
+  <div class="form-title">Driver Performance Review Request</div>
+  <select id="prType">
+    <option value="">-- Review Type --</option>
+    <option>Accident History</option><option>Behavior History</option><option>Discipline Performance</option><option>Overall Performance</option>
+  </select>
+  <textarea id="prReason" placeholder="Reason/Description"></textarea>
+  <button onclick="submitPerformanceReview()">Submit</button>
+  <div class="msg" id="prFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="ticketFormBox">
+  <div class="form-title">Ticket Confirmation & Details</div>
+  <div class="field-label">Travel Date *</div>
+  <input type="date" id="tkTravelDate">
+  <input type="text" id="tkDestination" placeholder="Destination">
+  <select id="tkType">
+    <option value="">-- Request Type --</option>
+    <option>Confirmation</option><option>Ticket Modification</option><option>Cancellation</option><option>Other</option>
+  </select>
+  <textarea id="tkReason" placeholder="Reason/Description"></textarea>
+  <button onclick="submitTicket()">Submit</button>
+  <div class="msg" id="tkFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="exitReentryFormBox">
+  <div class="form-title">Exit/Re-Entry Confirmation</div>
+  <input type="text" id="exNumber" placeholder="Exit/Re-Entry Number">
+  <div class="field-label">Travel Date *</div>
+  <input type="date" id="exTravelDate">
+  <div class="field-label">Return Date *</div>
+  <input type="date" id="exReturnDate">
+  <input type="text" id="exCountry" placeholder="Destination Country">
+  <div class="checkbox-row"><label><input type="checkbox" id="exConfirm"> Confirmation Required</label></div>
+  <button onclick="submitExitReentry()">Submit</button>
+  <div class="msg" id="exFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card hidden" id="furtherFormBox">
+  <div class="form-title">Further Driver Request/Complaint</div>
+  <div class="checkbox-row">
+    <label><input type="radio" name="furType" value="Complaint" onchange="toggleFurtherFields()"> Complaint</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="furType" value="Request" onchange="toggleFurtherFields()"> Request</label>
+  </div>
+  <input type="text" id="furComplaintFor" class="hidden" placeholder="Complaint For (ID/Name/Other)">
+  <input type="text" id="furRequestFor" class="hidden" placeholder="Request For (ID/Name/Other)">
+  <input type="text" id="furReason" placeholder="Reason">
+  <textarea id="furDescription" placeholder="Description"></textarea>
+  <button onclick="submitFurther()">Submit</button>
+  <div class="msg" id="furFormMsg"></div>
+  <button class="back-btn" onclick="showRequestCategory()">Back</button>
+</div>
+
+<div class="card wide hidden" id="myRecordsBox">
+  <h2 style="color:var(--maroon);">My Complaints & Requests</h2>
+  <div id="myRecordsTable"></div>
+</div>
+<div class="card wide hidden" id="allComplaintsBox">
+  <h2 style="color:var(--maroon);">All Complaints</h2>
+  <div id="allComplaintsTable"></div>
+</div>
+
 <script>
 var API_URL = "https://script.google.com/macros/s/AKfycbx8D7ucrF0YsCVbMoiBTs8M-DMpj943p9LXyWBwFZDzbE3tbaJzfFsxqauZCR51od8jlg/exec";
 var currentUser = null;
+var selectedComplaintCategory = "";
+
+var allBoxIds = ['splash','loginBox','contactBox','langBox','homeBox','typeMenuBox','complaintCategoryBox','complaintFormBox',
+'requestCategoryBox','routeShiftFormBox','menameFormBox','absenceFormBox','iqamaFormBox','accommodationFormBox',
+'fingerprintFormBox','emergencyFormBox','vacationFormBox','contractFormBox','medicalFormBox','salaryReviewFormBox',
+'salarySlipFormBox','familyVisitFormBox','uniformFormBox','performanceFormBox','ticketFormBox','exitReentryFormBox',
+'furtherFormBox','myRecordsBox','allComplaintsBox'];
 
 function callAPI(action, data) {
   var url = API_URL + "?action=" + encodeURIComponent(action) + "&data=" + encodeURIComponent(JSON.stringify(data || {}));
   return fetch(url).then(function(r) { return r.json(); });
 }
-
-function saveSession() {
-  localStorage.setItem('driverConnectSession', JSON.stringify(currentUser));
-}
-function loadSession() {
-  var raw = localStorage.getItem('driverConnectSession');
-  return raw ? JSON.parse(raw) : null;
-}
-function clearSession() {
-  localStorage.removeItem('driverConnectSession');
-}
-
-function hideAllTop() {
-  ['splash','loginBox','contactBox','langBox','homeBox'].forEach(function(id) {
-    document.getElementById(id).classList.add('hidden');
-  });
-}
+function saveSession() { localStorage.setItem('driverConnectSession', JSON.stringify(currentUser)); }
+function loadSession() { var raw = localStorage.getItem('driverConnectSession'); return raw ? JSON.parse(raw) : null; }
+function clearSession() { localStorage.removeItem('driverConnectSession'); }
+function hideAll() { allBoxIds.forEach(function(id){ document.getElementById(id).classList.add('hidden'); }); }
 
 window.addEventListener('load', function() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(function(){});
-  }
+  if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
   var session = loadSession();
+  hideAll();
   if (session && session.empId) {
     currentUser = session;
-    hideAllTop();
     document.getElementById('gearBtn').classList.remove('hidden');
     document.getElementById('homeBox').classList.remove('hidden');
     document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
     buildMenu(currentUser.role);
   } else {
-    hideAllTop();
     document.getElementById('loginBox').classList.remove('hidden');
   }
 });
@@ -211,62 +547,326 @@ function login() {
   callAPI('checkLogin', { empId: empId, password: pass }).then(function(result) {
     if (result.success) {
       currentUser = result;
-      hideAllTop();
+      hideAll();
       document.getElementById('langBox').classList.remove('hidden');
     } else {
       document.getElementById('msg').innerText = "Invalid Employee ID or Password";
     }
-  }).catch(function(err) {
-    document.getElementById('msg').innerText = "Connection error. Please try again.";
-  });
+  }).catch(function(){ document.getElementById('msg').innerText = "Connection error. Please try again."; });
 }
-
-function showContactBox() { hideAllTop(); document.getElementById('contactBox').classList.remove('hidden'); }
-function backToLogin() { hideAllTop(); document.getElementById('loginBox').classList.remove('hidden'); }
-
+function showContactBox() { hideAll(); document.getElementById('contactBox').classList.remove('hidden'); }
+function backToLogin() { hideAll(); document.getElementById('loginBox').classList.remove('hidden'); }
 function selectLanguage(lang) {
-  currentUser.language = lang;
-  saveSession();
-  hideAllTop();
+  currentUser.language = lang; saveSession();
+  goHome();
   document.getElementById('gearBtn').classList.remove('hidden');
+}
+function goHome() {
+  hideAll();
   document.getElementById('homeBox').classList.remove('hidden');
   document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
   buildMenu(currentUser.role);
 }
-
 function buildMenu(role) {
   var menu = document.getElementById('menuArea');
   menu.innerHTML = "";
   if (role === "Driver") {
-    menu.innerHTML += '<button class="menu-btn" onclick="alert(\'Complaint/Request forms coming in next step!\')">Complaint/Request</button>';
-    menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'Tracking coming in next step!\')">Track My Complaints & Requests</button>';
+    menu.innerHTML += '<button class="menu-btn" onclick="showTypeMenu()">Complaint/Request</button>';
+    menu.innerHTML += '<button class="menu-btn secondary" onclick="showMyRecords()">Track My Complaints & Requests</button>';
   } else {
-    menu.innerHTML += '<button class="menu-btn" onclick="alert(\'Admin view coming soon!\')">View All Complaints</button>';
+    menu.innerHTML += '<button class="menu-btn" onclick="showAllComplaints()">View All Complaints</button>';
+    menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'Coming soon\')">Manage Users</button>';
+  }
+}
+function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
+document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
+document.getElementById('gearHome').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goHome(); });
+document.getElementById('gearLanguage').addEventListener('click', function() {
+  document.getElementById('gearPanel').classList.add('hidden'); hideAll();
+  document.getElementById('langBox').classList.remove('hidden');
+});
+document.getElementById('gearLogout').addEventListener('click', function() {
+  currentUser = null; clearSession();
+  document.getElementById('gearBtn').classList.add('hidden');
+  document.getElementById('gearPanel').classList.add('hidden');
+  hideAll();
+  document.getElementById('empId').value = ""; document.getElementById('pass').value = "";
+  document.getElementById('loginBox').classList.remove('hidden');
+});
+
+function showTypeMenu() { hideAll(); document.getElementById('typeMenuBox').classList.remove('hidden'); }
+function showComplaintCategory() { hideAll(); document.getElementById('complaintCategoryBox').classList.remove('hidden'); }
+function showRequestCategory() { hideAll(); document.getElementById('requestCategoryBox').classList.remove('hidden'); }
+
+function showForm(boxId, dateFieldId) {
+  hideAll();
+  document.getElementById(boxId).classList.remove('hidden');
+  if (dateFieldId) {
+    var f = document.getElementById(dateFieldId);
+    if (f && !f.value) f.value = new Date().toISOString().slice(0,10);
   }
 }
 
-function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
-document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
-document.getElementById('t_gearHome').addEventListener('click', function() {
-  document.getElementById('gearPanel').classList.add('hidden');
-  hideAllTop();
-  document.getElementById('homeBox').classList.remove('hidden');
-});
-document.getElementById('t_gearLanguage').addEventListener('click', function() {
-  document.getElementById('gearPanel').classList.add('hidden');
-  hideAllTop();
-  document.getElementById('langBox').classList.remove('hidden');
-});
-document.getElementById('t_gearLogout').addEventListener('click', function() {
-  currentUser = null;
-  clearSession();
-  document.getElementById('gearBtn').classList.add('hidden');
-  document.getElementById('gearPanel').classList.add('hidden');
-  hideAllTop();
-  document.getElementById('empId').value = "";
-  document.getElementById('pass').value = "";
-  document.getElementById('loginBox').classList.remove('hidden');
-});
+function selectComplaintCategory(cat) {
+  selectedComplaintCategory = cat;
+  hideAll();
+  document.getElementById('complaintFormTitle').innerText = cat;
+  document.getElementById('complaintFormBox').classList.remove('hidden');
+  document.getElementById('complaintFormMsg').innerText = "";
+  document.getElementById('cfAgainst').value = "";
+  document.getElementById('cfNameOpt').classList.add('hidden');
+  document.getElementById('cfNameOpt').value = "";
+  if (!document.getElementById('cfDate').value) document.getElementById('cfDate').value = new Date().toISOString().slice(0,10);
+  if (!document.getElementById('cfTime').value) {
+    var n = new Date();
+    document.getElementById('cfTime').value = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  }
+}
+function toggleAgainstFields() {
+  var val = document.getElementById('cfAgainst').value;
+  var nf = document.getElementById('cfNameOpt');
+  if (val === 'Specific Person' || val === 'Specific Shift') { nf.classList.remove('hidden'); }
+  else { nf.classList.add('hidden'); nf.value = ""; }
+}
+function submitComplaintForm() {
+  var location = document.getElementById('cfLocation').value;
+  var date = document.getElementById('cfDate').value;
+  var time = document.getElementById('cfTime').value;
+  var against = document.getElementById('cfAgainst').value;
+  var nameOpt = document.getElementById('cfNameOpt').value;
+  var reason = document.getElementById('cfReason').value;
+  var description = document.getElementById('cfDescription').value;
+  if (!against) { document.getElementById('complaintFormMsg').innerText = "Please select Complaint Against"; return; }
+  if (!date || !time || !reason) { document.getElementById('complaintFormMsg').innerText = "Date, Time and Reason are required"; return; }
+  var payload = { empId: currentUser.empId, name: currentUser.name, department: "Operation", category: selectedComplaintCategory,
+    location: location, date: date, time: time, againstType: against, againstName: nameOpt, reason: reason, description: description };
+  document.getElementById('complaintFormMsg').className = "msg";
+  document.getElementById('complaintFormMsg').innerText = "Submitting...";
+  callAPI('submitComplaint', payload).then(function(res) {
+    document.getElementById('complaintFormMsg').className = "msg success";
+    document.getElementById('complaintFormMsg').innerText = "Submitted! Reference: " + res.complaintId;
+    ['cfLocation','cfDate','cfTime','cfNameOpt','cfReason','cfDescription'].forEach(function(id){document.getElementById(id).value = "";});
+    document.getElementById('cfAgainst').value = ""; document.getElementById('cfNameOpt').classList.add('hidden');
+  }).catch(function(){ document.getElementById('complaintFormMsg').className = "msg error"; document.getElementById('complaintFormMsg').innerText = "Connection error"; });
+}
+
+function doSubmitRequest(payload, msgId, clearIds) {
+  var el = document.getElementById(msgId);
+  el.className = "msg"; el.innerText = "Submitting...";
+  callAPI('submitRequest', payload).then(function(res) {
+    el.className = "msg success";
+    el.innerText = "Submitted! Reference: " + res.requestId;
+    clearIds.forEach(function(id) {
+      var f = document.getElementById(id);
+      if (f.type === 'checkbox') f.checked = false; else f.value = "";
+    });
+  }).catch(function(){ el.className = "msg error"; el.innerText = "Connection error"; });
+}
+
+function submitRouteShift() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Route/Shift Change",
+    desiredDate: document.getElementById('rsEffectiveDate').value,
+    currentRoute: document.getElementById('rsCurrentRoute').value,
+    requestedRoute: document.getElementById('rsRequestedRoute').value,
+    currentShift: document.getElementById('rsCurrentShift').value,
+    requestedShift: document.getElementById('rsRequestedShift').value,
+    reason: document.getElementById('rsReason').value };
+  if (!d.desiredDate || !d.reason) { document.getElementById('rsFormMsg').innerText = "Effective Date and Reason are required"; return; }
+  doSubmitRequest(d, 'rsFormMsg', ['rsCurrentRoute','rsCurrentShift','rsRequestedRoute','rsRequestedShift','rsReason']);
+}
+function submitMename() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Mename Issue",
+    menamePassword: document.getElementById('mnPassword').value,
+    selectedType: document.getElementById('mnIssueType').value,
+    description: document.getElementById('mnDescription').value,
+    date1: document.getElementById('mnIssueDate').value,
+    contactNumber: document.getElementById('mnContact').value };
+  if (!d.selectedType || !d.description || !d.date1) { document.getElementById('mnFormMsg').innerText = "Issue Type, Description and Date are required"; return; }
+  doSubmitRequest(d, 'mnFormMsg', ['mnPassword','mnIssueType','mnDescription','mnContact']);
+}
+function submitAbsence() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Absence Correction",
+    date1: document.getElementById('abAbsenceDate').value,
+    selectedType: document.getElementById('abType').value,
+    description: document.getElementById('abReason').value };
+  if (!d.date1 || !d.selectedType) { document.getElementById('abFormMsg').innerText = "Date and Status are required"; return; }
+  doSubmitRequest(d, 'abFormMsg', ['abType','abReason']);
+}
+function submitIqama() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Iqama Issue/Iqama Renewal Request",
+    iqamaNumber: document.getElementById('iqNumber').value,
+    expiryDate: document.getElementById('iqExpiry').value,
+    selectedType: document.getElementById('iqType').value,
+    description: document.getElementById('iqDescription').value };
+  if (!d.iqamaNumber || !d.expiryDate || !d.selectedType) { document.getElementById('iqFormMsg').innerText = "Iqama Number, Expiry Date and Request Type are required"; return; }
+  doSubmitRequest(d, 'iqFormMsg', ['iqNumber','iqExpiry','iqType','iqDescription']);
+}
+function submitAccommodation() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Accommodation Issue",
+    accommodationLocation: document.getElementById('acLocation').value,
+    roomNumber: document.getElementById('acRoom').value,
+    selectedType: document.getElementById('acCategory').value,
+    description: document.getElementById('acDescription').value };
+  if (!d.accommodationLocation || !d.selectedType) { document.getElementById('acFormMsg').innerText = "Location and Issue Category are required"; return; }
+  doSubmitRequest(d, 'acFormMsg', ['acLocation','acRoom','acCategory','acDescription']);
+}
+function submitFingerprint() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Fingerprint Issue",
+    selectedType: document.getElementById('fpType').value,
+    description: document.getElementById('fpDescription').value };
+  if (!d.selectedType) { document.getElementById('fpFormMsg').innerText = "Issue Type is required"; return; }
+  doSubmitRequest(d, 'fpFormMsg', ['fpType','fpDescription']);
+}
+function submitEmergency() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Emergency Leave Request",
+    date1: document.getElementById('emStartDate').value,
+    date2: document.getElementById('emEndDate').value,
+    numberOfDays: document.getElementById('emDays').value,
+    selectedType: document.getElementById('emType').value,
+    description: document.getElementById('emDescription').value,
+    contactNumber: document.getElementById('emContact').value };
+  if (!d.date1 || !d.date2 || !d.selectedType) { document.getElementById('emFormMsg').innerText = "Start Date, End Date and Emergency Type are required"; return; }
+  doSubmitRequest(d, 'emFormMsg', ['emStartDate','emEndDate','emDays','emType','emDescription','emContact']);
+}
+function submitVacation() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Vacation Postponement/Early Return/Extension/Cancellation",
+    selectedType: document.getElementById('vcType').value,
+    date1: document.getElementById('vcOrigStart').value,
+    date2: document.getElementById('vcOrigEnd').value,
+    description: document.getElementById('vcReason').value,
+    date3: document.getElementById('vcNewStart').value,
+    date4: document.getElementById('vcNewEnd').value };
+  if (!d.selectedType || !d.date1 || !d.date2) { document.getElementById('vcFormMsg').innerText = "Vacation Type and Original Dates are required"; return; }
+  doSubmitRequest(d, 'vcFormMsg', ['vcType','vcOrigStart','vcOrigEnd','vcReason','vcNewStart','vcNewEnd']);
+}
+function submitContractRenewal() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Contract Renewal Request",
+    iqamaNumber: document.getElementById('crIqamaNumber').value,
+    expiryDate: document.getElementById('crIqamaExpiry').value,
+    date1: document.getElementById('crContractExpiry').value,
+    description: document.getElementById('crDescription').value };
+  if (!d.iqamaNumber || !d.expiryDate || !d.date1) { document.getElementById('crFormMsg').innerText = "Iqama Number, Iqama Expiry and Contract Expiry are required"; return; }
+  doSubmitRequest(d, 'crFormMsg', ['crIqamaNumber','crIqamaExpiry','crContractExpiry','crDescription']);
+}
+function submitMedicalInsurance() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Medical Insurance",
+    selectedType: document.getElementById('miType').value,
+    description: document.getElementById('miDescription').value };
+  if (!d.selectedType) { document.getElementById('miFormMsg').innerText = "Request Type is required"; return; }
+  doSubmitRequest(d, 'miFormMsg', ['miType','miDescription']);
+}
+function submitSalaryReview() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Salary Review",
+    selectedType: document.getElementById('srReason').value,
+    description: document.getElementById('srDescription').value };
+  if (!d.selectedType) { document.getElementById('srFormMsg').innerText = "Review Reason is required"; return; }
+  doSubmitRequest(d, 'srFormMsg', ['srReason','srDescription']);
+}
+function submitSalarySlip() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Salary Slip Request",
+    monthYear: document.getElementById('ssMonth').value,
+    description: document.getElementById('ssDescription').value };
+  if (!d.monthYear) { document.getElementById('ssFormMsg').innerText = "Month is required"; return; }
+  doSubmitRequest(d, 'ssFormMsg', ['ssMonth','ssDescription']);
+}
+function submitFamilyVisit() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Family Visit Request",
+    visitorName: document.getElementById('fvName').value,
+    relationship: document.getElementById('fvRelation').value,
+    passportNumber: document.getElementById('fvPassport').value,
+    date1: document.getElementById('fvStart').value,
+    date2: document.getElementById('fvEnd').value,
+    description: document.getElementById('fvPurpose').value };
+  if (!d.visitorName || !d.date1 || !d.date2) { document.getElementById('fvFormMsg').innerText = "Visitor Name and Visit Dates are required"; return; }
+  doSubmitRequest(d, 'fvFormMsg', ['fvName','fvRelation','fvPassport','fvStart','fvEnd','fvPurpose']);
+}
+function submitUniform() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Uniform Eligibility",
+    shirtSize: document.getElementById('unShirt').value,
+    trouserSize: document.getElementById('unTrouser').value,
+    date1: document.getElementById('unLastDate').value,
+    quantity: document.getElementById('unQuantity').value,
+    description: document.getElementById('unDescription').value };
+  if (!d.shirtSize && !d.trouserSize) { document.getElementById('unFormMsg').innerText = "At least one size is required"; return; }
+  doSubmitRequest(d, 'unFormMsg', ['unShirt','unTrouser','unLastDate','unQuantity','unDescription']);
+}
+function submitPerformanceReview() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Driver Performance Review Request",
+    selectedType: document.getElementById('prType').value,
+    description: document.getElementById('prReason').value };
+  if (!d.selectedType) { document.getElementById('prFormMsg').innerText = "Review Type is required"; return; }
+  doSubmitRequest(d, 'prFormMsg', ['prType','prReason']);
+}
+function submitTicket() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Ticket Confirmation & Details",
+    date1: document.getElementById('tkTravelDate').value,
+    destination: document.getElementById('tkDestination').value,
+    selectedType: document.getElementById('tkType').value,
+    description: document.getElementById('tkReason').value };
+  if (!d.date1 || !d.selectedType) { document.getElementById('tkFormMsg').innerText = "Travel Date and Request Type are required"; return; }
+  doSubmitRequest(d, 'tkFormMsg', ['tkTravelDate','tkDestination','tkType','tkReason']);
+}
+function submitExitReentry() {
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Exit/Re-Entry Confirmation",
+    reason: document.getElementById('exNumber').value,
+    date1: document.getElementById('exTravelDate').value,
+    date2: document.getElementById('exReturnDate').value,
+    destination: document.getElementById('exCountry').value,
+    confirmationRequired: document.getElementById('exConfirm').checked ? "Yes" : "No" };
+  if (!d.date1 || !d.date2) { document.getElementById('exFormMsg').innerText = "Travel Date and Return Date are required"; return; }
+  doSubmitRequest(d, 'exFormMsg', ['exNumber','exTravelDate','exReturnDate','exCountry','exConfirm']);
+}
+function toggleFurtherFields() {
+  var val = document.querySelector('input[name="furType"]:checked').value;
+  if (val === 'Complaint') { document.getElementById('furComplaintFor').classList.remove('hidden'); document.getElementById('furRequestFor').classList.add('hidden'); }
+  else { document.getElementById('furRequestFor').classList.remove('hidden'); document.getElementById('furComplaintFor').classList.add('hidden'); }
+}
+function submitFurther() {
+  var checked = document.querySelector('input[name="furType"]:checked');
+  if (!checked) { document.getElementById('furFormMsg').innerText = "Please select Complaint or Request"; return; }
+  var d = { empId: currentUser.empId, name: currentUser.name, category: "Further Driver Request/Complaint",
+    selectedType: checked.value,
+    complaintFor: document.getElementById('furComplaintFor').value,
+    requestFor: document.getElementById('furRequestFor').value,
+    reason: document.getElementById('furReason').value,
+    description: document.getElementById('furDescription').value };
+  if (!d.reason) { document.getElementById('furFormMsg').innerText = "Reason is required"; return; }
+  doSubmitRequest(d, 'furFormMsg', ['furComplaintFor','furRequestFor','furReason','furDescription']);
+}
+
+function showMyRecords() {
+  hideAll();
+  document.getElementById('myRecordsBox').classList.remove('hidden');
+  document.getElementById('myRecordsTable').innerText = "Loading...";
+  Promise.all([
+    callAPI('getMyComplaints', { empId: currentUser.empId }),
+    callAPI('getMyRequests', { empId: currentUser.empId })
+  ]).then(function(results) {
+    var complaints = results[0] || [];
+    var requests = results[1] || [];
+    var combined = [];
+    complaints.forEach(function(c){ combined.push({ id: c.id, type: "Complaint", category: c.category, status: c.status }); });
+    requests.forEach(function(r){ combined.push({ id: r.id, type: "Request", category: r.category, status: r.status }); });
+    if (combined.length === 0) { document.getElementById('myRecordsTable').innerText = "No records found."; return; }
+    var html = "<table><tr><th>ID</th><th>Type</th><th>Category</th><th>Status</th></tr>";
+    combined.forEach(function(c){ html += "<tr><td>"+c.id+"</td><td>"+c.type+"</td><td>"+c.category+"</td><td class='status-"+c.status+"'>"+c.status+"</td></tr>"; });
+    html += "</table>";
+    document.getElementById('myRecordsTable').innerHTML = html;
+  }).catch(function(){ document.getElementById('myRecordsTable').innerText = "Connection error."; });
+}
+
+function showAllComplaints() {
+  hideAll();
+  document.getElementById('allComplaintsBox').classList.remove('hidden');
+  document.getElementById('allComplaintsTable').innerText = "Loading...";
+  callAPI('getAllComplaints', {}).then(function(list) {
+    if (list.length === 0) { document.getElementById('allComplaintsTable').innerText = "No complaints found."; return; }
+    var html = "<table><tr><th>ID</th><th>Driver</th><th>Category</th><th>Dept</th><th>Status</th></tr>";
+    list.forEach(function(c){ html += "<tr><td>"+c.id+"</td><td>"+c.name+"</td><td>"+c.category+"</td><td>"+c.department+"</td><td class='status-"+c.status+"'>"+c.status+"</td></tr>"; });
+    html += "</table>";
+    document.getElementById('allComplaintsTable').innerHTML = html;
+  }).catch(function(){ document.getElementById('allComplaintsTable').innerText = "Connection error."; });
+}
 </script>
 </body>
 </html>

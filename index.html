@@ -34,6 +34,7 @@
     color: var(--text);
   }
   h1, h2, h3 { font-family: 'Poppins', 'Inter', sans-serif; margin: 0 0 6px; }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
   .card {
     background: white;
     border-radius: 16px;
@@ -43,6 +44,7 @@
     padding: 30px 26px;
     text-align: center;
     margin-top: 40px;
+    animation: fadeSlideIn 0.35s ease;
   }
   .card.wide { max-width: 640px; }
   .req-list { max-height: 68vh; overflow-y: auto; }
@@ -58,6 +60,7 @@
     font-size: 15px;
     font-family: 'Inter', sans-serif;
     background: #FCFAF9;
+    transition: border-color 0.15s;
   }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--maroon); }
   textarea { resize: vertical; min-height: 68px; }
@@ -73,9 +76,10 @@
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     margin-top: 9px;
-    transition: background 0.15s;
+    transition: background 0.15s, transform 0.1s;
   }
   button:hover { background: var(--maroon-dark); }
+  button:active { transform: scale(0.97); }
   button.secondary { background: var(--teal); }
   button.secondary:hover { background: #145a52; }
   button.back-btn { background: #666; }
@@ -99,15 +103,20 @@
   #splash { text-align: center; color: var(--maroon); margin-top: 120px; }
   #splash img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 4px 20px rgba(110,42,86,0.2); }
 
-  #gearBtn {
-    position: fixed; top: 16px; left: 16px; width: 46px; height: 46px;
-    background: var(--maroon); border-radius: 50%; display: flex; align-items: center;
+  #gearBtn, #floatBackBtn {
+    position: fixed; top: 16px; width: 46px; height: 46px;
+    border-radius: 50%; display: flex; align-items: center;
     justify-content: center; font-size: 20px; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(110,42,86,0.35); z-index: 200; color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25); z-index: 200; color: white;
+    transition: transform 0.1s;
   }
+  #gearBtn:active, #floatBackBtn:active { transform: scale(0.92); }
+  #gearBtn { left: 16px; background: var(--maroon); }
+  #floatBackBtn { right: 16px; background: var(--teal); }
   #gearPanel {
     position: fixed; top: 68px; left: 16px; background: white; border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.15); overflow: hidden; z-index: 200; width: 190px;
+    animation: fadeSlideIn 0.2s ease;
   }
   #gearPanel button {
     width: 100%; margin: 0; border-radius: 0; background: white; color: var(--maroon);
@@ -127,10 +136,11 @@
 </div>
 
 <div id="gearBtn" class="hidden">&#9881;</div>
+<div id="floatBackBtn" class="hidden" onclick="goBack()">&#8592;</div>
 <div id="gearPanel" class="hidden">
-  <button id="gearHome">Home</button>
-  <button id="gearLanguage">Change Language</button>
-  <button id="gearLogout">Logout</button>
+  <button id="t_gearHome">Home</button>
+  <button id="t_gearLanguage">Change Language</button>
+  <button id="t_gearLogout">Logout</button>
 </div>
 
 <div class="card hidden" id="loginBox">
@@ -140,17 +150,16 @@
   <input type="password" id="pass" placeholder="Password">
   <button onclick="login()">Login</button>
   <div class="msg error" id="msg"></div>
-  <button class="link-btn" onclick="showContactBox()">Forgot Password?</button>
+  <button class="link-btn" id="t_forgotBtn" onclick="showContactBox()"></button>
 </div>
 
 <div class="card hidden" id="contactBox">
-  <h3 style="color:var(--maroon);">Forgot Password?</h3>
-  <p style="color:var(--gray); font-size:14px;">Please contact the admin to reset your password:</p>
+  <h3 style="color:var(--maroon);" id="t_forgotTitle"></h3>
+  <p style="color:var(--gray); font-size:14px;" id="t_forgotDesc"></p>
   <div class="contact-box">
     📱 <b>WhatsApp:</b> +966-XX-XXX-XXXX<br>
     🏢 <b>Office:</b> Modern Bus Co. Ltd., Makkah, KSA
   </div>
-  <button class="back-btn" onclick="backToLogin()">Back</button>
 </div>
 
 <div class="card hidden" id="langBox">
@@ -169,63 +178,59 @@
 </div>
 
 <div class="card hidden" id="typeMenuBox">
-  <h3 style="color:var(--maroon);">Complaint or Request?</h3>
-  <button class="menu-btn" onclick="showComplaintCategory()">Complaint</button>
-  <button class="menu-btn secondary" onclick="showRequestCategory()">Request</button>
-  <button class="back-btn" onclick="goHome()">Back</button>
+  <h3 style="color:var(--maroon);" id="t_typeTitle"></h3>
+  <button class="menu-btn" id="t_complaintBtn" onclick="showComplaintCategory()"></button>
+  <button class="menu-btn secondary" id="t_requestBtn" onclick="showRequestCategory()"></button>
 </div>
 
 <div class="card hidden" id="complaintCategoryBox">
-  <h3 style="color:var(--maroon);">Select Complaint Category</h3>
-  <button class="menu-btn" onclick="selectComplaintCategory('Listener Team\'s Complaint')">Listener Team's Complaint</button>
-  <button class="menu-btn" onclick="selectComplaintCategory('Team Leader\'s Complaint')">Team Leader's Complaint</button>
-  <button class="back-btn" onclick="showTypeMenu()">Back</button>
+  <h3 style="color:var(--maroon);" id="t_categoryTitle"></h3>
+  <button class="menu-btn" id="t_catListener" onclick="selectComplaintCategory('catListener')"></button>
+  <button class="menu-btn" id="t_catTeamLeader" onclick="selectComplaintCategory('catTeamLeader')"></button>
 </div>
 
 <div class="card hidden" id="complaintFormBox">
   <div class="form-title" id="complaintFormTitle"></div>
-  <div class="field-label">Location (Optional)</div>
+  <div class="field-label" id="t_locLabel"></div>
   <input type="text" id="cfLocation">
-  <div class="field-label">Date *</div>
+  <div class="field-label" id="t_dateLabel"></div>
   <input type="date" id="cfDate">
-  <div class="field-label">Time *</div>
+  <div class="field-label" id="t_timeLabel"></div>
   <input type="time" id="cfTime">
-  <div class="field-label">Select Complaint Against</div>
+  <div class="field-label" id="t_againstLabel"></div>
   <select id="cfAgainst" onchange="toggleAgainstFields()">
-    <option value="">-- Select --</option>
-    <option value="Whole Department">Whole Department</option>
-    <option value="Specific Person">Specific Person</option>
-    <option value="Specific Shift">Specific Shift</option>
+    <option value="" id="t_againstNone"></option>
+    <option value="Whole Department" id="t_againstDept"></option>
+    <option value="Specific Person" id="t_againstPerson"></option>
+    <option value="Specific Shift" id="t_againstShift"></option>
   </select>
   <input type="text" id="cfNameOpt" class="hidden" placeholder="Name (if known, optional)">
   <input type="text" id="cfReason" placeholder="Complaint Reason">
   <textarea id="cfDescription" placeholder="Write Description..."></textarea>
-  <button onclick="submitComplaintForm()">Submit</button>
+  <button id="t_submitBtn1" onclick="submitComplaintForm()"></button>
   <div class="msg" id="complaintFormMsg"></div>
-  <button class="back-btn" onclick="showComplaintCategory()">Back</button>
 </div>
 
 <div class="card hidden req-list" id="requestCategoryBox">
-  <h3 style="color:var(--maroon);">Select Request Category</h3>
-  <button class="menu-btn" onclick="showForm('routeShiftFormBox','rsEffectiveDate')">Route/Shift Change</button>
-  <button class="menu-btn" onclick="showForm('menameFormBox','mnIssueDate')">Mename Issue</button>
-  <button class="menu-btn" onclick="showForm('absenceFormBox','abAbsenceDate')">Absence Correction</button>
-  <button class="menu-btn" onclick="showForm('iqamaFormBox',null)">Iqama Issue/Iqama Renewal Request</button>
-  <button class="menu-btn" onclick="showForm('accommodationFormBox',null)">Accommodation Issue</button>
-  <button class="menu-btn" onclick="showForm('fingerprintFormBox',null)">Fingerprint Issue</button>
-  <button class="menu-btn" onclick="showForm('emergencyFormBox','emStartDate')">Emergency Leave Request</button>
-  <button class="menu-btn" onclick="showForm('vacationFormBox','vcOrigStart')">Vacation Postponement/Early Return/Extension/Cancellation</button>
-  <button class="menu-btn" onclick="showForm('contractFormBox',null)">Contract Renewal Request</button>
-  <button class="menu-btn" onclick="showForm('medicalFormBox',null)">Medical Insurance</button>
-  <button class="menu-btn" onclick="showForm('salaryReviewFormBox',null)">Salary Review</button>
-  <button class="menu-btn" onclick="showForm('salarySlipFormBox',null)">Salary Slip Request</button>
-  <button class="menu-btn" onclick="showForm('familyVisitFormBox','fvStart')">Family Visit Request</button>
-  <button class="menu-btn" onclick="showForm('uniformFormBox','unLastDate')">Uniform Eligibility</button>
-  <button class="menu-btn" onclick="showForm('performanceFormBox',null)">Driver Performance Review Request</button>
-  <button class="menu-btn" onclick="showForm('ticketFormBox','tkTravelDate')">Ticket Confirmation & Details</button>
-  <button class="menu-btn" onclick="showForm('exitReentryFormBox','exTravelDate')">Exit/Re-Entry Confirmation</button>
-  <button class="menu-btn" onclick="showForm('furtherFormBox',null)">Further Driver Request/Complaint</button>
-  <button class="back-btn" onclick="showTypeMenu()">Back</button>
+  <h3 style="color:var(--maroon);" id="t_requestCategoryTitle"></h3>
+  <button class="menu-btn" id="t_reqRouteShift" onclick="showForm('routeShiftFormBox','rsEffectiveDate')"></button>
+  <button class="menu-btn" id="t_reqMename" onclick="showForm('menameFormBox','mnIssueDate')"></button>
+  <button class="menu-btn" id="t_reqAbsence" onclick="showForm('absenceFormBox','abAbsenceDate')"></button>
+  <button class="menu-btn" id="t_reqIqama" onclick="showForm('iqamaFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqAccommodation" onclick="showForm('accommodationFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqFingerprint" onclick="showForm('fingerprintFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqEmergencyLeave" onclick="showForm('emergencyFormBox','emStartDate')"></button>
+  <button class="menu-btn" id="t_reqVacation" onclick="showForm('vacationFormBox','vcOrigStart')"></button>
+  <button class="menu-btn" id="t_reqContractRenewal" onclick="showForm('contractFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqMedicalInsurance" onclick="showForm('medicalFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqSalaryReview" onclick="showForm('salaryReviewFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqSalarySlip" onclick="showForm('salarySlipFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqFamilyVisit" onclick="showForm('familyVisitFormBox','fvStart')"></button>
+  <button class="menu-btn" id="t_reqUniform" onclick="showForm('uniformFormBox','unLastDate')"></button>
+  <button class="menu-btn" id="t_reqPerformanceReview" onclick="showForm('performanceFormBox',null)"></button>
+  <button class="menu-btn" id="t_reqTicketConfirmation" onclick="showForm('ticketFormBox','tkTravelDate')"></button>
+  <button class="menu-btn" id="t_reqExitReentry" onclick="showForm('exitReentryFormBox','exTravelDate')"></button>
+  <button class="menu-btn" id="t_reqFurther" onclick="showForm('furtherFormBox',null)"></button>
 </div>
 
 <div class="card hidden" id="routeShiftFormBox">
@@ -243,7 +248,6 @@
   <textarea id="rsReason" placeholder="Reason for Change"></textarea>
   <button onclick="submitRouteShift()">Submit</button>
   <div class="msg" id="rsFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="menameFormBox">
@@ -256,7 +260,6 @@
   <input type="text" id="mnContact" placeholder="Contact Number">
   <button onclick="submitMename()">Submit</button>
   <div class="msg" id="mnFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="absenceFormBox">
@@ -272,7 +275,6 @@
   <textarea id="abReason" placeholder="Reason/Description"></textarea>
   <button onclick="submitAbsence()">Submit</button>
   <div class="msg" id="abFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="iqamaFormBox">
@@ -287,7 +289,6 @@
   <textarea id="iqDescription" placeholder="Issue Description"></textarea>
   <button onclick="submitIqama()">Submit</button>
   <div class="msg" id="iqFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="accommodationFormBox">
@@ -302,7 +303,6 @@
   <textarea id="acDescription" placeholder="Issue Description"></textarea>
   <button onclick="submitAccommodation()">Submit</button>
   <div class="msg" id="acFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="fingerprintFormBox">
@@ -314,7 +314,6 @@
   <textarea id="fpDescription" placeholder="Issue Description"></textarea>
   <button onclick="submitFingerprint()">Submit</button>
   <div class="msg" id="fpFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="emergencyFormBox">
@@ -332,7 +331,6 @@
   <input type="text" id="emContact" placeholder="Contact Number (Numbers Only)">
   <button onclick="submitEmergency()">Submit</button>
   <div class="msg" id="emFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="vacationFormBox">
@@ -352,7 +350,6 @@
   <input type="date" id="vcNewEnd">
   <button onclick="submitVacation()">Submit</button>
   <div class="msg" id="vcFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="contractFormBox">
@@ -365,7 +362,6 @@
   <textarea id="crDescription" placeholder="Request Description"></textarea>
   <button onclick="submitContractRenewal()">Submit</button>
   <div class="msg" id="crFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="medicalFormBox">
@@ -377,7 +373,6 @@
   <textarea id="miDescription" placeholder="Issue Description"></textarea>
   <button onclick="submitMedicalInsurance()">Submit</button>
   <div class="msg" id="miFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="salaryReviewFormBox">
@@ -389,7 +384,6 @@
   <textarea id="srDescription" placeholder="Description (Optional)"></textarea>
   <button onclick="submitSalaryReview()">Submit</button>
   <div class="msg" id="srFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="salarySlipFormBox">
@@ -399,7 +393,6 @@
   <textarea id="ssDescription" placeholder="Request Reason/Description"></textarea>
   <button onclick="submitSalarySlip()">Submit</button>
   <div class="msg" id="ssFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="familyVisitFormBox">
@@ -414,7 +407,6 @@
   <textarea id="fvPurpose" placeholder="Purpose"></textarea>
   <button onclick="submitFamilyVisit()">Submit</button>
   <div class="msg" id="fvFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="uniformFormBox">
@@ -436,7 +428,6 @@
   <textarea id="unDescription" placeholder="Request Description"></textarea>
   <button onclick="submitUniform()">Submit</button>
   <div class="msg" id="unFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="performanceFormBox">
@@ -448,7 +439,6 @@
   <textarea id="prReason" placeholder="Reason/Description"></textarea>
   <button onclick="submitPerformanceReview()">Submit</button>
   <div class="msg" id="prFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="ticketFormBox">
@@ -463,7 +453,6 @@
   <textarea id="tkReason" placeholder="Reason/Description"></textarea>
   <button onclick="submitTicket()">Submit</button>
   <div class="msg" id="tkFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="exitReentryFormBox">
@@ -477,7 +466,6 @@
   <div class="checkbox-row"><label><input type="checkbox" id="exConfirm"> Confirmation Required</label></div>
   <button onclick="submitExitReentry()">Submit</button>
   <div class="msg" id="exFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card hidden" id="furtherFormBox">
@@ -493,28 +481,187 @@
   <textarea id="furDescription" placeholder="Description"></textarea>
   <button onclick="submitFurther()">Submit</button>
   <div class="msg" id="furFormMsg"></div>
-  <button class="back-btn" onclick="showRequestCategory()">Back</button>
 </div>
 
 <div class="card wide hidden" id="myRecordsBox">
-  <h2 style="color:var(--maroon);">My Complaints & Requests</h2>
+  <h2 style="color:var(--maroon);" id="t_myRecordsTitle"></h2>
   <div id="myRecordsTable"></div>
 </div>
 <div class="card wide hidden" id="allComplaintsBox">
-  <h2 style="color:var(--maroon);">All Complaints</h2>
+  <h2 style="color:var(--maroon);" id="t_allComplaintsTitle"></h2>
   <div id="allComplaintsTable"></div>
 </div>
 
 <script>
 var API_URL = "https://script.google.com/macros/s/AKfycbx8D7ucrF0YsCVbMoiBTs8M-DMpj943p9LXyWBwFZDzbE3tbaJzfFsxqauZCR51od8jlg/exec";
 var currentUser = null;
-var selectedComplaintCategory = "";
+var selectedComplaintLabelKey = "";
 
 var allBoxIds = ['splash','loginBox','contactBox','langBox','homeBox','typeMenuBox','complaintCategoryBox','complaintFormBox',
 'requestCategoryBox','routeShiftFormBox','menameFormBox','absenceFormBox','iqamaFormBox','accommodationFormBox',
 'fingerprintFormBox','emergencyFormBox','vacationFormBox','contractFormBox','medicalFormBox','salaryReviewFormBox',
 'salarySlipFormBox','familyVisitFormBox','uniformFormBox','performanceFormBox','ticketFormBox','exitReentryFormBox',
 'furtherFormBox','myRecordsBox','allComplaintsBox'];
+
+// Screens where the floating Back button should NOT show
+var noBackScreens = ['splash','loginBox','homeBox'];
+// Each screen's "parent" screen, used when the browser/hardware Back is pressed with no history state
+var parentOf = {
+  contactBox: 'loginBox', langBox: 'homeBox', typeMenuBox: 'homeBox',
+  complaintCategoryBox: 'typeMenuBox', complaintFormBox: 'complaintCategoryBox',
+  requestCategoryBox: 'typeMenuBox',
+  routeShiftFormBox: 'requestCategoryBox', menameFormBox: 'requestCategoryBox', absenceFormBox: 'requestCategoryBox',
+  iqamaFormBox: 'requestCategoryBox', accommodationFormBox: 'requestCategoryBox', fingerprintFormBox: 'requestCategoryBox',
+  emergencyFormBox: 'requestCategoryBox', vacationFormBox: 'requestCategoryBox', contractFormBox: 'requestCategoryBox',
+  medicalFormBox: 'requestCategoryBox', salaryReviewFormBox: 'requestCategoryBox', salarySlipFormBox: 'requestCategoryBox',
+  familyVisitFormBox: 'requestCategoryBox', uniformFormBox: 'requestCategoryBox', performanceFormBox: 'requestCategoryBox',
+  ticketFormBox: 'requestCategoryBox', exitReentryFormBox: 'requestCategoryBox', furtherFormBox: 'requestCategoryBox',
+  myRecordsBox: 'homeBox', allComplaintsBox: 'homeBox'
+};
+
+var translations = {
+  English: {
+    gearHome:"Home", gearLanguage:"Change Language", gearLogout:"Logout",
+    forgotBtn:"Forgot Password?", forgotTitle:"Forgot Password?", forgotDesc:"Please contact the admin to reset your password:",
+    welcomePrefix:"Welcome, ", complaintRequestBtn:"Complaint/Request", trackComplaintsBtn:"Track My Complaints & Requests",
+    viewAllBtn:"View All Complaints", manageUsersBtn:"Manage Users", manageUsersSoon:"Coming soon", viewDeptBtn:"View Department Complaints",
+    typeTitle:"Complaint or Request?", complaintBtn:"Complaint", requestBtn:"Request", categoryTitle:"Select Complaint Category",
+    catListener:"Listener Team's Complaint", catTeamLeader:"Team Leader's Complaint",
+    locLabel:"Location (Optional)", dateLabel:"Date *", timeLabel:"Time *", againstLabel:"Select Complaint Against",
+    againstNone:"-- Select --", againstDept:"Whole Department", againstPerson:"Specific Person", againstShift:"Specific Shift",
+    submitBtn:"Submit", errorRequired:"Date, Time and Reason are required", errorAgainst:"Please select Complaint Against",
+    submitting:"Submitting...", submitted:"Submitted! Reference: ", checking:"Checking...", noRecords:"No records found.",
+    colId:"ID", colType:"Type", colCategory:"Category", colStatus:"Status", colDriver:"Driver", colDept:"Dept",
+    myRecordsTitle:"My Complaints & Requests", allComplaintsTitle:"All Complaints",
+    requestCategoryTitle:"Select Request Category",
+    reqRouteShift:"Route/Shift Change", reqMename:"Mename Issue", reqAbsence:"Absence Correction",
+    reqIqama:"Iqama Issue/Iqama Renewal Request", reqAccommodation:"Accommodation Issue", reqFingerprint:"Fingerprint Issue",
+    reqEmergencyLeave:"Emergency Leave Request", reqVacation:"Vacation Postponement/Early Return/Extension/Cancellation",
+    reqContractRenewal:"Contract Renewal Request", reqMedicalInsurance:"Medical Insurance",
+    reqSalaryReview:"Salary Review", reqSalarySlip:"Salary Slip Request", reqFamilyVisit:"Family Visit Request",
+    reqUniform:"Uniform Eligibility", reqPerformanceReview:"Driver Performance Review Request",
+    reqTicketConfirmation:"Ticket Confirmation & Details", reqExitReentry:"Exit/Re-Entry Confirmation",
+    reqFurther:"Further Driver Request/Complaint"
+  },
+  Urdu: {
+    gearHome:"ہوم", gearLanguage:"زبان تبدیل کریں", gearLogout:"لاگ آؤٹ",
+    forgotBtn:"پاسورڈ بھول گئے؟", forgotTitle:"پاسورڈ بھول گئے؟", forgotDesc:"براہ کرم پاسورڈ ری سیٹ کے لیے ایڈمن سے رابطہ کریں:",
+    welcomePrefix:"خوش آمدید، ", complaintRequestBtn:"شکایت/درخواست", trackComplaintsBtn:"میری شکایات اور درخواستیں دیکھیں",
+    viewAllBtn:"تمام شکایات دیکھیں", manageUsersBtn:"یوزرز کا انتظام", manageUsersSoon:"جلد آئے گا", viewDeptBtn:"ڈیپارٹمنٹ کی شکایات دیکھیں",
+    typeTitle:"شکایت یا درخواست؟", complaintBtn:"شکایت", requestBtn:"درخواست", categoryTitle:"شکایت کی قسم منتخب کریں",
+    catListener:"لسنر ٹیم کی شکایت", catTeamLeader:"ٹیم لیڈر کی شکایت",
+    locLabel:"جگہ (اختیاری)", dateLabel:"تاریخ *", timeLabel:"وقت *", againstLabel:"شکایت کس کے خلاف ہے منتخب کریں",
+    againstNone:"-- منتخب کریں --", againstDept:"پورا ڈیپارٹمنٹ", againstPerson:"مخصوص شخص", againstShift:"مخصوص شفٹ",
+    submitBtn:"جمع کروائیں", errorRequired:"تاریخ، وقت اور وجہ بھرنا ضروری ہے", errorAgainst:"براہ کرم منتخب کریں کہ شکایت کس کے خلاف ہے",
+    submitting:"جمع ہو رہا ہے...", submitted:"جمع ہو گیا! ریفرنس: ", checking:"چیک ہو رہا ہے...", noRecords:"کوئی ریکارڈ نہیں ملا۔",
+    colId:"آئی ڈی", colType:"قسم", colCategory:"کیٹیگری", colStatus:"صورتحال", colDriver:"ڈرائیور", colDept:"ڈیپارٹمنٹ",
+    myRecordsTitle:"میری شکایات اور درخواستیں", allComplaintsTitle:"تمام شکایات",
+    requestCategoryTitle:"درخواست کی قسم منتخب کریں",
+    reqRouteShift:"روٹ/شفٹ تبدیلی", reqMename:"Mename کا مسئلہ", reqAbsence:"غیر حاضری کی تصحیح",
+    reqIqama:"اقامہ کا مسئلہ/تجدید درخواست", reqAccommodation:"رہائش کا مسئلہ", reqFingerprint:"فنگر پرنٹ کا مسئلہ",
+    reqEmergencyLeave:"ہنگامی چھٹی کی درخواست", reqVacation:"چھٹی موخر/جلدی واپسی/توسیع/منسوخی",
+    reqContractRenewal:"کنٹریکٹ کی تجدید کی درخواست", reqMedicalInsurance:"میڈیکل انشورنس",
+    reqSalaryReview:"تنخواہ جائزہ", reqSalarySlip:"تنخواہ سلپ درخواست", reqFamilyVisit:"فیملی ویزٹ درخواست",
+    reqUniform:"یونیفارم اہلیت", reqPerformanceReview:"ڈرائیور کارکردگی ریویو درخواست",
+    reqTicketConfirmation:"ٹکٹ تصدیق اور تفصیلات", reqExitReentry:"ایگزٹ/ری اینٹری تصدیق",
+    reqFurther:"مزید درائیور درخواست/شکایت"
+  },
+  Arabic: {
+    gearHome:"الرئيسية", gearLanguage:"تغيير اللغة", gearLogout:"تسجيل الخروج",
+    forgotBtn:"نسيت كلمة المرور؟", forgotTitle:"نسيت كلمة المرور؟", forgotDesc:"يرجى التواصل مع المسؤول لإعادة تعيين كلمة المرور:",
+    welcomePrefix:"مرحباً، ", complaintRequestBtn:"شكوى/طلب", trackComplaintsBtn:"متابعة شكاواي وطلباتي",
+    viewAllBtn:"عرض جميع الشكاوى", manageUsersBtn:"إدارة المستخدمين", manageUsersSoon:"قريباً", viewDeptBtn:"عرض شكاوى القسم",
+    typeTitle:"شكوى أم طلب؟", complaintBtn:"شكوى", requestBtn:"طلب", categoryTitle:"اختر نوع الشكوى",
+    catListener:"شكوى فريق المستمعين", catTeamLeader:"شكوى قائد الفريق",
+    locLabel:"الموقع (اختياري)", dateLabel:"التاريخ *", timeLabel:"الوقت *", againstLabel:"اختر الشكوى ضد",
+    againstNone:"-- اختر --", againstDept:"القسم بأكمله", againstPerson:"شخص محدد", againstShift:"مناوبة محددة",
+    submitBtn:"إرسال", errorRequired:"التاريخ والوقت والسبب مطلوبة", errorAgainst:"الرجاء اختيار الشكوى ضد من",
+    submitting:"جارٍ الإرسال...", submitted:"تم الإرسال! الرقم المرجعي: ", checking:"جارٍ التحقق...", noRecords:"لا توجد سجلات.",
+    colId:"الرقم", colType:"النوع", colCategory:"الفئة", colStatus:"الحالة", colDriver:"السائق", colDept:"القسم",
+    myRecordsTitle:"شكاواي وطلباتي", allComplaintsTitle:"جميع الشكاوى",
+    requestCategoryTitle:"اختر نوع الطلب",
+    reqRouteShift:"تغيير الطريق/المناوبة", reqMename:"مشكلة Mename", reqAbsence:"تصحيح الغياب",
+    reqIqama:"مشكلة الإقامة/طلب تجديد", reqAccommodation:"مشكلة السكن", reqFingerprint:"مشكلة البصمة",
+    reqEmergencyLeave:"طلب إجازة طارئة", reqVacation:"تأجيل/عودة مبكرة/تمديد/إلغاء الإجازة",
+    reqContractRenewal:"طلب تجديد العقد", reqMedicalInsurance:"التأمين الطبي",
+    reqSalaryReview:"مراجعة الراتب", reqSalarySlip:"طلب كشف الراتب", reqFamilyVisit:"طلب زيارة عائلية",
+    reqUniform:"أهلية الزي الموحد", reqPerformanceReview:"طلب مراجعة أداء السائق",
+    reqTicketConfirmation:"تأكيد التذكرة والتفاصيل", reqExitReentry:"تأكيد الخروج والعودة",
+    reqFurther:"طلب/شكوى إضافية للسائق"
+  },
+  Hindi: {
+    gearHome:"होम", gearLanguage:"भाषा बदलें", gearLogout:"लॉग आउट",
+    forgotBtn:"पासवर्ड भूल गए?", forgotTitle:"पासवर्ड भूल गए?", forgotDesc:"कृपया पासवर्ड रीसेट के लिए एडमिन से संपर्क करें:",
+    welcomePrefix:"स्वागत है, ", complaintRequestBtn:"शिकायत/अनुरोध", trackComplaintsBtn:"मेरी शिकायतें और अनुरोध देखें",
+    viewAllBtn:"सभी शिकायतें देखें", manageUsersBtn:"यूज़र प्रबंधन", manageUsersSoon:"जल्द आ रहा है", viewDeptBtn:"विभाग की शिकायतें देखें",
+    typeTitle:"शिकायत या अनुरोध?", complaintBtn:"शिकायत", requestBtn:"अनुरोध", categoryTitle:"शिकायत की श्रेणी चुनें",
+    catListener:"लिसनर टीम की शिकायत", catTeamLeader:"टीम लीडर की शिकायत",
+    locLabel:"स्थान (वैकल्पिक)", dateLabel:"तारीख *", timeLabel:"समय *", againstLabel:"शिकायत किसके खिलाफ चुनें",
+    againstNone:"-- चुनें --", againstDept:"पूरा विभाग", againstPerson:"विशिष्ट व्यक्ति", againstShift:"विशिष्ट शिफ्ट",
+    submitBtn:"जमा करें", errorRequired:"तारीख, समय और कारण आवश्यक हैं", errorAgainst:"कृपया शिकायत किसके खिलाफ चुनें",
+    submitting:"जमा हो रहा है...", submitted:"जमा हो गया! संदर्भ: ", checking:"जांच हो रही है...", noRecords:"कोई रिकॉर्ड नहीं मिला।",
+    colId:"आईडी", colType:"प्रकार", colCategory:"श्रेणी", colStatus:"स्थिति", colDriver:"ड्राइवर", colDept:"विभाग",
+    myRecordsTitle:"मेरी शिकायतें और अनुरोध", allComplaintsTitle:"सभी शिकायतें",
+    requestCategoryTitle:"अनुरोध की श्रेणी चुनें",
+    reqRouteShift:"रूट/शिफ्ट परिवर्तन", reqMename:"Mename समस्या", reqAbsence:"अनुपस्थिति सुधार",
+    reqIqama:"इकामा समस्या/नवीनीकरण अनुरोध", reqAccommodation:"आवास समस्या", reqFingerprint:"फिंगरप्रिंट समस्या",
+    reqEmergencyLeave:"आपातकालीन छुट्टी अनुरोध", reqVacation:"छुट्टी स्थगन/जल्दी वापसी/विस्तार/रद्दीकरण",
+    reqContractRenewal:"अनुबंध नवीनीकरण अनुरोध", reqMedicalInsurance:"मेडिकल इंश्योरेंस",
+    reqSalaryReview:"वेतन समीक्षा", reqSalarySlip:"वेतन पर्ची अनुरोध", reqFamilyVisit:"पारिवारिक विज़िट अनुरोध",
+    reqUniform:"यूनिफ़ॉर्म पात्रता", reqPerformanceReview:"ड्राइवर प्रदर्शन समीक्षा अनुरोध",
+    reqTicketConfirmation:"टिकट पुष्टि और विवरण", reqExitReentry:"एग्ज़िट/री-एंट्री पुष्टि",
+    reqFurther:"अन्य ड्राइवर अनुरोध/शिकायत"
+  },
+  Indonesian: {
+    gearHome:"Beranda", gearLanguage:"Ubah Bahasa", gearLogout:"Keluar",
+    forgotBtn:"Lupa Password?", forgotTitle:"Lupa Password?", forgotDesc:"Silakan hubungi admin untuk mereset password Anda:",
+    welcomePrefix:"Selamat datang, ", complaintRequestBtn:"Keluhan/Permintaan", trackComplaintsBtn:"Lacak Keluhan & Permintaan Saya",
+    viewAllBtn:"Lihat Semua Keluhan", manageUsersBtn:"Kelola Pengguna", manageUsersSoon:"Segera hadir", viewDeptBtn:"Lihat Keluhan Departemen",
+    typeTitle:"Keluhan atau Permintaan?", complaintBtn:"Keluhan", requestBtn:"Permintaan", categoryTitle:"Pilih Kategori Keluhan",
+    catListener:"Keluhan Tim Pendengar", catTeamLeader:"Keluhan Team Leader",
+    locLabel:"Lokasi (Opsional)", dateLabel:"Tanggal *", timeLabel:"Waktu *", againstLabel:"Pilih Keluhan Terhadap",
+    againstNone:"-- Pilih --", againstDept:"Seluruh Departemen", againstPerson:"Orang Tertentu", againstShift:"Shift Tertentu",
+    submitBtn:"Kirim", errorRequired:"Tanggal, Waktu dan Alasan wajib diisi", errorAgainst:"Silakan pilih Keluhan Terhadap",
+    submitting:"Mengirim...", submitted:"Terkirim! Referensi: ", checking:"Memeriksa...", noRecords:"Tidak ada data ditemukan.",
+    colId:"ID", colType:"Jenis", colCategory:"Kategori", colStatus:"Status", colDriver:"Pengemudi", colDept:"Dept",
+    myRecordsTitle:"Keluhan & Permintaan Saya", allComplaintsTitle:"Semua Keluhan",
+    requestCategoryTitle:"Pilih Kategori Permintaan",
+    reqRouteShift:"Perubahan Rute/Shift", reqMename:"Masalah Mename", reqAbsence:"Koreksi Ketidakhadiran",
+    reqIqama:"Masalah Iqama/Permintaan Perpanjangan", reqAccommodation:"Masalah Akomodasi", reqFingerprint:"Masalah Sidik Jari",
+    reqEmergencyLeave:"Permintaan Cuti Darurat", reqVacation:"Penundaan/Kembali Cepat/Perpanjangan/Pembatalan Cuti",
+    reqContractRenewal:"Permintaan Perpanjangan Kontrak", reqMedicalInsurance:"Asuransi Kesehatan",
+    reqSalaryReview:"Tinjauan Gaji", reqSalarySlip:"Permintaan Slip Gaji", reqFamilyVisit:"Permintaan Kunjungan Keluarga",
+    reqUniform:"Kelayakan Seragam", reqPerformanceReview:"Permintaan Tinjauan Kinerja Pengemudi",
+    reqTicketConfirmation:"Konfirmasi & Detail Tiket", reqExitReentry:"Konfirmasi Keluar/Masuk Kembali",
+    reqFurther:"Permintaan/Keluhan Pengemudi Lainnya"
+  }
+};
+
+function t(key) {
+  var lang = (currentUser && currentUser.language) ? currentUser.language : 'English';
+  return (translations[lang] && translations[lang][key]) || translations.English[key] || key;
+}
+
+function applyLanguage() {
+  var pairs = [
+    ['t_gearHome','gearHome'],['t_gearLanguage','gearLanguage'],['t_gearLogout','gearLogout'],
+    ['t_forgotBtn','forgotBtn'],['t_forgotTitle','forgotTitle'],['t_forgotDesc','forgotDesc'],
+    ['t_typeTitle','typeTitle'],['t_complaintBtn','complaintBtn'],['t_requestBtn','requestBtn'],
+    ['t_categoryTitle','categoryTitle'],['t_catListener','catListener'],['t_catTeamLeader','catTeamLeader'],
+    ['t_locLabel','locLabel'],['t_dateLabel','dateLabel'],['t_timeLabel','timeLabel'],['t_againstLabel','againstLabel'],
+    ['t_againstNone','againstNone'],['t_againstDept','againstDept'],['t_againstPerson','againstPerson'],['t_againstShift','againstShift'],
+    ['t_submitBtn1','submitBtn'],
+    ['t_requestCategoryTitle','requestCategoryTitle'],
+    ['t_reqRouteShift','reqRouteShift'],['t_reqMename','reqMename'],['t_reqAbsence','reqAbsence'],
+    ['t_reqIqama','reqIqama'],['t_reqAccommodation','reqAccommodation'],['t_reqFingerprint','reqFingerprint'],
+    ['t_reqEmergencyLeave','reqEmergencyLeave'],['t_reqVacation','reqVacation'],['t_reqContractRenewal','reqContractRenewal'],
+    ['t_reqMedicalInsurance','reqMedicalInsurance'],['t_reqSalaryReview','reqSalaryReview'],['t_reqSalarySlip','reqSalarySlip'],
+    ['t_reqFamilyVisit','reqFamilyVisit'],['t_reqUniform','reqUniform'],['t_reqPerformanceReview','reqPerformanceReview'],
+    ['t_reqTicketConfirmation','reqTicketConfirmation'],['t_reqExitReentry','reqExitReentry'],['t_reqFurther','reqFurther'],
+    ['t_myRecordsTitle','myRecordsTitle'],['t_allComplaintsTitle','allComplaintsTitle']
+  ];
+  pairs.forEach(function(p) { var el = document.getElementById(p[0]); if (el) el.innerText = t(p[1]); });
+}
 
 function callAPI(action, data) {
   var url = API_URL + "?action=" + encodeURIComponent(action) + "&data=" + encodeURIComponent(JSON.stringify(data || {}));
@@ -523,20 +670,46 @@ function callAPI(action, data) {
 function saveSession() { localStorage.setItem('driverConnectSession', JSON.stringify(currentUser)); }
 function loadSession() { var raw = localStorage.getItem('driverConnectSession'); return raw ? JSON.parse(raw) : null; }
 function clearSession() { localStorage.removeItem('driverConnectSession'); }
-function hideAll() { allBoxIds.forEach(function(id){ document.getElementById(id).classList.add('hidden'); }); }
+
+function hideAllRaw() { allBoxIds.forEach(function(id){ document.getElementById(id).classList.add('hidden'); }); }
+
+// ---- Navigation with history integration ----
+function goToScreen(screenId, push) {
+  hideAllRaw();
+  document.getElementById(screenId).classList.remove('hidden');
+  document.getElementById('floatBackBtn').classList.toggle('hidden', noBackScreens.indexOf(screenId) !== -1);
+  if (push !== false) {
+    history.pushState({ screen: screenId }, '', '#' + screenId);
+  }
+}
+function goBack() { history.back(); }
+window.addEventListener('popstate', function(e) {
+  if (e.state && e.state.screen) {
+    goToScreen(e.state.screen, false);
+  } else {
+    // fell off the stack - go to a sensible default
+    hideAllRaw();
+    if (currentUser) { document.getElementById('homeBox').classList.remove('hidden'); }
+    else { document.getElementById('loginBox').classList.remove('hidden'); }
+    document.getElementById('floatBackBtn').classList.add('hidden');
+  }
+});
 
 window.addEventListener('load', function() {
   if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
   var session = loadSession();
-  hideAll();
+  hideAllRaw();
   if (session && session.empId) {
     currentUser = session;
+    applyLanguage();
     document.getElementById('gearBtn').classList.remove('hidden');
     document.getElementById('homeBox').classList.remove('hidden');
-    document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
+    document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
     buildMenu(currentUser.role);
+    history.replaceState({ screen: 'homeBox' }, '', '#homeBox');
   } else {
     document.getElementById('loginBox').classList.remove('hidden');
+    history.replaceState({ screen: 'loginBox' }, '', '#loginBox');
   }
 });
 
@@ -547,71 +720,62 @@ function login() {
   callAPI('checkLogin', { empId: empId, password: pass }).then(function(result) {
     if (result.success) {
       currentUser = result;
-      hideAll();
-      document.getElementById('langBox').classList.remove('hidden');
+      goToScreen('langBox');
     } else {
       document.getElementById('msg').innerText = "Invalid Employee ID or Password";
     }
   }).catch(function(){ document.getElementById('msg').innerText = "Connection error. Please try again."; });
 }
-function showContactBox() { hideAll(); document.getElementById('contactBox').classList.remove('hidden'); }
-function backToLogin() { hideAll(); document.getElementById('loginBox').classList.remove('hidden'); }
+function showContactBox() { goToScreen('contactBox'); }
 function selectLanguage(lang) {
   currentUser.language = lang; saveSession();
-  goHome();
+  applyLanguage();
   document.getElementById('gearBtn').classList.remove('hidden');
+  goHome();
 }
 function goHome() {
-  hideAll();
-  document.getElementById('homeBox').classList.remove('hidden');
-  document.getElementById('welcomeText').innerText = "Welcome, " + currentUser.name + " (" + currentUser.role + ")";
+  goToScreen('homeBox');
+  document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
   buildMenu(currentUser.role);
 }
 function buildMenu(role) {
   var menu = document.getElementById('menuArea');
   menu.innerHTML = "";
   if (role === "Driver") {
-    menu.innerHTML += '<button class="menu-btn" onclick="showTypeMenu()">Complaint/Request</button>';
-    menu.innerHTML += '<button class="menu-btn secondary" onclick="showMyRecords()">Track My Complaints & Requests</button>';
+    menu.innerHTML += '<button class="menu-btn" onclick="showTypeMenu()">' + t('complaintRequestBtn') + '</button>';
+    menu.innerHTML += '<button class="menu-btn secondary" onclick="showMyRecords()">' + t('trackComplaintsBtn') + '</button>';
   } else {
-    menu.innerHTML += '<button class="menu-btn" onclick="showAllComplaints()">View All Complaints</button>';
-    menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'Coming soon\')">Manage Users</button>';
+    menu.innerHTML += '<button class="menu-btn" onclick="showAllComplaints()">' + t('viewAllBtn') + '</button>';
+    menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'' + t('manageUsersSoon') + '\')">' + t('manageUsersBtn') + '</button>';
   }
 }
 function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
 document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
-document.getElementById('gearHome').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goHome(); });
-document.getElementById('gearLanguage').addEventListener('click', function() {
-  document.getElementById('gearPanel').classList.add('hidden'); hideAll();
-  document.getElementById('langBox').classList.remove('hidden');
-});
-document.getElementById('gearLogout').addEventListener('click', function() {
+document.getElementById('t_gearHome').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goHome(); });
+document.getElementById('t_gearLanguage').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goToScreen('langBox'); });
+document.getElementById('t_gearLogout').addEventListener('click', function() {
   currentUser = null; clearSession();
   document.getElementById('gearBtn').classList.add('hidden');
   document.getElementById('gearPanel').classList.add('hidden');
-  hideAll();
   document.getElementById('empId').value = ""; document.getElementById('pass').value = "";
-  document.getElementById('loginBox').classList.remove('hidden');
+  goToScreen('loginBox');
 });
 
-function showTypeMenu() { hideAll(); document.getElementById('typeMenuBox').classList.remove('hidden'); }
-function showComplaintCategory() { hideAll(); document.getElementById('complaintCategoryBox').classList.remove('hidden'); }
-function showRequestCategory() { hideAll(); document.getElementById('requestCategoryBox').classList.remove('hidden'); }
-
+function showTypeMenu() { goToScreen('typeMenuBox'); }
+function showComplaintCategory() { goToScreen('complaintCategoryBox'); }
+function showRequestCategory() { goToScreen('requestCategoryBox'); }
 function showForm(boxId, dateFieldId) {
-  hideAll();
-  document.getElementById(boxId).classList.remove('hidden');
+  goToScreen(boxId);
   if (dateFieldId) {
     var f = document.getElementById(dateFieldId);
     if (f && !f.value) f.value = new Date().toISOString().slice(0,10);
   }
 }
 
-function selectComplaintCategory(cat) {
-  selectedComplaintCategory = cat;
-  hideAll();
-  document.getElementById('complaintFormTitle').innerText = cat;
-  document.getElementById('complaintFormBox').classList.remove('hidden');
+function selectComplaintCategory(labelKey) {
+  selectedComplaintLabelKey = labelKey;
+  goToScreen('complaintFormBox');
+  document.getElementById('complaintFormTitle').innerText = t(labelKey);
   document.getElementById('complaintFormMsg').innerText = "";
   document.getElementById('cfAgainst').value = "";
   document.getElementById('cfNameOpt').classList.add('hidden');
@@ -636,15 +800,15 @@ function submitComplaintForm() {
   var nameOpt = document.getElementById('cfNameOpt').value;
   var reason = document.getElementById('cfReason').value;
   var description = document.getElementById('cfDescription').value;
-  if (!against) { document.getElementById('complaintFormMsg').innerText = "Please select Complaint Against"; return; }
-  if (!date || !time || !reason) { document.getElementById('complaintFormMsg').innerText = "Date, Time and Reason are required"; return; }
-  var payload = { empId: currentUser.empId, name: currentUser.name, department: "Operation", category: selectedComplaintCategory,
-    location: location, date: date, time: time, againstType: against, againstName: nameOpt, reason: reason, description: description };
+  if (!against) { document.getElementById('complaintFormMsg').innerText = t('errorAgainst'); return; }
+  if (!date || !time || !reason) { document.getElementById('complaintFormMsg').innerText = t('errorRequired'); return; }
+  var payload = { empId: currentUser.empId, name: currentUser.name, department: "Operation", category: t(selectedComplaintLabelKey),
+    location: location, date: date, time: time, againstType: t('against' + against.replace(/\s/g,'')), againstName: nameOpt, reason: reason, description: description };
   document.getElementById('complaintFormMsg').className = "msg";
-  document.getElementById('complaintFormMsg').innerText = "Submitting...";
+  document.getElementById('complaintFormMsg').innerText = t('submitting');
   callAPI('submitComplaint', payload).then(function(res) {
     document.getElementById('complaintFormMsg').className = "msg success";
-    document.getElementById('complaintFormMsg').innerText = "Submitted! Reference: " + res.complaintId;
+    document.getElementById('complaintFormMsg').innerText = t('submitted') + res.complaintId;
     ['cfLocation','cfDate','cfTime','cfNameOpt','cfReason','cfDescription'].forEach(function(id){document.getElementById(id).value = "";});
     document.getElementById('cfAgainst').value = ""; document.getElementById('cfNameOpt').classList.add('hidden');
   }).catch(function(){ document.getElementById('complaintFormMsg').className = "msg error"; document.getElementById('complaintFormMsg').innerText = "Connection error"; });
@@ -652,10 +816,10 @@ function submitComplaintForm() {
 
 function doSubmitRequest(payload, msgId, clearIds) {
   var el = document.getElementById(msgId);
-  el.className = "msg"; el.innerText = "Submitting...";
+  el.className = "msg"; el.innerText = t('submitting');
   callAPI('submitRequest', payload).then(function(res) {
     el.className = "msg success";
-    el.innerText = "Submitted! Reference: " + res.requestId;
+    el.innerText = t('submitted') + res.requestId;
     clearIds.forEach(function(id) {
       var f = document.getElementById(id);
       if (f.type === 'checkbox') f.checked = false; else f.value = "";
@@ -835,9 +999,8 @@ function submitFurther() {
 }
 
 function showMyRecords() {
-  hideAll();
-  document.getElementById('myRecordsBox').classList.remove('hidden');
-  document.getElementById('myRecordsTable').innerText = "Loading...";
+  goToScreen('myRecordsBox');
+  document.getElementById('myRecordsTable').innerText = t('checking');
   Promise.all([
     callAPI('getMyComplaints', { empId: currentUser.empId }),
     callAPI('getMyRequests', { empId: currentUser.empId })
@@ -847,8 +1010,8 @@ function showMyRecords() {
     var combined = [];
     complaints.forEach(function(c){ combined.push({ id: c.id, type: "Complaint", category: c.category, status: c.status }); });
     requests.forEach(function(r){ combined.push({ id: r.id, type: "Request", category: r.category, status: r.status }); });
-    if (combined.length === 0) { document.getElementById('myRecordsTable').innerText = "No records found."; return; }
-    var html = "<table><tr><th>ID</th><th>Type</th><th>Category</th><th>Status</th></tr>";
+    if (combined.length === 0) { document.getElementById('myRecordsTable').innerText = t('noRecords'); return; }
+    var html = "<table><tr><th>"+t('colId')+"</th><th>"+t('colType')+"</th><th>"+t('colCategory')+"</th><th>"+t('colStatus')+"</th></tr>";
     combined.forEach(function(c){ html += "<tr><td>"+c.id+"</td><td>"+c.type+"</td><td>"+c.category+"</td><td class='status-"+c.status+"'>"+c.status+"</td></tr>"; });
     html += "</table>";
     document.getElementById('myRecordsTable').innerHTML = html;
@@ -856,12 +1019,11 @@ function showMyRecords() {
 }
 
 function showAllComplaints() {
-  hideAll();
-  document.getElementById('allComplaintsBox').classList.remove('hidden');
-  document.getElementById('allComplaintsTable').innerText = "Loading...";
+  goToScreen('allComplaintsBox');
+  document.getElementById('allComplaintsTable').innerText = t('checking');
   callAPI('getAllComplaints', {}).then(function(list) {
-    if (list.length === 0) { document.getElementById('allComplaintsTable').innerText = "No complaints found."; return; }
-    var html = "<table><tr><th>ID</th><th>Driver</th><th>Category</th><th>Dept</th><th>Status</th></tr>";
+    if (list.length === 0) { document.getElementById('allComplaintsTable').innerText = t('noRecords'); return; }
+    var html = "<table><tr><th>"+t('colId')+"</th><th>"+t('colDriver')+"</th><th>"+t('colCategory')+"</th><th>"+t('colDept')+"</th><th>"+t('colStatus')+"</th></tr>";
     list.forEach(function(c){ html += "<tr><td>"+c.id+"</td><td>"+c.name+"</td><td>"+c.category+"</td><td>"+c.department+"</td><td class='status-"+c.status+"'>"+c.status+"</td></tr>"; });
     html += "</table>";
     document.getElementById('allComplaintsTable').innerHTML = html;

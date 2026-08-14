@@ -234,85 +234,85 @@
 </div>
 
 <div class="card hidden" id="routeShiftFormBox">
-  <div class="form-title">Route/Shift Change</div>
-  <div class="field-label">Current Route (Optional, numbers/letters only)</div>
+  <div class="form-title" id="t_rsTitle">Route/Shift Change</div>
+  <div class="field-label" id="t_rsCurrentRouteLbl">Current Route (Optional, numbers/letters only)</div>
   <input type="text" id="rsCurrentRoute">
-  <div class="field-label">Current Shift (Optional)</div>
+  <div class="field-label" id="t_rsCurrentShiftLbl">Current Shift (Optional)</div>
   <input type="time" id="rsCurrentShift">
-  <div class="field-label">Requested Route (Optional, numbers/letters only)</div>
+  <div class="field-label" id="t_rsRequestedRouteLbl">Requested Route (Optional, numbers/letters only)</div>
   <input type="text" id="rsRequestedRoute">
-  <div class="field-label">Requested Shift (Optional)</div>
+  <div class="field-label" id="t_rsRequestedShiftLbl">Requested Shift (Optional)</div>
   <input type="time" id="rsRequestedShift">
-  <div class="field-label">Effective Date * (date you expect this resolved by)</div>
+  <div class="field-label" id="t_rsEffectiveDateLbl">Effective Date * (date you expect this resolved by)</div>
   <input type="date" id="rsEffectiveDate">
   <textarea id="rsReason" placeholder="Reason for Change"></textarea>
-  <button onclick="submitRouteShift()">Submit</button>
+  <button id="t_rsSubmitBtn" onclick="submitRouteShift()">Submit</button>
   <div class="msg" id="rsFormMsg"></div>
 </div>
 
 <div class="card hidden" id="menameFormBox">
-  <div class="form-title">Mename Issue</div>
+  <div class="form-title" id="t_mnTitle">Mename Issue</div>
   <input type="text" id="mnPassword" placeholder="Mename Password (Optional)">
   <input type="text" id="mnIssueType" placeholder="Issue Type">
   <textarea id="mnDescription" placeholder="Issue Description"></textarea>
-  <div class="field-label">Issue Date *</div>
+  <div class="field-label" id="t_mnIssueDateLbl">Issue Date *</div>
   <input type="date" id="mnIssueDate">
   <input type="text" id="mnContact" placeholder="Contact Number">
-  <button onclick="submitMename()">Submit</button>
+  <button id="t_mnSubmitBtn" onclick="submitMename()">Submit</button>
   <div class="msg" id="mnFormMsg"></div>
 </div>
 
 <div class="card hidden" id="absenceFormBox">
-  <div class="form-title">Absence Correction</div>
-  <div class="field-label">Absence Date *</div>
+  <div class="form-title" id="t_abTitle">Absence Correction</div>
+  <div class="field-label" id="t_abAbsenceDateLbl">Absence Date *</div>
   <input type="date" id="abAbsenceDate">
   <select id="abType">
-    <option value="">-- Select Status --</option>
-    <option>Present</option><option>Sick Leave</option><option>Annual Leave</option><option>Unpaid Leave</option>
-    <option>Death Leave</option><option>Emergency Leave</option><option>Marriage Leave</option>
-    <option>Compensatory Leave</option><option>Weekly Off</option><option>Other</option>
+    <option value="" id="t_abOptSelect">-- Select Status --</option>
+    <option value="Present" id="t_abOptPresent">Present</option><option value="Sick Leave" id="t_abOptSick">Sick Leave</option><option value="Annual Leave" id="t_abOptAnnual">Annual Leave</option><option value="Unpaid Leave" id="t_abOptUnpaid">Unpaid Leave</option>
+    <option value="Death Leave" id="t_abOptDeath">Death Leave</option><option value="Emergency Leave" id="t_abOptEmergency">Emergency Leave</option><option value="Marriage Leave" id="t_abOptMarriage">Marriage Leave</option>
+    <option value="Compensatory Leave" id="t_abOptCompensatory">Compensatory Leave</option><option value="Weekly Off" id="t_abOptWeeklyOff">Weekly Off</option><option value="Other" id="t_abOptOther">Other</option>
   </select>
   <textarea id="abReason" placeholder="Reason/Description"></textarea>
-  <button onclick="submitAbsence()">Submit</button>
+  <button id="t_abSubmitBtn" onclick="submitAbsence()">Submit</button>
   <div class="msg" id="abFormMsg"></div>
 </div>
 
 <div class="card hidden" id="iqamaFormBox">
-  <div class="form-title">Iqama Issue/Iqama Renewal Request</div>
+  <div class="form-title" id="t_iqTitle">Iqama Issue/Iqama Renewal Request</div>
   <input type="text" id="iqNumber" placeholder="Iqama Number (Numbers Only)">
-  <div class="field-label">Iqama Expiry Date *</div>
+  <div class="field-label" id="t_iqExpiryLbl">Iqama Expiry Date *</div>
   <input type="date" id="iqExpiry">
   <select id="iqType">
-    <option value="">-- Request Type --</option>
-    <option>Renewal</option><option>Lost</option><option>Damaged</option><option>Other</option>
+    <option value="" id="t_iqOptSelect">-- Request Type --</option>
+    <option value="Renewal" id="t_iqOptRenewal">Renewal</option><option value="Lost" id="t_iqOptLost">Lost</option><option value="Damaged" id="t_iqOptDamaged">Damaged</option><option value="Other" id="t_iqOptOther">Other</option>
   </select>
   <textarea id="iqDescription" placeholder="Issue Description"></textarea>
-  <button onclick="submitIqama()">Submit</button>
+  <button id="t_iqSubmitBtn" onclick="submitIqama()">Submit</button>
   <div class="msg" id="iqFormMsg"></div>
 </div>
 
 <div class="card hidden" id="accommodationFormBox">
-  <div class="form-title">Accommodation Issue</div>
+  <div class="form-title" id="t_acTitle">Accommodation Issue</div>
   <input type="text" id="acLocation" placeholder="Accommodation Location">
   <input type="text" id="acRoom" placeholder="Room Number (Numbers Only)">
   <select id="acCategory">
-    <option value="">-- Issue Category --</option>
-    <option>AC</option><option>Electricity</option><option>Water</option><option>Cleaning</option>
-    <option>Furniture</option><option>Internet</option><option>Other</option>
+    <option value="" id="t_acOptSelect">-- Issue Category --</option>
+    <option value="AC" id="t_acOptAC">AC</option><option value="Electricity" id="t_acOptElectricity">Electricity</option><option value="Water" id="t_acOptWater">Water</option><option value="Cleaning" id="t_acOptCleaning">Cleaning</option>
+    <option value="Furniture" id="t_acOptFurniture">Furniture</option><option value="Internet" id="t_acOptInternet">Internet</option><option value="Other" id="t_acOptOther">Other</option>
   </select>
   <textarea id="acDescription" placeholder="Issue Description"></textarea>
-  <button onclick="submitAccommodation()">Submit</button>
+  <button id="t_acSubmitBtn" onclick="submitAccommodation()">Submit</button>
   <div class="msg" id="acFormMsg"></div>
 </div>
 
 <div class="card hidden" id="fingerprintFormBox">
-  <div class="form-title">Fingerprint Issue</div>
+  <div class="form-title" id="t_fpTitle">Fingerprint Issue</div>
   <select id="fpType">
-    <option value="">-- Issue Type --</option>
-    <option>Not Registered</option><option>Failed Verification</option>
+    <option value="" id="t_fpOptSelect">-- Issue Type --</option>
+    <option value="Not Registered" id="t_fpOptNotRegistered">Not Registered</option><option value="Failed Verification" id="t_fpOptFailedVerification">Failed Verification</option>
   </select>
   <textarea id="fpDescription" placeholder="Issue Description"></textarea>
-  <button onclick="submitFingerprint()">Submit</button>
+  <button id="t_fpSubmitBtn" onclick="submitFingerprint()">Submit</button>
   <div class="msg" id="fpFormMsg"></div>
 </div>
 
@@ -541,7 +541,20 @@ var translations = {
     reqSalaryReview:"Salary Review", reqSalarySlip:"Salary Slip Request", reqFamilyVisit:"Family Visit Request",
     reqUniform:"Uniform Eligibility", reqPerformanceReview:"Driver Performance Review Request",
     reqTicketConfirmation:"Ticket Confirmation & Details", reqExitReentry:"Exit/Re-Entry Confirmation",
-    reqFurther:"Further Driver Request/Complaint"
+    reqFurther:"Further Driver Request/Complaint",
+    rsCurrentRouteLbl:"Current Route (Optional, numbers/letters only)", rsCurrentShiftLbl:"Current Shift (Optional)",
+    rsRequestedRouteLbl:"Requested Route (Optional, numbers/letters only)", rsRequestedShiftLbl:"Requested Shift (Optional)",
+    rsEffectiveDateLbl:"Effective Date * (date you expect this resolved by)", rsReasonPh:"Reason for Change",
+    mnPasswordPh:"Mename Password (Optional)", mnIssueTypePh:"Issue Type", mnIssueDateLbl:"Issue Date *", mnContactPh:"Contact Number",
+    abAbsenceDateLbl:"Absence Date *", abOptSelect:"-- Select Status --", abOptPresent:"Present", abOptSick:"Sick Leave",
+    abOptAnnual:"Annual Leave", abOptUnpaid:"Unpaid Leave", abOptDeath:"Death Leave", abOptEmergency:"Emergency Leave",
+    abOptMarriage:"Marriage Leave", abOptCompensatory:"Compensatory Leave", abOptWeeklyOff:"Weekly Off", abReasonPh:"Reason/Description",
+    iqNumberPh:"Iqama Number (Numbers Only)", iqExpiryLbl:"Iqama Expiry Date *", iqOptSelect:"-- Request Type --",
+    iqOptRenewal:"Renewal", iqOptLost:"Lost", iqOptDamaged:"Damaged",
+    acLocationPh:"Accommodation Location", acRoomPh:"Room Number (Numbers Only)", acOptSelect:"-- Issue Category --",
+    acOptAC:"AC", acOptElectricity:"Electricity", acOptWater:"Water", acOptCleaning:"Cleaning", acOptFurniture:"Furniture", acOptInternet:"Internet",
+    fpOptSelect:"-- Issue Type --", fpOptNotRegistered:"Not Registered", fpOptFailedVerification:"Failed Verification",
+    optOther:"Other", issueDescPh:"Issue Description"
   },
   Urdu: {
     gearHome:"ہوم", gearLanguage:"زبان تبدیل کریں", gearLogout:"لاگ آؤٹ",
@@ -564,7 +577,20 @@ var translations = {
     reqSalaryReview:"تنخواہ جائزہ", reqSalarySlip:"تنخواہ سلپ درخواست", reqFamilyVisit:"فیملی ویزٹ درخواست",
     reqUniform:"یونیفارم اہلیت", reqPerformanceReview:"ڈرائیور کارکردگی ریویو درخواست",
     reqTicketConfirmation:"ٹکٹ تصدیق اور تفصیلات", reqExitReentry:"ایگزٹ/ری اینٹری تصدیق",
-    reqFurther:"مزید درائیور درخواست/شکایت"
+    reqFurther:"مزید درائیور درخواست/شکایت",
+    rsCurrentRouteLbl:"موجودہ روٹ (اختیاری، صرف نمبر/حروف)", rsCurrentShiftLbl:"موجودہ شفٹ (اختیاری)",
+    rsRequestedRouteLbl:"درخواست شدہ روٹ (اختیاری، صرف نمبر/حروف)", rsRequestedShiftLbl:"درخواست شدہ شفٹ (اختیاری)",
+    rsEffectiveDateLbl:"مؤثر تاریخ * (وہ تاریخ جس تک حل ہونے کی توقع ہے)", rsReasonPh:"تبدیلی کی وجہ",
+    mnPasswordPh:"Mename پاسورڈ (اختیاری)", mnIssueTypePh:"مسئلے کی قسم", mnIssueDateLbl:"مسئلے کی تاریخ *", mnContactPh:"رابطہ نمبر",
+    abAbsenceDateLbl:"غیر حاضری کی تاریخ *", abOptSelect:"-- صورتحال منتخب کریں --", abOptPresent:"حاضر", abOptSick:"بیماری کی چھٹی",
+    abOptAnnual:"سالانہ چھٹی", abOptUnpaid:"بلا تنخواہ چھٹی", abOptDeath:"وفات کی چھٹی", abOptEmergency:"ہنگامی چھٹی",
+    abOptMarriage:"شادی کی چھٹی", abOptCompensatory:"معاوضہ چھٹی", abOptWeeklyOff:"ہفتہ وار چھٹی", abReasonPh:"وجہ/تفصیل",
+    iqNumberPh:"اقامہ نمبر (صرف نمبرز)", iqExpiryLbl:"اقامہ کی معیاد ختم ہونے کی تاریخ *", iqOptSelect:"-- درخواست کی قسم --",
+    iqOptRenewal:"تجدید", iqOptLost:"گم شدہ", iqOptDamaged:"خراب",
+    acLocationPh:"رہائش کا مقام", acRoomPh:"کمرہ نمبر (صرف نمبرز)", acOptSelect:"-- مسئلے کی کیٹیگری --",
+    acOptAC:"اے سی", acOptElectricity:"بجلی", acOptWater:"پانی", acOptCleaning:"صفائی", acOptFurniture:"فرنیچر", acOptInternet:"انٹرنیٹ",
+    fpOptSelect:"-- مسئلے کی قسم --", fpOptNotRegistered:"رجسٹرڈ نہیں", fpOptFailedVerification:"تصدیق ناکام",
+    optOther:"دیگر", issueDescPh:"مسئلے کی تفصیل"
   },
   Arabic: {
     gearHome:"الرئيسية", gearLanguage:"تغيير اللغة", gearLogout:"تسجيل الخروج",
@@ -587,7 +613,20 @@ var translations = {
     reqSalaryReview:"مراجعة الراتب", reqSalarySlip:"طلب كشف الراتب", reqFamilyVisit:"طلب زيارة عائلية",
     reqUniform:"أهلية الزي الموحد", reqPerformanceReview:"طلب مراجعة أداء السائق",
     reqTicketConfirmation:"تأكيد التذكرة والتفاصيل", reqExitReentry:"تأكيد الخروج والعودة",
-    reqFurther:"طلب/شكوى إضافية للسائق"
+    reqFurther:"طلب/شكوى إضافية للسائق",
+    rsCurrentRouteLbl:"الطريق الحالي (اختياري، أرقام/حروف فقط)", rsCurrentShiftLbl:"المناوبة الحالية (اختياري)",
+    rsRequestedRouteLbl:"الطريق المطلوب (اختياري، أرقام/حروف فقط)", rsRequestedShiftLbl:"المناوبة المطلوبة (اختياري)",
+    rsEffectiveDateLbl:"تاريخ السريان * (التاريخ الذي تتوقع فيه حل الطلب)", rsReasonPh:"سبب التغيير",
+    mnPasswordPh:"كلمة مرور Mename (اختياري)", mnIssueTypePh:"نوع المشكلة", mnIssueDateLbl:"تاريخ المشكلة *", mnContactPh:"رقم التواصل",
+    abAbsenceDateLbl:"تاريخ الغياب *", abOptSelect:"-- اختر الحالة --", abOptPresent:"حاضر", abOptSick:"إجازة مرضية",
+    abOptAnnual:"إجازة سنوية", abOptUnpaid:"إجازة بدون راتب", abOptDeath:"إجازة وفاة", abOptEmergency:"إجازة طارئة",
+    abOptMarriage:"إجازة زواج", abOptCompensatory:"إجازة تعويضية", abOptWeeklyOff:"إجازة أسبوعية", abReasonPh:"السبب/الوصف",
+    iqNumberPh:"رقم الإقامة (أرقام فقط)", iqExpiryLbl:"تاريخ انتهاء الإقامة *", iqOptSelect:"-- نوع الطلب --",
+    iqOptRenewal:"تجديد", iqOptLost:"مفقودة", iqOptDamaged:"تالفة",
+    acLocationPh:"موقع السكن", acRoomPh:"رقم الغرفة (أرقام فقط)", acOptSelect:"-- فئة المشكلة --",
+    acOptAC:"مكيف", acOptElectricity:"كهرباء", acOptWater:"مياه", acOptCleaning:"نظافة", acOptFurniture:"أثاث", acOptInternet:"إنترنت",
+    fpOptSelect:"-- نوع المشكلة --", fpOptNotRegistered:"غير مسجلة", fpOptFailedVerification:"فشل التحقق",
+    optOther:"أخرى", issueDescPh:"وصف المشكلة"
   },
   Hindi: {
     gearHome:"होम", gearLanguage:"भाषा बदलें", gearLogout:"लॉग आउट",
@@ -610,7 +649,20 @@ var translations = {
     reqSalaryReview:"वेतन समीक्षा", reqSalarySlip:"वेतन पर्ची अनुरोध", reqFamilyVisit:"पारिवारिक विज़िट अनुरोध",
     reqUniform:"यूनिफ़ॉर्म पात्रता", reqPerformanceReview:"ड्राइवर प्रदर्शन समीक्षा अनुरोध",
     reqTicketConfirmation:"टिकट पुष्टि और विवरण", reqExitReentry:"एग्ज़िट/री-एंट्री पुष्टि",
-    reqFurther:"अन्य ड्राइवर अनुरोध/शिकायत"
+    reqFurther:"अन्य ड्राइवर अनुरोध/शिकायत",
+    rsCurrentRouteLbl:"वर्तमान रूट (वैकल्पिक, केवल नंबर/अक्षर)", rsCurrentShiftLbl:"वर्तमान शिफ्ट (वैकल्पिक)",
+    rsRequestedRouteLbl:"अनुरोधित रूट (वैकल्पिक, केवल नंबर/अक्षर)", rsRequestedShiftLbl:"अनुरोधित शिफ्ट (वैकल्पिक)",
+    rsEffectiveDateLbl:"प्रभावी तारीख * (जिस तारीख तक हल होने की उम्मीद है)", rsReasonPh:"परिवर्तन का कारण",
+    mnPasswordPh:"Mename पासवर्ड (वैकल्पिक)", mnIssueTypePh:"समस्या का प्रकार", mnIssueDateLbl:"समस्या की तारीख *", mnContactPh:"संपर्क नंबर",
+    abAbsenceDateLbl:"अनुपस्थिति की तारीख *", abOptSelect:"-- स्थिति चुनें --", abOptPresent:"उपस्थित", abOptSick:"बीमारी की छुट्टी",
+    abOptAnnual:"वार्षिक छुट्टी", abOptUnpaid:"बिना वेतन छुट्टी", abOptDeath:"मृत्यु छुट्टी", abOptEmergency:"आपातकालीन छुट्टी",
+    abOptMarriage:"शादी की छुट्टी", abOptCompensatory:"प्रतिपूरक छुट्टी", abOptWeeklyOff:"साप्ताहिक अवकाश", abReasonPh:"कारण/विवरण",
+    iqNumberPh:"इकामा नंबर (केवल नंबर)", iqExpiryLbl:"इकामा समाप्ति तारीख *", iqOptSelect:"-- अनुरोध प्रकार --",
+    iqOptRenewal:"नवीनीकरण", iqOptLost:"खो गया", iqOptDamaged:"क्षतिग्रस्त",
+    acLocationPh:"आवास स्थान", acRoomPh:"कमरा नंबर (केवल नंबर)", acOptSelect:"-- समस्या श्रेणी --",
+    acOptAC:"एसी", acOptElectricity:"बिजली", acOptWater:"पानी", acOptCleaning:"सफाई", acOptFurniture:"फर्नीचर", acOptInternet:"इंटरनेट",
+    fpOptSelect:"-- समस्या प्रकार --", fpOptNotRegistered:"पंजीकृत नहीं", fpOptFailedVerification:"सत्यापन विफल",
+    optOther:"अन्य", issueDescPh:"समस्या का विवरण"
   },
   Indonesian: {
     gearHome:"Beranda", gearLanguage:"Ubah Bahasa", gearLogout:"Keluar",
@@ -633,7 +685,20 @@ var translations = {
     reqSalaryReview:"Tinjauan Gaji", reqSalarySlip:"Permintaan Slip Gaji", reqFamilyVisit:"Permintaan Kunjungan Keluarga",
     reqUniform:"Kelayakan Seragam", reqPerformanceReview:"Permintaan Tinjauan Kinerja Pengemudi",
     reqTicketConfirmation:"Konfirmasi & Detail Tiket", reqExitReentry:"Konfirmasi Keluar/Masuk Kembali",
-    reqFurther:"Permintaan/Keluhan Pengemudi Lainnya"
+    reqFurther:"Permintaan/Keluhan Pengemudi Lainnya",
+    rsCurrentRouteLbl:"Rute Saat Ini (Opsional, hanya angka/huruf)", rsCurrentShiftLbl:"Shift Saat Ini (Opsional)",
+    rsRequestedRouteLbl:"Rute yang Diminta (Opsional, hanya angka/huruf)", rsRequestedShiftLbl:"Shift yang Diminta (Opsional)",
+    rsEffectiveDateLbl:"Tanggal Efektif * (tanggal Anda perkirakan permintaan ini selesai)", rsReasonPh:"Alasan Perubahan",
+    mnPasswordPh:"Password Mename (Opsional)", mnIssueTypePh:"Jenis Masalah", mnIssueDateLbl:"Tanggal Masalah *", mnContactPh:"Nomor Kontak",
+    abAbsenceDateLbl:"Tanggal Ketidakhadiran *", abOptSelect:"-- Pilih Status --", abOptPresent:"Hadir", abOptSick:"Cuti Sakit",
+    abOptAnnual:"Cuti Tahunan", abOptUnpaid:"Cuti Tanpa Bayar", abOptDeath:"Cuti Duka", abOptEmergency:"Cuti Darurat",
+    abOptMarriage:"Cuti Menikah", abOptCompensatory:"Cuti Pengganti", abOptWeeklyOff:"Libur Mingguan", abReasonPh:"Alasan/Deskripsi",
+    iqNumberPh:"Nomor Iqama (Hanya Angka)", iqExpiryLbl:"Tanggal Kadaluarsa Iqama *", iqOptSelect:"-- Jenis Permintaan --",
+    iqOptRenewal:"Perpanjangan", iqOptLost:"Hilang", iqOptDamaged:"Rusak",
+    acLocationPh:"Lokasi Akomodasi", acRoomPh:"Nomor Kamar (Hanya Angka)", acOptSelect:"-- Kategori Masalah --",
+    acOptAC:"AC", acOptElectricity:"Listrik", acOptWater:"Air", acOptCleaning:"Kebersihan", acOptFurniture:"Furnitur", acOptInternet:"Internet",
+    fpOptSelect:"-- Jenis Masalah --", fpOptNotRegistered:"Tidak Terdaftar", fpOptFailedVerification:"Verifikasi Gagal",
+    optOther:"Lainnya", issueDescPh:"Deskripsi Masalah"
   }
 };
 
@@ -658,9 +723,34 @@ function applyLanguage() {
     ['t_reqMedicalInsurance','reqMedicalInsurance'],['t_reqSalaryReview','reqSalaryReview'],['t_reqSalarySlip','reqSalarySlip'],
     ['t_reqFamilyVisit','reqFamilyVisit'],['t_reqUniform','reqUniform'],['t_reqPerformanceReview','reqPerformanceReview'],
     ['t_reqTicketConfirmation','reqTicketConfirmation'],['t_reqExitReentry','reqExitReentry'],['t_reqFurther','reqFurther'],
-    ['t_myRecordsTitle','myRecordsTitle'],['t_allComplaintsTitle','allComplaintsTitle']
+    ['t_myRecordsTitle','myRecordsTitle'],['t_allComplaintsTitle','allComplaintsTitle'],
+    ['t_rsTitle','reqRouteShift'],['t_rsCurrentRouteLbl','rsCurrentRouteLbl'],['t_rsCurrentShiftLbl','rsCurrentShiftLbl'],
+    ['t_rsRequestedRouteLbl','rsRequestedRouteLbl'],['t_rsRequestedShiftLbl','rsRequestedShiftLbl'],['t_rsEffectiveDateLbl','rsEffectiveDateLbl'],
+    ['t_rsSubmitBtn','submitBtn'],
+    ['t_mnTitle','reqMename'],['t_mnIssueDateLbl','mnIssueDateLbl'],['t_mnSubmitBtn','submitBtn'],
+    ['t_abTitle','reqAbsence'],['t_abAbsenceDateLbl','abAbsenceDateLbl'],['t_abSubmitBtn','submitBtn'],
+    ['t_abOptSelect','abOptSelect'],['t_abOptPresent','abOptPresent'],['t_abOptSick','abOptSick'],['t_abOptAnnual','abOptAnnual'],
+    ['t_abOptUnpaid','abOptUnpaid'],['t_abOptDeath','abOptDeath'],['t_abOptEmergency','abOptEmergency'],['t_abOptMarriage','abOptMarriage'],
+    ['t_abOptCompensatory','abOptCompensatory'],['t_abOptWeeklyOff','abOptWeeklyOff'],['t_abOptOther','optOther'],
+    ['t_iqTitle','reqIqama'],['t_iqExpiryLbl','iqExpiryLbl'],['t_iqSubmitBtn','submitBtn'],
+    ['t_iqOptSelect','iqOptSelect'],['t_iqOptRenewal','iqOptRenewal'],['t_iqOptLost','iqOptLost'],['t_iqOptDamaged','iqOptDamaged'],['t_iqOptOther','optOther'],
+    ['t_acTitle','reqAccommodation'],['t_acSubmitBtn','submitBtn'],
+    ['t_acOptSelect','acOptSelect'],['t_acOptAC','acOptAC'],['t_acOptElectricity','acOptElectricity'],['t_acOptWater','acOptWater'],
+    ['t_acOptCleaning','acOptCleaning'],['t_acOptFurniture','acOptFurniture'],['t_acOptInternet','acOptInternet'],['t_acOptOther','optOther'],
+    ['t_fpTitle','reqFingerprint'],['t_fpSubmitBtn','submitBtn'],
+    ['t_fpOptSelect','fpOptSelect'],['t_fpOptNotRegistered','fpOptNotRegistered'],['t_fpOptFailedVerification','fpOptFailedVerification']
   ];
   pairs.forEach(function(p) { var el = document.getElementById(p[0]); if (el) el.innerText = t(p[1]); });
+
+  var placeholderPairs = [
+    ['rsReason','rsReasonPh'],
+    ['mnPassword','mnPasswordPh'],['mnIssueType','mnIssueTypePh'],['mnDescription','issueDescPh'],['mnContact','mnContactPh'],
+    ['abReason','abReasonPh'],
+    ['iqNumber','iqNumberPh'],['iqDescription','issueDescPh'],
+    ['acLocation','acLocationPh'],['acRoom','acRoomPh'],['acDescription','issueDescPh'],
+    ['fpDescription','issueDescPh']
+  ];
+  placeholderPairs.forEach(function(p) { var el = document.getElementById(p[0]); if (el) el.placeholder = t(p[1]); });
 }
 
 function callAPI(action, data) {

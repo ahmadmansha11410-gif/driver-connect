@@ -103,6 +103,29 @@
   #splash { text-align: center; color: var(--maroon); margin-top: 120px; }
   #splash img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 4px 20px rgba(110,42,86,0.2); }
 
+  .bus-track { position: relative; width: 100%; height: 30px; margin: 14px 0 2px; overflow: hidden; }
+  .bus-track img { position: absolute; top: 3px; left: 2%; height: 24px; width: auto; animation: busDriveBig 2.2s ease-in-out infinite; }
+  @keyframes busDriveBig {
+    0%   { left: 2%;  transform: scaleX(1); }
+    45%  { left: 46%; transform: scaleX(1); }
+    50%  { left: 46%; transform: scaleX(-1); }
+    95%  { left: 2%;  transform: scaleX(-1); }
+    100% { left: 2%;  transform: scaleX(1); }
+  }
+  .mini-bus-track { position: relative; display: inline-block; width: 95px; height: 14px; vertical-align: middle; margin-right: 6px; overflow: hidden; }
+  .mini-bus-track img { position: absolute; top: 0; left: 2%; height: 12px; width: auto; animation: busDriveMini 2.2s ease-in-out infinite; }
+  @keyframes busDriveMini {
+    0%   { left: 2%;  transform: scaleX(1); }
+    45%  { left: 32%; transform: scaleX(1); }
+    50%  { left: 32%; transform: scaleX(-1); }
+    95%  { left: 2%;  transform: scaleX(-1); }
+    100% { left: 2%;  transform: scaleX(1); }
+  }
+
+  #creatorCredit { text-align: center; margin-top: 150px; }
+  #creatorCredit .creator-credit-text { color: var(--gray); font-size: 12.5px; letter-spacing: 0.3px; font-family: 'Poppins', 'Inter', sans-serif; }
+  #creatorCredit .creator-credit-text b { color: var(--maroon); font-weight: 600; }
+
   #gearBtn, #floatBackBtn {
     position: fixed; top: 16px; width: 46px; height: 46px;
     border-radius: 50%; display: flex; align-items: center;
@@ -132,7 +155,12 @@
 <div id="splash" class="card">
   <img src="icon-192.png" alt="Driver Connect">
   <h2 style="margin-top:16px;">Driver Connect</h2>
+  <div class="bus-track"><img src="bus.png" alt="Bus loading"></div>
   <p style="color:var(--gray); font-size:13px;">Loading...</p>
+</div>
+
+<div id="creatorCredit" class="hidden">
+  <div class="creator-credit-text">Creator: <b>Ahmad Shehzad Mansha</b></div>
 </div>
 
 <div id="gearBtn" class="hidden">&#9881;</div>
@@ -510,6 +538,8 @@
 var API_URL = "https://script.google.com/macros/s/AKfycbx8D7ucrF0YsCVbMoiBTs8M-DMpj943p9LXyWBwFZDzbE3tbaJzfFsxqauZCR51od8jlg/exec";
 var currentUser = null;
 var selectedComplaintLabelKey = "";
+var currentScreenId = null;
+var formDirty = false;
 
 var allBoxIds = ['splash','loginBox','contactBox','langBox','homeBox','typeMenuBox','complaintCategoryBox','complaintFormBox',
 'requestCategoryBox','routeShiftFormBox','menameFormBox','absenceFormBox','iqamaFormBox','accommodationFormBox',
@@ -590,7 +620,8 @@ var translations = {
     furReasonPh:"Reason", furDescriptionPh:"Description",
     attachLabel:"Attach Photo/PDF (Optional)", attachUploading:"Uploading attachment...",
     attachTypeError:"Only picture or PDF files are allowed.", attachSizeError:"File is too large. Please choose a file under 10 MB.",
-    attachFailed:"Attachment upload failed. Please try again."
+    attachFailed:"Attachment upload failed. Please try again.",
+    confirmLeaveForm:"You have unsaved information in this form. Are you sure you want to leave? It will be lost."
   },
   Urdu: {
     gearHome:"ہوم", gearLanguage:"زبان تبدیل کریں", gearLogout:"لاگ آؤٹ",
@@ -648,7 +679,8 @@ var translations = {
     furReasonPh:"وجہ", furDescriptionPh:"تفصیل",
     attachLabel:"تصویر/PDF منسلک کریں (اختیاری)", attachUploading:"اٹیچمنٹ اپلوڈ ہو رہی ہے...",
     attachTypeError:"صرف تصویر یا PDF فائل کی اجازت ہے۔", attachSizeError:"فائل بہت بڑی ہے۔ براہ کرم 10 MB سے چھوٹی فائل منتخب کریں۔",
-    attachFailed:"اٹیچمنٹ اپلوڈ ناکام ہو گئی۔ دوبارہ کوشش کریں۔"
+    attachFailed:"اٹیچمنٹ اپلوڈ ناکام ہو گئی۔ دوبارہ کوشش کریں۔",
+    confirmLeaveForm:"اس فارم میں آپ کی غیر محفوظ شدہ معلومات موجود ہیں۔ کیا آپ واقعی چھوڑنا چاہتے ہیں؟ یہ ضائع ہو جائے گی۔"
   },
   Arabic: {
     gearHome:"الرئيسية", gearLanguage:"تغيير اللغة", gearLogout:"تسجيل الخروج",
@@ -706,7 +738,8 @@ var translations = {
     furReasonPh:"السبب", furDescriptionPh:"الوصف",
     attachLabel:"إرفاق صورة/PDF (اختياري)", attachUploading:"جارٍ رفع المرفق...",
     attachTypeError:"يُسمح فقط بملفات الصور أو PDF.", attachSizeError:"الملف كبير جدًا. يرجى اختيار ملف أصغر من 10 ميجابايت.",
-    attachFailed:"فشل رفع المرفق. يرجى المحاولة مرة أخرى."
+    attachFailed:"فشل رفع المرفق. يرجى المحاولة مرة أخرى.",
+    confirmLeaveForm:"لديك معلومات غير محفوظة في هذا النموذج. هل تريد المغادرة؟ سيتم فقدانها."
   },
   Hindi: {
     gearHome:"होम", gearLanguage:"भाषा बदलें", gearLogout:"लॉग आउट",
@@ -764,7 +797,8 @@ var translations = {
     furReasonPh:"कारण", furDescriptionPh:"विवरण",
     attachLabel:"फोटो/PDF अटैच करें (वैकल्पिक)", attachUploading:"अटैचमेंट अपलोड हो रहा है...",
     attachTypeError:"केवल तस्वीर या PDF फ़ाइल की अनुमति है।", attachSizeError:"फ़ाइल बहुत बड़ी है। कृपया 10 MB से छोटी फ़ाइल चुनें।",
-    attachFailed:"अटैचमेंट अपलोड नहीं हो सका। कृपया दोबारा कोशिश करें।"
+    attachFailed:"अटैचमेंट अपलोड नहीं हो सका। कृपया दोबारा कोशिश करें।",
+    confirmLeaveForm:"इस फॉर्म में आपकी जानकारी अभी सेव नहीं हुई है। क्या आप वाकई छोड़ना चाहते हैं? यह जानकारी खो जाएगी।"
   },
   Indonesian: {
     gearHome:"Beranda", gearLanguage:"Ubah Bahasa", gearLogout:"Keluar",
@@ -822,7 +856,8 @@ var translations = {
     furReasonPh:"Alasan", furDescriptionPh:"Deskripsi",
     attachLabel:"Lampirkan Foto/PDF (Opsional)", attachUploading:"Mengunggah lampiran...",
     attachTypeError:"Hanya file gambar atau PDF yang diizinkan.", attachSizeError:"File terlalu besar. Silakan pilih file di bawah 10 MB.",
-    attachFailed:"Gagal mengunggah lampiran. Silakan coba lagi."
+    attachFailed:"Gagal mengunggah lampiran. Silakan coba lagi.",
+    confirmLeaveForm:"Anda memiliki informasi yang belum tersimpan di formulir ini. Yakin ingin meninggalkannya? Data ini akan hilang."
   }
 };
 
@@ -830,6 +865,32 @@ function t(key) {
   var lang = (currentUser && currentUser.language) ? currentUser.language : 'English';
   return (translations[lang] && translations[lang][key]) || translations.English[key] || key;
 }
+
+// Small inline driving-bus icon shown next to "Loading/Checking/Submitting/Uploading" text.
+function miniBus() { return '<span class="mini-bus-track"><img src="bus.png" alt="bus"></span>'; }
+
+// A soft, short "tick" sound on every button tap. Kept quiet and brief on purpose - just a
+// gentle confirmation that the tap registered, not an alert or a ringtone.
+var clickAudioCtx = null;
+function playClickSound() {
+  try {
+    if (!clickAudioCtx) { clickAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    if (clickAudioCtx.state === 'suspended') { clickAudioCtx.resume(); }
+    var osc = clickAudioCtx.createOscillator();
+    var gain = clickAudioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 720;
+    gain.gain.setValueAtTime(0.045, clickAudioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, clickAudioCtx.currentTime + 0.055);
+    osc.connect(gain); gain.connect(clickAudioCtx.destination);
+    osc.start();
+    osc.stop(clickAudioCtx.currentTime + 0.06);
+  } catch (err) { /* sound is a nice-to-have - never let it break the app */ }
+}
+document.addEventListener('click', function(e) {
+  var btn = e.target && e.target.closest ? e.target.closest('button') : null;
+  if (btn) { playClickSound(); }
+}, true);
 
 function applyLanguage() {
   var pairs = [
@@ -976,7 +1037,7 @@ function uploadAttachmentIfAny(inputId, empId, category, msgElId) {
   var maxBytes = file.type === 'application/pdf' ? MAX_ATTACHMENT_BYTES : MAX_ATTACHMENT_BYTES * 2;
   if (file.size > maxBytes) { return Promise.reject(new Error(t('attachSizeError'))); }
   var msgEl = document.getElementById(msgElId);
-  if (msgEl) { msgEl.className = "msg"; msgEl.innerText = t('attachUploading'); }
+  if (msgEl) { msgEl.className = "msg"; msgEl.innerHTML = miniBus() + t('attachUploading'); }
   var finalMimeType = file.type;
   return compressImageIfNeeded(file).then(function(processedFile) {
     finalMimeType = processedFile.type || finalMimeType;
@@ -1002,45 +1063,88 @@ function goToScreen(screenId, push) {
   hideAllRaw();
   document.getElementById(screenId).classList.remove('hidden');
   document.getElementById('floatBackBtn').classList.toggle('hidden', noBackScreens.indexOf(screenId) !== -1);
+  currentScreenId = screenId;
+  formDirty = false;
   if (push !== false) {
     history.pushState({ screen: screenId }, '', '#' + screenId);
   }
 }
 function goBack() { history.back(); }
+
+// Returns true if it's OK to navigate away from the current screen right now.
+// If the current screen is a form with something typed into it, asks the driver to confirm first.
+function confirmLeaveIfDirty() {
+  if (currentScreenId && currentScreenId.indexOf('FormBox') !== -1 && formDirty) {
+    return confirm(t('confirmLeaveForm'));
+  }
+  return true;
+}
+
+// Tracks whether the driver has typed/selected/attached anything into the form currently on screen.
+document.addEventListener('input', function(e) {
+  if (currentScreenId && currentScreenId.indexOf('FormBox') !== -1) {
+    var box = document.getElementById(currentScreenId);
+    if (box && box.contains(e.target)) { formDirty = true; }
+  }
+});
+document.addEventListener('change', function(e) {
+  if (currentScreenId && currentScreenId.indexOf('FormBox') !== -1) {
+    var box = document.getElementById(currentScreenId);
+    if (box && box.contains(e.target)) { formDirty = true; }
+  }
+});
+
 window.addEventListener('popstate', function(e) {
+  if (!confirmLeaveIfDirty()) {
+    // Driver chose to stay - put the current screen back on top of the history stack.
+    history.pushState({ screen: currentScreenId }, '', '#' + currentScreenId);
+    return;
+  }
   if (e.state && e.state.screen) {
     goToScreen(e.state.screen, false);
   } else {
     // fell off the stack - go to a sensible default
     hideAllRaw();
-    if (currentUser) { document.getElementById('homeBox').classList.remove('hidden'); }
-    else { document.getElementById('loginBox').classList.remove('hidden'); }
+    if (currentUser) { document.getElementById('homeBox').classList.remove('hidden'); currentScreenId = 'homeBox'; }
+    else { document.getElementById('loginBox').classList.remove('hidden'); currentScreenId = 'loginBox'; }
     document.getElementById('floatBackBtn').classList.add('hidden');
+    formDirty = false;
   }
 });
 
 window.addEventListener('load', function() {
   if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
   var session = loadSession();
-  hideAllRaw();
-  if (session && session.empId) {
-    currentUser = session;
-    applyLanguage();
-    document.getElementById('gearBtn').classList.remove('hidden');
-    document.getElementById('homeBox').classList.remove('hidden');
-    document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
-    buildMenu(currentUser.role);
-    history.replaceState({ screen: 'homeBox' }, '', '#homeBox');
-  } else {
-    document.getElementById('loginBox').classList.remove('hidden');
-    history.replaceState({ screen: 'loginBox' }, '', '#loginBox');
-  }
+  var SPLASH_MIN_MS = 1300;
+  var CREDIT_MS = 800;
+  setTimeout(function() {
+    document.getElementById('splash').classList.add('hidden');
+    document.getElementById('creatorCredit').classList.remove('hidden');
+    setTimeout(function() {
+      document.getElementById('creatorCredit').classList.add('hidden');
+      hideAllRaw();
+      if (session && session.empId) {
+        currentUser = session;
+        applyLanguage();
+        document.getElementById('gearBtn').classList.remove('hidden');
+        document.getElementById('homeBox').classList.remove('hidden');
+        document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
+        buildMenu(currentUser.role);
+        currentScreenId = 'homeBox';
+        history.replaceState({ screen: 'homeBox' }, '', '#homeBox');
+      } else {
+        document.getElementById('loginBox').classList.remove('hidden');
+        currentScreenId = 'loginBox';
+        history.replaceState({ screen: 'loginBox' }, '', '#loginBox');
+      }
+    }, CREDIT_MS);
+  }, SPLASH_MIN_MS);
 });
 
 function login() {
   var empId = document.getElementById('empId').value;
   var pass = document.getElementById('pass').value;
-  document.getElementById('msg').innerText = "Checking...";
+  document.getElementById('msg').innerHTML = miniBus() + "Checking...";
   callAPI('checkLogin', { empId: empId, password: pass }).then(function(result) {
     if (result.success) {
       currentUser = result;
@@ -1075,9 +1179,16 @@ function buildMenu(role) {
 }
 function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
 document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
-document.getElementById('t_gearHome').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goHome(); });
-document.getElementById('t_gearLanguage').addEventListener('click', function() { document.getElementById('gearPanel').classList.add('hidden'); goToScreen('langBox'); });
+document.getElementById('t_gearHome').addEventListener('click', function() {
+  if (!confirmLeaveIfDirty()) return;
+  document.getElementById('gearPanel').classList.add('hidden'); goHome();
+});
+document.getElementById('t_gearLanguage').addEventListener('click', function() {
+  if (!confirmLeaveIfDirty()) return;
+  document.getElementById('gearPanel').classList.add('hidden'); goToScreen('langBox');
+});
 document.getElementById('t_gearLogout').addEventListener('click', function() {
+  if (!confirmLeaveIfDirty()) return;
   currentUser = null; clearSession();
   document.getElementById('gearBtn').classList.add('hidden');
   document.getElementById('gearPanel').classList.add('hidden');
@@ -1131,19 +1242,20 @@ function submitComplaintForm() {
   uploadAttachmentIfAny('cfAttachment', currentUser.empId, categoryEn, 'complaintFormMsg').then(function(attachmentUrl) {
     var payload = { empId: currentUser.empId, name: currentUser.name, department: "Operation", category: categoryEn,
       location: location, date: date, time: time, againstType: against, againstName: nameOpt, reason: reason, description: description, attachmentLink: attachmentUrl };
-    document.getElementById('complaintFormMsg').innerText = t('submitting');
+    document.getElementById('complaintFormMsg').innerHTML = miniBus() + t('submitting');
     return callAPI('submitComplaint', payload);
   }).then(function(res) {
     document.getElementById('complaintFormMsg').className = "msg success";
     document.getElementById('complaintFormMsg').innerText = t('submitted') + res.complaintId;
     ['cfLocation','cfDate','cfTime','cfNameOpt','cfReason','cfDescription','cfAttachment'].forEach(function(id){document.getElementById(id).value = "";});
     document.getElementById('cfAgainst').value = ""; document.getElementById('cfNameOpt').classList.add('hidden');
+    formDirty = false;
   }).catch(function(err){ document.getElementById('complaintFormMsg').className = "msg error"; document.getElementById('complaintFormMsg').innerText = (err && err.message) || "Connection error"; });
 }
 
 function doSubmitRequest(payload, msgId, clearIds) {
   var el = document.getElementById(msgId);
-  el.className = "msg"; el.innerText = t('submitting');
+  el.className = "msg"; el.innerHTML = miniBus() + t('submitting');
   callAPI('submitRequest', payload).then(function(res) {
     el.className = "msg success";
     el.innerText = t('submitted') + res.requestId;
@@ -1151,6 +1263,7 @@ function doSubmitRequest(payload, msgId, clearIds) {
       var f = document.getElementById(id);
       if (f.type === 'checkbox') f.checked = false; else f.value = "";
     });
+    formDirty = false;
   }).catch(function(){ el.className = "msg error"; el.innerText = "Connection error"; });
 }
 

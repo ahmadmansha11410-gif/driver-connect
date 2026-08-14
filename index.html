@@ -932,22 +932,63 @@ function fileToBase64(file) {
   });
 }
 
+// Shrinks large photos before upload (max 1600px on the longer side, JPEG quality ~0.82)
+// so uploads are fast on mobile data. PDFs are left untouched (returned as-is).
+function compressImageIfNeeded(file) {
+  if (file.type === 'application/pdf') { return Promise.resolve(file); }
+  return new Promise(function(resolve) {
+    var objectUrl = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function() {
+      URL.revokeObjectURL(objectUrl);
+      var maxSide = 1600;
+      var w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h || (w <= maxSide && h <= maxSide)) { resolve(file); return; }
+      var scale = w > h ? maxSide / w : maxSide / h;
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function(blob) {
+        if (!blob) { resolve(file); return; }
+        resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+      }, 'image/jpeg', 0.82);
+    };
+    img.onerror = function() { URL.revokeObjectURL(objectUrl); resolve(file); };
+    img.src = objectUrl;
+  });
+}
+
+function uploadAttachmentOnce(base64, mimeType, empId, category) {
+  var payload = { action: 'uploadAttachment', empId: empId, category: category, mimeType: mimeType, fileData: base64 };
+  return fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }).then(function(r) { return r.json(); });
+}
+
 // Uploads the file selected in the given file input (if any) to Google Drive via the API,
 // and resolves with the resulting Drive URL. Resolves with "" if no file was chosen.
+// Automatically retries once on failure (occasional network hiccups) before giving up.
 function uploadAttachmentIfAny(inputId, empId, category, msgElId) {
   var input = document.getElementById(inputId);
   var file = input && input.files && input.files[0];
   if (!file) { return Promise.resolve(""); }
   if (ALLOWED_ATTACHMENT_TYPES.indexOf(file.type) === -1) { return Promise.reject(new Error(t('attachTypeError'))); }
-  if (file.size > MAX_ATTACHMENT_BYTES) { return Promise.reject(new Error(t('attachSizeError'))); }
+  var maxBytes = file.type === 'application/pdf' ? MAX_ATTACHMENT_BYTES : MAX_ATTACHMENT_BYTES * 2;
+  if (file.size > maxBytes) { return Promise.reject(new Error(t('attachSizeError'))); }
   var msgEl = document.getElementById(msgElId);
   if (msgEl) { msgEl.className = "msg"; msgEl.innerText = t('attachUploading'); }
-  return fileToBase64(file).then(function(base64) {
-    var payload = { action: 'uploadAttachment', empId: empId, category: category, mimeType: file.type, fileData: base64 };
-    return fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }).then(function(r) { return r.json(); });
-  }).then(function(res) {
-    if (!res || !res.success) { throw new Error((res && res.error) || t('attachFailed')); }
-    return res.fileUrl;
+  var finalMimeType = file.type;
+  return compressImageIfNeeded(file).then(function(processedFile) {
+    finalMimeType = processedFile.type || finalMimeType;
+    return fileToBase64(processedFile);
+  }).then(function(base64) {
+    return uploadAttachmentOnce(base64, finalMimeType, empId, category).then(function(res) {
+      if (res && res.success) { return res.fileUrl; }
+      return uploadAttachmentOnce(base64, finalMimeType, empId, category).then(function(res2) {
+        if (!res2 || !res2.success) { throw new Error((res2 && res2.error) || t('attachFailed')); }
+        return res2.fileUrl;
+      });
+    });
   });
 }
 function saveSession() { localStorage.setItem('driverConnectSession', JSON.stringify(currentUser)); }

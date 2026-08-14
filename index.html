@@ -317,169 +317,169 @@
 </div>
 
 <div class="card hidden" id="emergencyFormBox">
-  <div class="form-title">Emergency Leave Request</div>
-  <div class="field-label">Leave Start Date *</div>
+  <div class="form-title" id="t_emTitle">Emergency Leave Request</div>
+  <div class="field-label" id="t_emStartDateLbl">Leave Start Date *</div>
   <input type="date" id="emStartDate">
-  <div class="field-label">Leave End Date *</div>
+  <div class="field-label" id="t_emEndDateLbl">Leave End Date *</div>
   <input type="date" id="emEndDate">
   <input type="text" id="emDays" placeholder="Number of Days (Numbers Only)">
   <select id="emType">
-    <option value="">-- Emergency Type --</option>
-    <option>Family Emergency</option><option>Medical Emergency</option><option>Death Case</option><option>Other</option>
+    <option value="" id="t_emOptSelect">-- Emergency Type --</option>
+    <option value="Family Emergency" id="t_emOptFamily">Family Emergency</option><option value="Medical Emergency" id="t_emOptMedical">Medical Emergency</option><option value="Death Case" id="t_emOptDeath">Death Case</option><option value="Other" id="t_emOptOther">Other</option>
   </select>
   <textarea id="emDescription" placeholder="Request Description"></textarea>
   <input type="text" id="emContact" placeholder="Contact Number (Numbers Only)">
-  <button onclick="submitEmergency()">Submit</button>
+  <button id="t_emSubmitBtn" onclick="submitEmergency()">Submit</button>
   <div class="msg" id="emFormMsg"></div>
 </div>
 
 <div class="card hidden" id="vacationFormBox">
-  <div class="form-title">Vacation Postponement/Early Return/Extension/Cancellation</div>
+  <div class="form-title" id="t_vcTitle">Vacation Postponement/Early Return/Extension/Cancellation</div>
   <select id="vcType">
-    <option value="">-- Vacation Type --</option>
-    <option>Postpone</option><option>Early Return</option><option>Extension</option><option>Cancellation</option><option>Other</option>
+    <option value="" id="t_vcOptSelect">-- Vacation Type --</option>
+    <option value="Postpone" id="t_vcOptPostpone">Postpone</option><option value="Early Return" id="t_vcOptEarlyReturn">Early Return</option><option value="Extension" id="t_vcOptExtension">Extension</option><option value="Cancellation" id="t_vcOptCancellation">Cancellation</option><option value="Other" id="t_vcOptOther">Other</option>
   </select>
-  <div class="field-label">Original Vacation Start Date *</div>
+  <div class="field-label" id="t_vcOrigStartLbl">Original Vacation Start Date *</div>
   <input type="date" id="vcOrigStart">
-  <div class="field-label">Original Vacation End Date *</div>
+  <div class="field-label" id="t_vcOrigEndLbl">Original Vacation End Date *</div>
   <input type="date" id="vcOrigEnd">
   <textarea id="vcReason" placeholder="Reason/Description"></textarea>
-  <div class="field-label">New Vacation Start Date (Optional)</div>
+  <div class="field-label" id="t_vcNewStartLbl">New Vacation Start Date (Optional)</div>
   <input type="date" id="vcNewStart">
-  <div class="field-label">New Vacation End Date (Optional)</div>
+  <div class="field-label" id="t_vcNewEndLbl">New Vacation End Date (Optional)</div>
   <input type="date" id="vcNewEnd">
-  <button onclick="submitVacation()">Submit</button>
+  <button id="t_vcSubmitBtn" onclick="submitVacation()">Submit</button>
   <div class="msg" id="vcFormMsg"></div>
 </div>
 
 <div class="card hidden" id="contractFormBox">
-  <div class="form-title">Contract Renewal Request</div>
+  <div class="form-title" id="t_crTitle">Contract Renewal Request</div>
   <input type="text" id="crIqamaNumber" placeholder="Iqama Number (Numbers Only)">
-  <div class="field-label">Iqama Expiry Date *</div>
+  <div class="field-label" id="t_crIqamaExpiryLbl">Iqama Expiry Date *</div>
   <input type="date" id="crIqamaExpiry">
-  <div class="field-label">Contract Expiry Date *</div>
+  <div class="field-label" id="t_crContractExpiryLbl">Contract Expiry Date *</div>
   <input type="date" id="crContractExpiry">
   <textarea id="crDescription" placeholder="Request Description"></textarea>
-  <button onclick="submitContractRenewal()">Submit</button>
+  <button id="t_crSubmitBtn" onclick="submitContractRenewal()">Submit</button>
   <div class="msg" id="crFormMsg"></div>
 </div>
 
 <div class="card hidden" id="medicalFormBox">
-  <div class="form-title">Medical Insurance</div>
+  <div class="form-title" id="t_miTitle">Medical Insurance</div>
   <select id="miType">
-    <option value="">-- Request Type --</option>
-    <option>Policy Inquiry</option><option>Claim Issue</option><option>Card Request</option><option>Other</option>
+    <option value="" id="t_miOptSelect">-- Request Type --</option>
+    <option value="Policy Inquiry" id="t_miOptPolicy">Policy Inquiry</option><option value="Claim Issue" id="t_miOptClaim">Claim Issue</option><option value="Card Request" id="t_miOptCard">Card Request</option><option value="Other" id="t_miOptOther">Other</option>
   </select>
   <textarea id="miDescription" placeholder="Issue Description"></textarea>
-  <button onclick="submitMedicalInsurance()">Submit</button>
+  <button id="t_miSubmitBtn" onclick="submitMedicalInsurance()">Submit</button>
   <div class="msg" id="miFormMsg"></div>
 </div>
 
 <div class="card hidden" id="salaryReviewFormBox">
-  <div class="form-title">Salary Review</div>
+  <div class="form-title" id="t_srTitle">Salary Review</div>
   <select id="srReason">
-    <option value="">-- Review Reason --</option>
-    <option>Compensation</option><option>Other</option>
+    <option value="" id="t_srOptSelect">-- Review Reason --</option>
+    <option value="Compensation" id="t_srOptCompensation">Compensation</option><option value="Other" id="t_srOptOther">Other</option>
   </select>
   <textarea id="srDescription" placeholder="Description (Optional)"></textarea>
-  <button onclick="submitSalaryReview()">Submit</button>
+  <button id="t_srSubmitBtn" onclick="submitSalaryReview()">Submit</button>
   <div class="msg" id="srFormMsg"></div>
 </div>
 
 <div class="card hidden" id="salarySlipFormBox">
-  <div class="form-title">Salary Slip Request</div>
-  <div class="field-label">Required Salary Month *</div>
+  <div class="form-title" id="t_ssTitle">Salary Slip Request</div>
+  <div class="field-label" id="t_ssMonthLbl">Required Salary Month *</div>
   <input type="month" id="ssMonth">
   <textarea id="ssDescription" placeholder="Request Reason/Description"></textarea>
-  <button onclick="submitSalarySlip()">Submit</button>
+  <button id="t_ssSubmitBtn" onclick="submitSalarySlip()">Submit</button>
   <div class="msg" id="ssFormMsg"></div>
 </div>
 
 <div class="card hidden" id="familyVisitFormBox">
-  <div class="form-title">Family Visit Request</div>
+  <div class="form-title" id="t_fvTitle">Family Visit Request</div>
   <input type="text" id="fvName" placeholder="Visitor Full Name">
   <input type="text" id="fvRelation" placeholder="Relationship With Visitor">
   <input type="text" id="fvPassport" placeholder="Passport Number">
-  <div class="field-label">Visit Start Date *</div>
+  <div class="field-label" id="t_fvStartLbl">Visit Start Date *</div>
   <input type="date" id="fvStart">
-  <div class="field-label">Visit End Date *</div>
+  <div class="field-label" id="t_fvEndLbl">Visit End Date *</div>
   <input type="date" id="fvEnd">
   <textarea id="fvPurpose" placeholder="Purpose"></textarea>
-  <button onclick="submitFamilyVisit()">Submit</button>
+  <button id="t_fvSubmitBtn" onclick="submitFamilyVisit()">Submit</button>
   <div class="msg" id="fvFormMsg"></div>
 </div>
 
 <div class="card hidden" id="uniformFormBox">
-  <div class="form-title">Uniform Eligibility</div>
+  <div class="form-title" id="t_unTitle">Uniform Eligibility</div>
   <select id="unShirt">
-    <option value="">-- Shirt Size --</option>
+    <option value="" id="t_unShirtSelect">-- Shirt Size --</option>
     <option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
     <option>4XL</option><option>5XL</option><option>7XL</option><option>8XL</option><option>9XL</option><option>10XL</option>
   </select>
   <select id="unTrouser">
-    <option value="">-- Trouser Size --</option>
+    <option value="" id="t_unTrouserSelect">-- Trouser Size --</option>
     <option>38</option><option>40</option><option>42</option><option>44</option><option>46</option><option>48</option>
     <option>50</option><option>52</option><option>54</option><option>56</option><option>58</option><option>60</option>
     <option>62</option><option>64</option><option>66</option><option>68</option>
   </select>
-  <div class="field-label">Last Receiving Date *</div>
+  <div class="field-label" id="t_unLastDateLbl">Last Receiving Date *</div>
   <input type="date" id="unLastDate">
   <input type="text" id="unQuantity" placeholder="Quantity Required (Numbers Only)">
   <textarea id="unDescription" placeholder="Request Description"></textarea>
-  <button onclick="submitUniform()">Submit</button>
+  <button id="t_unSubmitBtn" onclick="submitUniform()">Submit</button>
   <div class="msg" id="unFormMsg"></div>
 </div>
 
 <div class="card hidden" id="performanceFormBox">
-  <div class="form-title">Driver Performance Review Request</div>
+  <div class="form-title" id="t_prTitle">Driver Performance Review Request</div>
   <select id="prType">
-    <option value="">-- Review Type --</option>
-    <option>Accident History</option><option>Behavior History</option><option>Discipline Performance</option><option>Overall Performance</option>
+    <option value="" id="t_prOptSelect">-- Review Type --</option>
+    <option value="Accident History" id="t_prOptAccident">Accident History</option><option value="Behavior History" id="t_prOptBehavior">Behavior History</option><option value="Discipline Performance" id="t_prOptDiscipline">Discipline Performance</option><option value="Overall Performance" id="t_prOptOverall">Overall Performance</option>
   </select>
   <textarea id="prReason" placeholder="Reason/Description"></textarea>
-  <button onclick="submitPerformanceReview()">Submit</button>
+  <button id="t_prSubmitBtn" onclick="submitPerformanceReview()">Submit</button>
   <div class="msg" id="prFormMsg"></div>
 </div>
 
 <div class="card hidden" id="ticketFormBox">
-  <div class="form-title">Ticket Confirmation & Details</div>
-  <div class="field-label">Travel Date *</div>
+  <div class="form-title" id="t_tkTitle">Ticket Confirmation & Details</div>
+  <div class="field-label" id="t_tkTravelDateLbl">Travel Date *</div>
   <input type="date" id="tkTravelDate">
   <input type="text" id="tkDestination" placeholder="Destination">
   <select id="tkType">
-    <option value="">-- Request Type --</option>
-    <option>Confirmation</option><option>Ticket Modification</option><option>Cancellation</option><option>Other</option>
+    <option value="" id="t_tkOptSelect">-- Request Type --</option>
+    <option value="Confirmation" id="t_tkOptConfirmation">Confirmation</option><option value="Ticket Modification" id="t_tkOptModification">Ticket Modification</option><option value="Cancellation" id="t_tkOptCancellation">Cancellation</option><option value="Other" id="t_tkOptOther">Other</option>
   </select>
   <textarea id="tkReason" placeholder="Reason/Description"></textarea>
-  <button onclick="submitTicket()">Submit</button>
+  <button id="t_tkSubmitBtn" onclick="submitTicket()">Submit</button>
   <div class="msg" id="tkFormMsg"></div>
 </div>
 
 <div class="card hidden" id="exitReentryFormBox">
-  <div class="form-title">Exit/Re-Entry Confirmation</div>
+  <div class="form-title" id="t_exTitle">Exit/Re-Entry Confirmation</div>
   <input type="text" id="exNumber" placeholder="Exit/Re-Entry Number">
-  <div class="field-label">Travel Date *</div>
+  <div class="field-label" id="t_exTravelDateLbl">Travel Date *</div>
   <input type="date" id="exTravelDate">
-  <div class="field-label">Return Date *</div>
+  <div class="field-label" id="t_exReturnDateLbl">Return Date *</div>
   <input type="date" id="exReturnDate">
   <input type="text" id="exCountry" placeholder="Destination Country">
-  <div class="checkbox-row"><label><input type="checkbox" id="exConfirm"> Confirmation Required</label></div>
-  <button onclick="submitExitReentry()">Submit</button>
+  <div class="checkbox-row"><label><input type="checkbox" id="exConfirm"> <span id="t_exConfirmLbl">Confirmation Required</span></label></div>
+  <button id="t_exSubmitBtn" onclick="submitExitReentry()">Submit</button>
   <div class="msg" id="exFormMsg"></div>
 </div>
 
 <div class="card hidden" id="furtherFormBox">
-  <div class="form-title">Further Driver Request/Complaint</div>
+  <div class="form-title" id="t_furTitle">Further Driver Request/Complaint</div>
   <div class="checkbox-row">
-    <label><input type="radio" name="furType" value="Complaint" onchange="toggleFurtherFields()"> Complaint</label>
+    <label><input type="radio" name="furType" value="Complaint" onchange="toggleFurtherFields()"> <span id="t_furComplaintRadioLbl">Complaint</span></label>
     &nbsp;&nbsp;
-    <label><input type="radio" name="furType" value="Request" onchange="toggleFurtherFields()"> Request</label>
+    <label><input type="radio" name="furType" value="Request" onchange="toggleFurtherFields()"> <span id="t_furRequestRadioLbl">Request</span></label>
   </div>
   <input type="text" id="furComplaintFor" class="hidden" placeholder="Complaint For (ID/Name/Other)">
   <input type="text" id="furRequestFor" class="hidden" placeholder="Request For (ID/Name/Other)">
   <input type="text" id="furReason" placeholder="Reason">
   <textarea id="furDescription" placeholder="Description"></textarea>
-  <button onclick="submitFurther()">Submit</button>
+  <button id="t_furSubmitBtn" onclick="submitFurther()">Submit</button>
   <div class="msg" id="furFormMsg"></div>
 </div>
 
@@ -554,7 +554,26 @@ var translations = {
     acLocationPh:"Accommodation Location", acRoomPh:"Room Number (Numbers Only)", acOptSelect:"-- Issue Category --",
     acOptAC:"AC", acOptElectricity:"Electricity", acOptWater:"Water", acOptCleaning:"Cleaning", acOptFurniture:"Furniture", acOptInternet:"Internet",
     fpOptSelect:"-- Issue Type --", fpOptNotRegistered:"Not Registered", fpOptFailedVerification:"Failed Verification",
-    optOther:"Other", issueDescPh:"Issue Description"
+    optOther:"Other", issueDescPh:"Issue Description",
+    emStartDateLbl:"Leave Start Date *", emEndDateLbl:"Leave End Date *", emDaysPh:"Number of Days (Numbers Only)",
+    emOptSelect:"-- Emergency Type --", emOptFamily:"Family Emergency", emOptMedical:"Medical Emergency", emOptDeath:"Death Case",
+    emContactPh:"Contact Number (Numbers Only)", reqDescPh:"Request Description",
+    vcOptSelect:"-- Vacation Type --", vcOptPostpone:"Postpone", vcOptEarlyReturn:"Early Return", vcOptExtension:"Extension", vcOptCancellation:"Cancellation",
+    vcOrigStartLbl:"Original Vacation Start Date *", vcOrigEndLbl:"Original Vacation End Date *",
+    vcNewStartLbl:"New Vacation Start Date (Optional)", vcNewEndLbl:"New Vacation End Date (Optional)",
+    crContractExpiryLbl:"Contract Expiry Date *",
+    miOptPolicy:"Policy Inquiry", miOptClaim:"Claim Issue", miOptCard:"Card Request",
+    srOptSelect:"-- Review Reason --", srOptCompensation:"Compensation", srDescPh:"Description (Optional)",
+    ssMonthLbl:"Required Salary Month *", ssDescPh:"Request Reason/Description",
+    fvNamePh:"Visitor Full Name", fvRelationPh:"Relationship With Visitor", fvPassportPh:"Passport Number",
+    fvStartLbl:"Visit Start Date *", fvEndLbl:"Visit End Date *", fvPurposePh:"Purpose",
+    unShirtSelect:"-- Shirt Size --", unTrouserSelect:"-- Trouser Size --", unLastDateLbl:"Last Receiving Date *", unQuantityPh:"Quantity Required (Numbers Only)",
+    prOptSelect:"-- Review Type --", prOptAccident:"Accident History", prOptBehavior:"Behavior History",
+    prOptDiscipline:"Discipline Performance", prOptOverall:"Overall Performance",
+    tkTravelDateLbl:"Travel Date *", tkDestinationPh:"Destination", tkOptConfirmation:"Confirmation", tkOptModification:"Ticket Modification",
+    exNumberPh:"Exit/Re-Entry Number", exReturnDateLbl:"Return Date *", exCountryPh:"Destination Country", exConfirmLbl:"Confirmation Required",
+    furComplaintForPh:"Complaint For (ID/Name/Other)", furRequestForPh:"Request For (ID/Name/Other)",
+    furReasonPh:"Reason", furDescriptionPh:"Description"
   },
   Urdu: {
     gearHome:"ہوم", gearLanguage:"زبان تبدیل کریں", gearLogout:"لاگ آؤٹ",
@@ -590,7 +609,26 @@ var translations = {
     acLocationPh:"رہائش کا مقام", acRoomPh:"کمرہ نمبر (صرف نمبرز)", acOptSelect:"-- مسئلے کی کیٹیگری --",
     acOptAC:"اے سی", acOptElectricity:"بجلی", acOptWater:"پانی", acOptCleaning:"صفائی", acOptFurniture:"فرنیچر", acOptInternet:"انٹرنیٹ",
     fpOptSelect:"-- مسئلے کی قسم --", fpOptNotRegistered:"رجسٹرڈ نہیں", fpOptFailedVerification:"تصدیق ناکام",
-    optOther:"دیگر", issueDescPh:"مسئلے کی تفصیل"
+    optOther:"دیگر", issueDescPh:"مسئلے کی تفصیل",
+    emStartDateLbl:"چھٹی شروع ہونے کی تاریخ *", emEndDateLbl:"چھٹی ختم ہونے کی تاریخ *", emDaysPh:"دنوں کی تعداد (صرف نمبرز)",
+    emOptSelect:"-- ہنگامی قسم --", emOptFamily:"خاندانی ایمرجنسی", emOptMedical:"میڈیکل ایمرجنسی", emOptDeath:"وفات کا معاملہ",
+    emContactPh:"رابطہ نمبر (صرف نمبرز)", reqDescPh:"درخواست کی تفصیل",
+    vcOptSelect:"-- چھٹی کی قسم --", vcOptPostpone:"موخر کریں", vcOptEarlyReturn:"جلدی واپسی", vcOptExtension:"توسیع", vcOptCancellation:"منسوخی",
+    vcOrigStartLbl:"اصل چھٹی شروع ہونے کی تاریخ *", vcOrigEndLbl:"اصل چھٹی ختم ہونے کی تاریخ *",
+    vcNewStartLbl:"نئی چھٹی شروع ہونے کی تاریخ (اختیاری)", vcNewEndLbl:"نئی چھٹی ختم ہونے کی تاریخ (اختیاری)",
+    crContractExpiryLbl:"کنٹریکٹ ختم ہونے کی تاریخ *",
+    miOptPolicy:"پالیسی سے متعلق سوال", miOptClaim:"کلیم کا مسئلہ", miOptCard:"کارڈ کی درخواست",
+    srOptSelect:"-- جائزے کی وجہ --", srOptCompensation:"معاوضہ", srDescPh:"تفصیل (اختیاری)",
+    ssMonthLbl:"درکار تنخواہ کا مہینہ *", ssDescPh:"درخواست کی وجہ/تفصیل",
+    fvNamePh:"وزیٹر کا پورا نام", fvRelationPh:"وزیٹر کے ساتھ رشتہ", fvPassportPh:"پاسپورٹ نمبر",
+    fvStartLbl:"وزٹ شروع ہونے کی تاریخ *", fvEndLbl:"وزٹ ختم ہونے کی تاریخ *", fvPurposePh:"مقصد",
+    unShirtSelect:"-- شرٹ سائز --", unTrouserSelect:"-- پتلون سائز --", unLastDateLbl:"آخری وصولی کی تاریخ *", unQuantityPh:"درکار مقدار (صرف نمبرز)",
+    prOptSelect:"-- ریویو کی قسم --", prOptAccident:"حادثات کی تاریخ", prOptBehavior:"رویے کی تاریخ",
+    prOptDiscipline:"ڈسپلن کارکردگی", prOptOverall:"مجموعی کارکردگی",
+    tkTravelDateLbl:"سفر کی تاریخ *", tkDestinationPh:"منزل", tkOptConfirmation:"تصدیق", tkOptModification:"ٹکٹ میں تبدیلی",
+    exNumberPh:"ایگزٹ/ری اینٹری نمبر", exReturnDateLbl:"واپسی کی تاریخ *", exCountryPh:"منزل کا ملک", exConfirmLbl:"تصدیق درکار ہے",
+    furComplaintForPh:"شکایت کس کے لیے (آئی ڈی/نام/دیگر)", furRequestForPh:"درخواست کس کے لیے (آئی ڈی/نام/دیگر)",
+    furReasonPh:"وجہ", furDescriptionPh:"تفصیل"
   },
   Arabic: {
     gearHome:"الرئيسية", gearLanguage:"تغيير اللغة", gearLogout:"تسجيل الخروج",
@@ -626,7 +664,26 @@ var translations = {
     acLocationPh:"موقع السكن", acRoomPh:"رقم الغرفة (أرقام فقط)", acOptSelect:"-- فئة المشكلة --",
     acOptAC:"مكيف", acOptElectricity:"كهرباء", acOptWater:"مياه", acOptCleaning:"نظافة", acOptFurniture:"أثاث", acOptInternet:"إنترنت",
     fpOptSelect:"-- نوع المشكلة --", fpOptNotRegistered:"غير مسجلة", fpOptFailedVerification:"فشل التحقق",
-    optOther:"أخرى", issueDescPh:"وصف المشكلة"
+    optOther:"أخرى", issueDescPh:"وصف المشكلة",
+    emStartDateLbl:"تاريخ بداية الإجازة *", emEndDateLbl:"تاريخ نهاية الإجازة *", emDaysPh:"عدد الأيام (أرقام فقط)",
+    emOptSelect:"-- نوع الطارئ --", emOptFamily:"طارئ عائلي", emOptMedical:"طارئ طبي", emOptDeath:"حالة وفاة",
+    emContactPh:"رقم التواصل (أرقام فقط)", reqDescPh:"وصف الطلب",
+    vcOptSelect:"-- نوع الإجازة --", vcOptPostpone:"تأجيل", vcOptEarlyReturn:"عودة مبكرة", vcOptExtension:"تمديد", vcOptCancellation:"إلغاء",
+    vcOrigStartLbl:"تاريخ بداية الإجازة الأصلية *", vcOrigEndLbl:"تاريخ نهاية الإجازة الأصلية *",
+    vcNewStartLbl:"تاريخ بداية الإجازة الجديدة (اختياري)", vcNewEndLbl:"تاريخ نهاية الإجازة الجديدة (اختياري)",
+    crContractExpiryLbl:"تاريخ انتهاء العقد *",
+    miOptPolicy:"استفسار عن الوثيقة", miOptClaim:"مشكلة مطالبة", miOptCard:"طلب بطاقة",
+    srOptSelect:"-- سبب المراجعة --", srOptCompensation:"تعويض", srDescPh:"الوصف (اختياري)",
+    ssMonthLbl:"شهر الراتب المطلوب *", ssDescPh:"سبب الطلب/الوصف",
+    fvNamePh:"الاسم الكامل للزائر", fvRelationPh:"صلة القرابة بالزائر", fvPassportPh:"رقم جواز السفر",
+    fvStartLbl:"تاريخ بداية الزيارة *", fvEndLbl:"تاريخ نهاية الزيارة *", fvPurposePh:"الغرض",
+    unShirtSelect:"-- مقاس القميص --", unTrouserSelect:"-- مقاس البنطال --", unLastDateLbl:"تاريخ آخر استلام *", unQuantityPh:"الكمية المطلوبة (أرقام فقط)",
+    prOptSelect:"-- نوع المراجعة --", prOptAccident:"سجل الحوادث", prOptBehavior:"سجل السلوك",
+    prOptDiscipline:"أداء الانضباط", prOptOverall:"الأداء العام",
+    tkTravelDateLbl:"تاريخ السفر *", tkDestinationPh:"الوجهة", tkOptConfirmation:"تأكيد", tkOptModification:"تعديل التذكرة",
+    exNumberPh:"رقم الخروج/العودة", exReturnDateLbl:"تاريخ العودة *", exCountryPh:"بلد الوجهة", exConfirmLbl:"التأكيد مطلوب",
+    furComplaintForPh:"الشكوى بخصوص (رقم/اسم/أخرى)", furRequestForPh:"الطلب بخصوص (رقم/اسم/أخرى)",
+    furReasonPh:"السبب", furDescriptionPh:"الوصف"
   },
   Hindi: {
     gearHome:"होम", gearLanguage:"भाषा बदलें", gearLogout:"लॉग आउट",
@@ -662,7 +719,26 @@ var translations = {
     acLocationPh:"आवास स्थान", acRoomPh:"कमरा नंबर (केवल नंबर)", acOptSelect:"-- समस्या श्रेणी --",
     acOptAC:"एसी", acOptElectricity:"बिजली", acOptWater:"पानी", acOptCleaning:"सफाई", acOptFurniture:"फर्नीचर", acOptInternet:"इंटरनेट",
     fpOptSelect:"-- समस्या प्रकार --", fpOptNotRegistered:"पंजीकृत नहीं", fpOptFailedVerification:"सत्यापन विफल",
-    optOther:"अन्य", issueDescPh:"समस्या का विवरण"
+    optOther:"अन्य", issueDescPh:"समस्या का विवरण",
+    emStartDateLbl:"छुट्टी शुरू होने की तारीख *", emEndDateLbl:"छुट्टी समाप्ति तारीख *", emDaysPh:"दिनों की संख्या (केवल नंबर)",
+    emOptSelect:"-- आपातकालीन प्रकार --", emOptFamily:"पारिवारिक आपातकाल", emOptMedical:"चिकित्सा आपातकाल", emOptDeath:"मृत्यु का मामला",
+    emContactPh:"संपर्क नंबर (केवल नंबर)", reqDescPh:"अनुरोध विवरण",
+    vcOptSelect:"-- छुट्टी का प्रकार --", vcOptPostpone:"स्थगित करें", vcOptEarlyReturn:"जल्दी वापसी", vcOptExtension:"विस्तार", vcOptCancellation:"रद्द करें",
+    vcOrigStartLbl:"मूल छुट्टी शुरू होने की तारीख *", vcOrigEndLbl:"मूल छुट्टी समाप्ति तारीख *",
+    vcNewStartLbl:"नई छुट्टी शुरू होने की तारीख (वैकल्पिक)", vcNewEndLbl:"नई छुट्टी समाप्ति तारीख (वैकल्पिक)",
+    crContractExpiryLbl:"अनुबंध समाप्ति तारीख *",
+    miOptPolicy:"पॉलिसी पूछताछ", miOptClaim:"क्लेम समस्या", miOptCard:"कार्ड अनुरोध",
+    srOptSelect:"-- समीक्षा का कारण --", srOptCompensation:"मुआवज़ा", srDescPh:"विवरण (वैकल्पिक)",
+    ssMonthLbl:"आवश्यक वेतन माह *", ssDescPh:"अनुरोध कारण/विवरण",
+    fvNamePh:"आगंतुक का पूरा नाम", fvRelationPh:"आगंतुक से संबंध", fvPassportPh:"पासपोर्ट नंबर",
+    fvStartLbl:"विज़िट शुरू होने की तारीख *", fvEndLbl:"विज़िट समाप्ति तारीख *", fvPurposePh:"उद्देश्य",
+    unShirtSelect:"-- शर्ट साइज़ --", unTrouserSelect:"-- ट्राउज़र साइज़ --", unLastDateLbl:"अंतिम प्राप्ति तारीख *", unQuantityPh:"आवश्यक मात्रा (केवल नंबर)",
+    prOptSelect:"-- समीक्षा प्रकार --", prOptAccident:"दुर्घटना इतिहास", prOptBehavior:"व्यवहार इतिहास",
+    prOptDiscipline:"अनुशासन प्रदर्शन", prOptOverall:"समग्र प्रदर्शन",
+    tkTravelDateLbl:"यात्रा तारीख *", tkDestinationPh:"गंतव्य", tkOptConfirmation:"पुष्टि", tkOptModification:"टिकट में बदलाव",
+    exNumberPh:"एग्ज़िट/री-एंट्री नंबर", exReturnDateLbl:"वापसी तारीख *", exCountryPh:"गंतव्य देश", exConfirmLbl:"पुष्टि आवश्यक है",
+    furComplaintForPh:"शिकायत किसके लिए (आईडी/नाम/अन्य)", furRequestForPh:"अनुरोध किसके लिए (आईडी/नाम/अन्य)",
+    furReasonPh:"कारण", furDescriptionPh:"विवरण"
   },
   Indonesian: {
     gearHome:"Beranda", gearLanguage:"Ubah Bahasa", gearLogout:"Keluar",
@@ -698,7 +774,26 @@ var translations = {
     acLocationPh:"Lokasi Akomodasi", acRoomPh:"Nomor Kamar (Hanya Angka)", acOptSelect:"-- Kategori Masalah --",
     acOptAC:"AC", acOptElectricity:"Listrik", acOptWater:"Air", acOptCleaning:"Kebersihan", acOptFurniture:"Furnitur", acOptInternet:"Internet",
     fpOptSelect:"-- Jenis Masalah --", fpOptNotRegistered:"Tidak Terdaftar", fpOptFailedVerification:"Verifikasi Gagal",
-    optOther:"Lainnya", issueDescPh:"Deskripsi Masalah"
+    optOther:"Lainnya", issueDescPh:"Deskripsi Masalah",
+    emStartDateLbl:"Tanggal Mulai Cuti *", emEndDateLbl:"Tanggal Berakhir Cuti *", emDaysPh:"Jumlah Hari (Hanya Angka)",
+    emOptSelect:"-- Jenis Darurat --", emOptFamily:"Darurat Keluarga", emOptMedical:"Darurat Medis", emOptDeath:"Kasus Kematian",
+    emContactPh:"Nomor Kontak (Hanya Angka)", reqDescPh:"Deskripsi Permintaan",
+    vcOptSelect:"-- Jenis Cuti --", vcOptPostpone:"Tunda", vcOptEarlyReturn:"Kembali Lebih Awal", vcOptExtension:"Perpanjangan", vcOptCancellation:"Pembatalan",
+    vcOrigStartLbl:"Tanggal Mulai Cuti Asli *", vcOrigEndLbl:"Tanggal Berakhir Cuti Asli *",
+    vcNewStartLbl:"Tanggal Mulai Cuti Baru (Opsional)", vcNewEndLbl:"Tanggal Berakhir Cuti Baru (Opsional)",
+    crContractExpiryLbl:"Tanggal Kadaluarsa Kontrak *",
+    miOptPolicy:"Pertanyaan Polis", miOptClaim:"Masalah Klaim", miOptCard:"Permintaan Kartu",
+    srOptSelect:"-- Alasan Peninjauan --", srOptCompensation:"Kompensasi", srDescPh:"Deskripsi (Opsional)",
+    ssMonthLbl:"Bulan Gaji yang Diperlukan *", ssDescPh:"Alasan Permintaan/Deskripsi",
+    fvNamePh:"Nama Lengkap Pengunjung", fvRelationPh:"Hubungan dengan Pengunjung", fvPassportPh:"Nomor Paspor",
+    fvStartLbl:"Tanggal Mulai Kunjungan *", fvEndLbl:"Tanggal Berakhir Kunjungan *", fvPurposePh:"Tujuan",
+    unShirtSelect:"-- Ukuran Baju --", unTrouserSelect:"-- Ukuran Celana --", unLastDateLbl:"Tanggal Penerimaan Terakhir *", unQuantityPh:"Jumlah yang Dibutuhkan (Hanya Angka)",
+    prOptSelect:"-- Jenis Tinjauan --", prOptAccident:"Riwayat Kecelakaan", prOptBehavior:"Riwayat Perilaku",
+    prOptDiscipline:"Kinerja Disiplin", prOptOverall:"Kinerja Keseluruhan",
+    tkTravelDateLbl:"Tanggal Perjalanan *", tkDestinationPh:"Tujuan", tkOptConfirmation:"Konfirmasi", tkOptModification:"Perubahan Tiket",
+    exNumberPh:"Nomor Keluar/Masuk Kembali", exReturnDateLbl:"Tanggal Kembali *", exCountryPh:"Negara Tujuan", exConfirmLbl:"Konfirmasi Diperlukan",
+    furComplaintForPh:"Keluhan Untuk (ID/Nama/Lainnya)", furRequestForPh:"Permintaan Untuk (ID/Nama/Lainnya)",
+    furReasonPh:"Alasan", furDescriptionPh:"Deskripsi"
   }
 };
 
@@ -738,7 +833,30 @@ function applyLanguage() {
     ['t_acOptSelect','acOptSelect'],['t_acOptAC','acOptAC'],['t_acOptElectricity','acOptElectricity'],['t_acOptWater','acOptWater'],
     ['t_acOptCleaning','acOptCleaning'],['t_acOptFurniture','acOptFurniture'],['t_acOptInternet','acOptInternet'],['t_acOptOther','optOther'],
     ['t_fpTitle','reqFingerprint'],['t_fpSubmitBtn','submitBtn'],
-    ['t_fpOptSelect','fpOptSelect'],['t_fpOptNotRegistered','fpOptNotRegistered'],['t_fpOptFailedVerification','fpOptFailedVerification']
+    ['t_fpOptSelect','fpOptSelect'],['t_fpOptNotRegistered','fpOptNotRegistered'],['t_fpOptFailedVerification','fpOptFailedVerification'],
+    ['t_emTitle','reqEmergencyLeave'],['t_emStartDateLbl','emStartDateLbl'],['t_emEndDateLbl','emEndDateLbl'],['t_emSubmitBtn','submitBtn'],
+    ['t_emOptSelect','emOptSelect'],['t_emOptFamily','emOptFamily'],['t_emOptMedical','emOptMedical'],['t_emOptDeath','emOptDeath'],['t_emOptOther','optOther'],
+    ['t_vcTitle','reqVacation'],['t_vcSubmitBtn','submitBtn'],
+    ['t_vcOptSelect','vcOptSelect'],['t_vcOptPostpone','vcOptPostpone'],['t_vcOptEarlyReturn','vcOptEarlyReturn'],['t_vcOptExtension','vcOptExtension'],['t_vcOptCancellation','vcOptCancellation'],['t_vcOptOther','optOther'],
+    ['t_vcOrigStartLbl','vcOrigStartLbl'],['t_vcOrigEndLbl','vcOrigEndLbl'],['t_vcNewStartLbl','vcNewStartLbl'],['t_vcNewEndLbl','vcNewEndLbl'],
+    ['t_crTitle','reqContractRenewal'],['t_crIqamaExpiryLbl','iqExpiryLbl'],['t_crContractExpiryLbl','crContractExpiryLbl'],['t_crSubmitBtn','submitBtn'],
+    ['t_miTitle','reqMedicalInsurance'],['t_miSubmitBtn','submitBtn'],
+    ['t_miOptSelect','iqOptSelect'],['t_miOptPolicy','miOptPolicy'],['t_miOptClaim','miOptClaim'],['t_miOptCard','miOptCard'],['t_miOptOther','optOther'],
+    ['t_srTitle','reqSalaryReview'],['t_srSubmitBtn','submitBtn'],
+    ['t_srOptSelect','srOptSelect'],['t_srOptCompensation','srOptCompensation'],['t_srOptOther','optOther'],
+    ['t_ssTitle','reqSalarySlip'],['t_ssMonthLbl','ssMonthLbl'],['t_ssSubmitBtn','submitBtn'],
+    ['t_fvTitle','reqFamilyVisit'],['t_fvStartLbl','fvStartLbl'],['t_fvEndLbl','fvEndLbl'],['t_fvSubmitBtn','submitBtn'],
+    ['t_unTitle','reqUniform'],['t_unShirtSelect','unShirtSelect'],['t_unTrouserSelect','unTrouserSelect'],
+    ['t_unLastDateLbl','unLastDateLbl'],['t_unSubmitBtn','submitBtn'],
+    ['t_prTitle','reqPerformanceReview'],['t_prSubmitBtn','submitBtn'],
+    ['t_prOptSelect','prOptSelect'],['t_prOptAccident','prOptAccident'],['t_prOptBehavior','prOptBehavior'],
+    ['t_prOptDiscipline','prOptDiscipline'],['t_prOptOverall','prOptOverall'],
+    ['t_tkTitle','reqTicketConfirmation'],['t_tkTravelDateLbl','tkTravelDateLbl'],['t_tkSubmitBtn','submitBtn'],
+    ['t_tkOptSelect','iqOptSelect'],['t_tkOptConfirmation','tkOptConfirmation'],['t_tkOptModification','tkOptModification'],
+    ['t_tkOptCancellation','vcOptCancellation'],['t_tkOptOther','optOther'],
+    ['t_exTitle','reqExitReentry'],['t_exTravelDateLbl','tkTravelDateLbl'],['t_exReturnDateLbl','exReturnDateLbl'],
+    ['t_exConfirmLbl','exConfirmLbl'],['t_exSubmitBtn','submitBtn'],
+    ['t_furTitle','reqFurther'],['t_furComplaintRadioLbl','complaintBtn'],['t_furRequestRadioLbl','requestBtn'],['t_furSubmitBtn','submitBtn']
   ];
   pairs.forEach(function(p) { var el = document.getElementById(p[0]); if (el) el.innerText = t(p[1]); });
 
@@ -748,7 +866,19 @@ function applyLanguage() {
     ['abReason','abReasonPh'],
     ['iqNumber','iqNumberPh'],['iqDescription','issueDescPh'],
     ['acLocation','acLocationPh'],['acRoom','acRoomPh'],['acDescription','issueDescPh'],
-    ['fpDescription','issueDescPh']
+    ['fpDescription','issueDescPh'],
+    ['emDays','emDaysPh'],['emDescription','reqDescPh'],['emContact','emContactPh'],
+    ['vcReason','abReasonPh'],
+    ['crIqamaNumber','iqNumberPh'],['crDescription','reqDescPh'],
+    ['miDescription','issueDescPh'],
+    ['srDescription','srDescPh'],
+    ['ssDescription','ssDescPh'],
+    ['fvName','fvNamePh'],['fvRelation','fvRelationPh'],['fvPassport','fvPassportPh'],['fvPurpose','fvPurposePh'],
+    ['unQuantity','unQuantityPh'],['unDescription','reqDescPh'],
+    ['prReason','abReasonPh'],
+    ['tkDestination','tkDestinationPh'],['tkReason','abReasonPh'],
+    ['exNumber','exNumberPh'],['exCountry','exCountryPh'],
+    ['furComplaintFor','furComplaintForPh'],['furRequestFor','furRequestForPh'],['furReason','furReasonPh'],['furDescription','furDescriptionPh']
   ];
   placeholderPairs.forEach(function(p) { var el = document.getElementById(p[0]); if (el) el.placeholder = t(p[1]); });
 }

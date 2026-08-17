@@ -1,9 +1,11 @@
-const CACHE_NAME = 'driver-connect-v1';
+const CACHE_NAME = 'driver-connect-v2';
 const urlsToCache = [
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './bus.png',
+  './admin-bg.jpg'
 ];
 
 self.addEventListener('install', function(event) {
@@ -28,10 +30,27 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  // Only cache same-origin requests (app shell), always go to network for Apps Script API calls
+  // Always go straight to the network for Apps Script API calls - never cache those.
   if (event.request.url.indexOf('script.google.com') !== -1) {
     return;
   }
+  // Network-first for the app shell (index.html and page navigations), so a driver always gets
+  // the latest update the moment it's published. Falls back to the last cached copy only if
+  // there's no internet connection right now.
+  var isPageRequest = event.request.mode === 'navigate' || event.request.url.indexOf('index.html') !== -1;
+  if (isPageRequest) {
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+        var copy = response.clone();
+        caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, copy); });
+        return response;
+      }).catch(function() {
+        return caches.match(event.request);
+      })
+    );
+    return;
+  }
+  // Cache-first for everything else (icons, images, manifest) - these rarely change.
   event.respondWith(
     caches.match(event.request).then(function(response) {
       return response || fetch(event.request);

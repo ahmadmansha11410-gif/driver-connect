@@ -148,6 +148,101 @@
   #gearPanel button:hover { background: var(--cream); }
   .lang-btn { background: var(--maroon); }
   .contact-box { background: var(--cream); border-radius: 10px; padding: 14px; text-align: left; font-size: 14px; margin-top: 12px; line-height: 1.6; }
+
+  /* ===================== ADMIN / SUPER ADMIN DASHBOARD ===================== */
+  :root {
+    --adm-dark: #26282d;
+    --adm-dark2: #1c1e22;
+    --adm-accent: #b3468c;
+    --adm-accent-dark: #8f3670;
+    --adm-line: #3f93b8;
+    --adm-text: #f2f0f1;
+    --adm-text-dim: #b7b6b8;
+    --adm-panel: rgba(20,21,25,0.55);
+    --adm-panel-border: rgba(255,255,255,0.12);
+  }
+  #adminDashBox {
+    display: block; position: relative; width: 100%; max-width: 100%;
+    min-height: 100vh; margin: 0; padding: 0; border-radius: 0; box-shadow: none;
+    background: #101113; color: var(--adm-text); text-align: left; animation: none;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+  #adminDashBox.hidden { display: none !important; }
+  .admin-bgphoto {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+    background-image: linear-gradient(rgba(10,10,14,0.55), rgba(10,10,14,0.72)), url('admin-bg.jpg');
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+  }
+  .admin-content { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+  .admin-topbar {
+    background: var(--adm-dark2); text-align: center; padding: 9px 10px;
+    font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: 1px;
+    color: var(--adm-accent); font-size: 15px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .admin-searchrow { background: var(--adm-dark); display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 2px solid var(--adm-line); }
+  .admin-hamburger { font-size: 20px; color: var(--adm-text); cursor: pointer; padding: 6px; line-height: 1; user-select: none; }
+  .admin-hamburger:active { opacity: 0.7; }
+  .admin-searchbar { flex: 1; display: flex; align-items: center; background: var(--adm-accent); border-radius: 20px; overflow: hidden; }
+  .admin-searchbar .admin-search-icon { padding: 0 10px 0 14px; color: rgba(255,255,255,0.85); font-size: 14px; }
+  .admin-searchbar input { flex: 1; border: none; background: transparent; color: white; padding: 9px 4px; font-size: 14px; margin: 0; width: auto; }
+  .admin-searchbar input::placeholder { color: rgba(255,255,255,0.75); }
+  .admin-searchbar input:focus { outline: none; }
+  .admin-searchbar button { width: auto; margin: 0; padding: 9px 16px; background: var(--adm-accent-dark); border-radius: 0; font-size: 12px; }
+  .admin-menu {
+    position: absolute; top: 84px; left: 14px; background: #2f3136; border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45); z-index: 50; width: 190px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .admin-menu.hidden { display: none !important; }
+  .admin-menu-item { padding: 12px 16px; font-size: 14px; font-weight: 600; color: var(--adm-text); cursor: pointer; }
+  .admin-menu-item:hover { background: rgba(255,255,255,0.06); }
+  .admin-menu-item + .admin-menu-item { border-top: 1px solid rgba(255,255,255,0.06); }
+
+  .admin-stats, .admin-profile, .admin-tabsrow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 34px;
+    padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--adm-text-dim);
+  }
+  .admin-stats { padding-bottom: 4px; }
+  .admin-stats b, .admin-profile b { color: var(--adm-text); font-weight: 700; }
+  .admin-profile { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; }
+  .admin-profile-item { min-width: 170px; flex: 1 1 200px; }
+  .admin-profile-item .admin-wa-link { display: inline-block; margin-left: 8px; text-decoration: none; font-size: 15px; vertical-align: middle; }
+  .admin-tabsrow { border-top: 2px solid var(--adm-line); padding-top: 12px; }
+  .admin-tab {
+    width: auto; margin: 0; padding: 7px 16px; background: transparent; border: 1px solid var(--adm-accent);
+    color: var(--adm-accent); border-radius: 16px; font-size: 12.5px; font-weight: 700;
+  }
+  .admin-tab.active { background: var(--adm-accent); color: white; }
+  .admin-tabsrow input[type="date"] {
+    width: auto; margin: 0; padding: 6px 10px; background: #34363c; border: 1px solid rgba(255,255,255,0.15);
+    color: var(--adm-text); border-radius: 8px; font-size: 12.5px;
+  }
+  .admin-tabsrow .admin-action-btn {
+    width: auto; margin: 0; padding: 7px 14px; background: var(--adm-accent); color: white;
+    border-radius: 8px; font-size: 12.5px; font-weight: 700;
+  }
+  .admin-tabsrow .admin-action-btn:hover { background: var(--adm-accent-dark); }
+
+  .admin-table-wrap { flex: 1; overflow-x: auto; padding: 0 16px 16px; }
+  table.admin-table { width: 100%; min-width: 980px; border-collapse: collapse; font-size: 12.5px; background: var(--adm-panel); border-radius: 8px; overflow: hidden; }
+  table.admin-table th { background: var(--adm-accent); color: white; padding: 9px 8px; text-align: left; font-weight: 700; white-space: nowrap; }
+  table.admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--adm-text); }
+  table.admin-table tbody tr { cursor: pointer; }
+  table.admin-table tbody tr:hover { background: rgba(255,255,255,0.06); }
+  table.admin-table td a { color: #6fc3e0; }
+  #adminTableEmpty { text-align: center; padding: 20px; color: var(--adm-text-dim); font-size: 13px; }
+
+  .admin-footer { display: flex; align-items: flex-end; justify-content: space-between; padding: 16px; border-top: 1px solid var(--adm-line); margin-top: auto; }
+  .admin-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 26px; color: var(--adm-accent); line-height: 0.85; }
+  .admin-logo span { display: block; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10px; letter-spacing: 2px; color: var(--adm-text-dim); margin-top: 4px; }
+  .admin-footer img { width: 220px; max-width: 45vw; height: auto; opacity: 0.95; }
+
+  @media (max-width: 640px) {
+    .admin-topbar { font-size: 13px; }
+    table.admin-table { min-width: 820px; font-size: 11.5px; }
+    .admin-footer img { width: 150px; }
+    .admin-logo { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -203,6 +298,76 @@
   <div class="brand-title">Driver Connect</div>
   <div class="welcome" id="welcomeText"></div>
   <div id="menuArea"></div>
+</div>
+
+<!-- ===================== ADMIN / SUPER ADMIN / SUPER USER DASHBOARD ===================== -->
+<div class="hidden" id="adminDashBox">
+  <div class="admin-bgphoto"></div>
+  <div class="admin-content">
+
+    <div class="admin-topbar">DRIVER CONNECT</div>
+    <div class="admin-searchrow">
+      <span class="admin-hamburger" onclick="toggleAdminMenu()">&#9776;</span>
+      <div class="admin-searchbar">
+        <span class="admin-search-icon">&#128269;</span>
+        <input type="text" id="adminSearchInput" placeholder="" onkeydown="if(event.key==='Enter'){adminSearch();}">
+        <button onclick="adminSearch()">&#9654;</button>
+      </div>
+    </div>
+    <div class="admin-menu hidden" id="adminMenu">
+      <div class="admin-menu-item" onclick="adminGoToDriverHome()">Home</div>
+      <div class="admin-menu-item" id="adminAuthorityMenuItem" onclick="adminAuthorityClick()">Change Authority</div>
+      <div class="admin-menu-item" onclick="adminLogoutClick()">Logout</div>
+    </div>
+
+    <div class="admin-stats">
+      <span>Total Requests :<b id="adminStatReq">00</b></span>
+      <span>Total Pending Requests :<b id="adminStatReqPending">00</b></span>
+      <span id="adminStatCompWrap">Total Complaints:<b id="adminStatComp">00</b></span>
+      <span id="adminStatCompPendingWrap">Total Pending Complaints:<b id="adminStatCompPending">00</b></span>
+    </div>
+
+    <div class="admin-profile">
+      <span class="admin-profile-item">Name &#8594;| <b id="adminProfName">-</b></span>
+      <span class="admin-profile-item">Nationality &#8594;| <b id="adminProfNationality">-</b></span>
+      <span class="admin-profile-item">MOBILE &#8594;| <b id="adminProfMobile">-</b><a class="admin-wa-link hidden" id="adminProfWhatsApp" href="#" target="_blank">&#128241;</a></span>
+      <span class="admin-profile-item">DESIGNATION &#8594;| <b id="adminProfDesignation">-</b></span>
+      <span class="admin-profile-item">CURRENT STATUS &#8594;| <b id="adminProfStatus">-</b></span>
+      <span class="admin-profile-item">Joining Date&#8594;| <b id="adminProfJoining">-</b></span>
+      <span class="admin-profile-item">LWD Date&#8594;| <b id="adminProfLWD">-</b></span>
+    </div>
+
+    <div class="admin-tabsrow">
+      <button class="admin-tab" id="adminTab_requests" onclick="adminSetTab('requests')">Requests</button>
+      <button class="admin-tab" id="adminTab_complaints" onclick="adminSetTab('complaints')">Complaints</button>
+      <button class="admin-tab" id="adminTab_all" onclick="adminSetTab('all')">All</button>
+      <span>Date From <input type="date" id="adminDateFrom" onchange="renderAdminTable()"></span>
+      <span>To Date <input type="date" id="adminDateTo" onchange="renderAdminTable()"></span>
+      <button class="admin-action-btn" onclick="adminSaveChangesPlaceholder()">Save Changes</button>
+      <button class="admin-action-btn" onclick="adminExportPlaceholder()">Export Data</button>
+      <button class="admin-action-btn" onclick="alert('WhatsApp bhejna agla update mein aayega.')">Send Data By WhatsApp</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Employee ID</th><th>Category</th><th>Date</th><th>Reason</th><th>Description</th>
+            <th>Against Name</th><th>Date Submitted</th><th>Status</th><th>Assigned To</th>
+            <th>Date Resolved</th><th>Attachment Link</th>
+          </tr>
+        </thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+      <div id="adminTableEmpty">No records found.</div>
+    </div>
+
+    <div class="admin-footer">
+      <div class="admin-logo">M3<span>AR PRESENTS</span></div>
+      <img src="bus.png" alt="">
+    </div>
+
+  </div>
 </div>
 
 <div class="card hidden" id="typeMenuBox">
@@ -545,10 +710,13 @@ var allBoxIds = ['splash','loginBox','contactBox','langBox','homeBox','typeMenuB
 'requestCategoryBox','routeShiftFormBox','menameFormBox','absenceFormBox','iqamaFormBox','accommodationFormBox',
 'fingerprintFormBox','emergencyFormBox','vacationFormBox','contractFormBox','medicalFormBox','salaryReviewFormBox',
 'salarySlipFormBox','familyVisitFormBox','uniformFormBox','performanceFormBox','ticketFormBox','exitReentryFormBox',
-'furtherFormBox','myRecordsBox','allComplaintsBox'];
+'furtherFormBox','myRecordsBox','allComplaintsBox','adminDashBox'];
 
 // Screens where the floating Back button should NOT show
-var noBackScreens = ['splash','loginBox','homeBox'];
+var noBackScreens = ['splash','loginBox','homeBox','adminDashBox'];
+
+// Only this one Employee ID may open "Change Authority" (matches Code.gs's SUPER_ADMIN_OWNER_ID)
+var SUPER_ADMIN_OWNER_ID = '114101372';
 // Each screen's "parent" screen, used when the browser/hardware Back is pressed with no history state
 var parentOf = {
   contactBox: 'loginBox', langBox: 'homeBox', typeMenuBox: 'homeBox',
@@ -1125,13 +1293,18 @@ window.addEventListener('load', function() {
       hideAllRaw();
       if (session && session.empId) {
         currentUser = session;
-        applyLanguage();
-        document.getElementById('gearBtn').classList.remove('hidden');
-        document.getElementById('homeBox').classList.remove('hidden');
-        document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
-        buildMenu(currentUser.role);
-        currentScreenId = 'homeBox';
-        history.replaceState({ screen: 'homeBox' }, '', '#homeBox');
+        if (currentUser.role === 'Driver') {
+          applyLanguage();
+          document.getElementById('gearBtn').classList.remove('hidden');
+          document.getElementById('homeBox').classList.remove('hidden');
+          document.getElementById('welcomeText').innerText = t('welcomePrefix') + currentUser.name + " (" + currentUser.role + ")";
+          buildMenu(currentUser.role);
+          currentScreenId = 'homeBox';
+          history.replaceState({ screen: 'homeBox' }, '', '#homeBox');
+        } else {
+          initAdminDashboard(false);
+          history.replaceState({ screen: 'adminDashBox' }, '', '#adminDashBox');
+        }
       } else {
         document.getElementById('loginBox').classList.remove('hidden');
         currentScreenId = 'loginBox';
@@ -1148,7 +1321,12 @@ function login() {
   callAPI('checkLogin', { empId: empId, password: pass }).then(function(result) {
     if (result.success) {
       currentUser = result;
-      goToScreen('langBox');
+      if (currentUser.role === 'Driver') {
+        goToScreen('langBox');
+      } else {
+        saveSession();
+        initAdminDashboard();
+      }
     } else {
       document.getElementById('msg').innerText = "Invalid Employee ID or Password";
     }
@@ -1177,6 +1355,199 @@ function buildMenu(role) {
     menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'' + t('manageUsersSoon') + '\')">' + t('manageUsersBtn') + '</button>';
   }
 }
+
+// ===================== ADMIN / SUPER ADMIN / SUPER USER DASHBOARD =====================
+var adminAllData = [];         // combined Complaints + Requests, refreshed from the sheet on load/search
+var adminCurrentTab = 'all';   // 'requests' | 'complaints' | 'all'
+
+function esc(v) {
+  if (v === undefined || v === null) return '';
+  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmtAdminDate(v) {
+  if (!v) return '';
+  var d = new Date(v);
+  if (isNaN(d.getTime())) return String(v);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return String(d.getDate()).padStart(2,'0') + '-' + months[d.getMonth()] + '-' + d.getFullYear();
+}
+
+// push === false is used on session-restore (page reload) so we don't add an extra history entry.
+function initAdminDashboard(push) {
+  goToScreen('adminDashBox', push !== false);
+  var isOwner = String(currentUser.empId) === SUPER_ADMIN_OWNER_ID;
+  document.getElementById('adminAuthorityMenuItem').innerText = isOwner ? 'Change Authority' : 'Request to Admin for Authority';
+
+  if (currentUser.role === 'Super User') {
+    // Super User only ever sees Requests - hide the Complaints/All tabs and the complaint stat tiles.
+    document.getElementById('adminTab_complaints').classList.add('hidden');
+    document.getElementById('adminTab_all').classList.add('hidden');
+    document.getElementById('adminStatCompWrap').classList.add('hidden');
+    document.getElementById('adminStatCompPendingWrap').classList.add('hidden');
+    adminCurrentTab = 'requests';
+  } else {
+    adminCurrentTab = 'all';
+  }
+  document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.remove('active'); });
+  var activeTabBtn = document.getElementById('adminTab_' + adminCurrentTab);
+  if (activeTabBtn) activeTabBtn.classList.add('active');
+
+  document.getElementById('adminSearchInput').value = '';
+  document.getElementById('adminDateFrom').value = '';
+  document.getElementById('adminDateTo').value = '';
+  loadAdminData();
+}
+
+function loadAdminData() {
+  var complaintsPromise = (currentUser.role === 'Super User') ? Promise.resolve([]) : callAPI('getAllComplaints', {});
+  Promise.all([complaintsPromise, callAPI('getAllRequests', {})]).then(function(res) {
+    var complaints = res[0] || [];
+    var requests = res[1] || [];
+    adminAllData = complaints.concat(requests);
+    renderAdminTable();
+  }).catch(function() {
+    adminAllData = [];
+    renderAdminTable();
+  });
+}
+
+function getAdminFilteredData() {
+  var list = adminAllData.slice();
+  if (adminCurrentTab === 'requests') { list = list.filter(function(r){ return r.recordType === 'request'; }); }
+  else if (adminCurrentTab === 'complaints') { list = list.filter(function(r){ return r.recordType === 'complaint'; }); }
+
+  var q = (document.getElementById('adminSearchInput').value || '').trim();
+  if (q) { list = list.filter(function(r){ return String(r.empId) === q; }); }
+
+  var from = document.getElementById('adminDateFrom').value;
+  var to = document.getElementById('adminDateTo').value;
+  if (from || to) {
+    list = list.filter(function(r) {
+      var dRaw = r.recordType === 'request' ? r.date1 : r.date;
+      if (!dRaw) return false;
+      var dd = new Date(dRaw);
+      if (isNaN(dd.getTime())) return false;
+      if (from && dd < new Date(from)) return false;
+      if (to && dd > new Date(to)) return false;
+      return true;
+    });
+  }
+  list.sort(function(a, b) {
+    var da = new Date((a.recordType === 'request' ? a.date1 : a.date) || a.dateSubmitted || 0);
+    var db = new Date((b.recordType === 'request' ? b.date1 : b.date) || b.dateSubmitted || 0);
+    return db - da;
+  });
+  return list;
+}
+
+function computeAdminStats(list) {
+  var totalReq = 0, pendingReq = 0, totalComp = 0, pendingComp = 0;
+  list.forEach(function(r) {
+    if (r.recordType === 'request') {
+      totalReq++;
+      if (r.status !== 'Resolved') pendingReq++;
+    } else {
+      totalComp++;
+      if (r.status !== 'Resolved') pendingComp++;
+    }
+  });
+  document.getElementById('adminStatReq').innerText = totalReq;
+  document.getElementById('adminStatReqPending').innerText = pendingReq;
+  document.getElementById('adminStatComp').innerText = totalComp;
+  document.getElementById('adminStatCompPending').innerText = pendingComp;
+}
+
+function renderAdminTable() {
+  var list = getAdminFilteredData();
+  computeAdminStats(list);
+  var tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = '';
+  list.forEach(function(r) {
+    var dateVal = r.recordType === 'request' ? r.date1 : r.date;
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + esc(r.empId) + '</td>' +
+      '<td>' + esc(r.category) + '</td>' +
+      '<td>' + esc(fmtAdminDate(dateVal)) + '</td>' +
+      '<td>' + esc(r.reason) + '</td>' +
+      '<td>' + esc(r.description) + '</td>' +
+      '<td>' + (r.recordType === 'complaint' ? esc(r.againstName) : '') + '</td>' +
+      '<td>' + esc(fmtAdminDate(r.dateSubmitted)) + '</td>' +
+      '<td>' + esc(r.status) + '</td>' +
+      '<td>' + esc(r.assignedTo) + '</td>' +
+      '<td>' + esc(fmtAdminDate(r.dateResolved)) + '</td>' +
+      '<td>' + (r.attachmentLink ? '<a href="' + esc(r.attachmentLink) + '" target="_blank" rel="noopener">View</a>' : '') + '</td>';
+    tr.addEventListener('click', function(e) {
+      if (e.target && e.target.tagName === 'A') return; // let the attachment link open normally
+      adminLoadProfile(r.empId);
+    });
+    tbody.appendChild(tr);
+  });
+  document.getElementById('adminTableEmpty').classList.toggle('hidden', list.length > 0);
+}
+
+function adminSetTab(tab) {
+  adminCurrentTab = tab;
+  document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('adminTab_' + tab);
+  if (btn) btn.classList.add('active');
+  renderAdminTable();
+}
+
+function adminSearch() {
+  var q = (document.getElementById('adminSearchInput').value || '').trim();
+  renderAdminTable();
+  if (q) { adminLoadProfile(q); }
+}
+
+function adminLoadProfile(empId) {
+  callAPI('getDriverProfile', { empId: empId }).then(function(res) {
+    var waLink = document.getElementById('adminProfWhatsApp');
+    if (res && res.success) {
+      document.getElementById('adminProfName').innerText = res.name || '-';
+      document.getElementById('adminProfNationality').innerText = res.nationality || '-';
+      document.getElementById('adminProfMobile').innerText = res.mobile || '-';
+      document.getElementById('adminProfDesignation').innerText = res.designation || '-';
+      document.getElementById('adminProfStatus').innerText = res.currentStatus || '-';
+      document.getElementById('adminProfJoining').innerText = fmtAdminDate(res.joiningDate) || '-';
+      document.getElementById('adminProfLWD').innerText = fmtAdminDate(res.lwdDate) || '-';
+      var digits = (res.mobile || '').replace(/[^0-9]/g, '');
+      if (digits) { waLink.href = 'https://wa.me/' + digits; waLink.classList.remove('hidden'); }
+      else { waLink.classList.add('hidden'); }
+    } else {
+      ['adminProfName','adminProfNationality','adminProfMobile','adminProfDesignation','adminProfStatus','adminProfJoining','adminProfLWD']
+        .forEach(function(id){ document.getElementById(id).innerText = '-'; });
+      waLink.classList.add('hidden');
+    }
+  });
+}
+
+function toggleAdminMenu() { document.getElementById('adminMenu').classList.toggle('hidden'); }
+
+function adminGoToDriverHome() {
+  document.getElementById('adminMenu').classList.add('hidden');
+  goToScreen('langBox');
+}
+
+function adminAuthorityClick() {
+  document.getElementById('adminMenu').classList.add('hidden');
+  if (String(currentUser.empId) === SUPER_ADMIN_OWNER_ID) {
+    alert('Change Authority screen is coming in the next update.');
+  } else {
+    alert('Request to Admin for Authority - coming in the next update.');
+  }
+}
+
+function adminLogoutClick() {
+  document.getElementById('adminMenu').classList.add('hidden');
+  currentUser = null; clearSession();
+  document.getElementById('empId').value = ""; document.getElementById('pass').value = "";
+  goToScreen('loginBox');
+}
+
+function adminSaveChangesPlaceholder() { alert('Editing and saving changes is coming in the next update.'); }
+function adminExportPlaceholder() { alert('Export to Excel is coming in the next update.'); }
+
 function toggleGearPanel() { document.getElementById('gearPanel').classList.toggle('hidden'); }
 document.getElementById('gearBtn').addEventListener('click', toggleGearPanel);
 document.getElementById('t_gearHome').addEventListener('click', function() {

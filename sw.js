@@ -1,11 +1,13 @@
-const CACHE_NAME = 'driver-connect-v2';
+const CACHE_NAME = 'driver-connect-v3';
 const urlsToCache = [
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './bus.png',
-  './admin-bg.jpg'
+  './admin-bg.jpg',
+  './admin-logo.png',
+  './admin-bus.png'
 ];
 
 self.addEventListener('install', function(event) {

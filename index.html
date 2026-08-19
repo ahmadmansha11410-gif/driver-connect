@@ -121,6 +121,91 @@
     width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; display: flex; align-items: center;
     justify-content: center; font-size: 17px; background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); color: white;
   }
+
+  /* ===================== MY RECORDS (Driver's own Complaints & Requests) ===================== */
+  #myRecordsBox {
+    position: fixed; inset: 0; z-index: 5; display: flex; flex-direction: column;
+    height: 100vh; height: 100dvh; text-align: left; animation: none;
+    background-image: linear-gradient(rgba(10,10,14,0.65), rgba(10,10,14,0.82)), url('admin-bg.jpg');
+    background-size: cover; background-position: center;
+  }
+  .rec-header {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    padding: 16px 70px; background: rgba(16,17,19,0.7); border-bottom: 2px solid var(--teal); min-height: 22px;
+  }
+  .rec-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: var(--text); text-align: center; }
+
+  .rec-kpi { flex-shrink: 0; display: flex; gap: 9px; padding: 12px 14px 8px; overflow-x: auto; }
+  .rec-kpi-chip {
+    flex-shrink: 0; min-width: 96px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 13px; padding: 8px 12px; cursor: pointer;
+  }
+  .rec-kpi-chip:first-child, .rec-kpi-chip:nth-child(3) { background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); border: none; }
+  .rec-kpi-chip .num { font-size: 17px; font-weight: 800; color: var(--text); }
+  .rec-kpi-chip:first-child .num, .rec-kpi-chip:nth-child(3) .num { color: white; }
+  .rec-kpi-chip .lbl { font-size: 9.5px; color: var(--gray); margin-top: 2px; }
+  .rec-kpi-chip:first-child .lbl, .rec-kpi-chip:nth-child(3) .lbl { color: rgba(255,255,255,0.85); }
+
+  .rec-filters { flex-shrink: 0; position: relative; display: flex; align-items: center; gap: 8px; padding: 0 14px 12px; }
+  .rec-tab {
+    width: auto; margin: 0; padding: 6px 13px; font-size: 11px; font-weight: 700; border-radius: 16px;
+    border: 1px solid var(--maroon); color: var(--maroon); background: transparent; box-shadow: none;
+  }
+  .rec-tab.active { background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); color: white; border: none; }
+  .rec-datebtn {
+    margin-left: auto; width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; flex-shrink: 0;
+  }
+  .rec-datepanel {
+    position: absolute; top: calc(100% + 6px); right: 14px; z-index: 20; background: #2f3136;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 14px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 8px; min-width: 190px;
+  }
+  .rec-datepanel.hidden { display: none !important; }
+  .rec-datepanel label { font-size: 11.5px; color: var(--gray); display: flex; flex-direction: column; gap: 4px; }
+  .rec-datepanel input[type="date"] {
+    background: #34363c; border: 1px solid rgba(255,255,255,0.15); color: var(--text); border-radius: 8px;
+    padding: 6px 8px; font-size: 12.5px; margin: 0;
+  }
+  .rec-clear-btn {
+    width: auto; margin: 0; padding: 7px 14px; background: var(--maroon); color: white;
+    border-radius: 8px; font-size: 12px; font-weight: 700; box-shadow: none;
+  }
+
+  .rec-cards { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 14px 10px; display: flex; flex-direction: column; gap: 9px; }
+  .rec-card { background: rgba(24,25,28,0.85); border: 1px solid rgba(255,255,255,0.09); border-radius: 13px; overflow: hidden; }
+  .rec-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 13px; cursor: pointer; }
+  .rec-card-head .meta { font-size: 10px; color: var(--gray); }
+  .rec-card-head .msg { font-size: 13px; font-weight: 700; margin-top: 3px; line-height: 1.35; color: var(--text); }
+  .rec-card-head .r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .rec-badge { font-size: 9.5px; font-weight: 700; padding: 3px 9px; border-radius: 10px; background: rgba(179,70,140,0.28); color: #e28fc8; white-space: nowrap; }
+  .rec-badge.resolved { background: rgba(63,147,184,0.28); color: #7fd0ef; }
+  .rec-chev { font-size: 11px; color: var(--gray); transition: transform 0.15s; display: inline-block; }
+  .rec-card.open .rec-chev { transform: rotate(90deg); }
+  .rec-card-body {
+    display: none; padding: 0 13px 13px; border-top: 1px solid rgba(255,255,255,0.07);
+    margin-top: 2px; padding-top: 10px; font-size: 11.5px; color: var(--gray); line-height: 1.6;
+  }
+  .rec-card.open .rec-card-body { display: block; }
+  .rec-card-body .kv { margin-bottom: 5px; }
+  .rec-card-body .kv b { color: var(--text); }
+  .rec-card-body .kv a { color: #6fc3e0; }
+  .rec-delete {
+    margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700;
+    color: #ff8a8a; background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.3);
+    padding: 6px 12px; border-radius: 8px; cursor: pointer; width: auto;
+  }
+  .rec-delete:hover { background: rgba(255,107,107,0.2); }
+  #recCardsEmpty.hidden { display: none !important; }
+  #recCardsEmpty { text-align: center; padding: 30px 20px; color: var(--gray); font-size: 13px; }
+
+  .rec-footer {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: #101113;
+  }
+  .rec-footer img.logo { height: 24px; width: auto; opacity: 0.95; }
+  .rec-footer img.bus { width: 100px; max-width: 34vw; height: auto; opacity: 0.95; }
+
   .checkbox-row { text-align: left; font-size: 14.5px; margin: 10px 0; }
   .checkbox-row input { width: auto; margin-right: 6px; }
   table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
@@ -945,9 +1030,37 @@
   <div class="msg" id="furFormMsg"></div>
 </div>
 
-<div class="card wide hidden" id="myRecordsBox">
-  <h2 style="color:var(--maroon);" id="t_myRecordsTitle"></h2>
-  <div id="myRecordsTable"></div>
+<div class="hidden" id="myRecordsBox">
+  <div class="rec-header">
+    <div class="rec-title" id="t_myRecordsTitle"></div>
+  </div>
+
+  <div class="rec-kpi">
+    <div class="rec-kpi-chip" onclick="recSetTab('requests')"><div class="num" id="recStatReq">00</div><div class="lbl">Total Requests</div></div>
+    <div class="rec-kpi-chip" onclick="recSetTab('requests')"><div class="num" id="recStatReqPending">00</div><div class="lbl">Pending Requests</div></div>
+    <div class="rec-kpi-chip" onclick="recSetTab('complaints')"><div class="num" id="recStatComp">00</div><div class="lbl">Total Complaints</div></div>
+    <div class="rec-kpi-chip" onclick="recSetTab('complaints')"><div class="num" id="recStatCompPending">00</div><div class="lbl">Pending Complaints</div></div>
+  </div>
+
+  <div class="rec-filters">
+    <button class="rec-tab active" id="recTab_all" onclick="recSetTab('all')">All</button>
+    <button class="rec-tab" id="recTab_requests" onclick="recSetTab('requests')">Requests</button>
+    <button class="rec-tab" id="recTab_complaints" onclick="recSetTab('complaints')">Complaints</button>
+    <span class="rec-datebtn" onclick="recToggleDatePanel()">&#128197;</span>
+    <div class="rec-datepanel hidden" id="recDatePanel">
+      <label>Date From <input type="date" id="recDateFrom" onchange="recOnDateChange()"></label>
+      <label>To Date <input type="date" id="recDateTo" onchange="recOnDateChange()"></label>
+      <button class="rec-clear-btn" onclick="recClearDates()">Clear Dates</button>
+    </div>
+  </div>
+
+  <div class="rec-cards" id="recCards"></div>
+  <div id="recCardsEmpty" class="hidden">No records found.</div>
+
+  <div class="rec-footer">
+    <img class="logo" src="admin-logo.png" alt="M3 AR Presents">
+    <img class="bus" src="admin-bus.png" alt="">
+  </div>
 </div>
 <div class="card wide hidden" id="allComplaintsBox">
   <h2 style="color:var(--maroon);" id="t_allComplaintsTitle"></h2>
@@ -960,6 +1073,12 @@ var currentUser = null;
 var selectedComplaintLabelKey = "";
 var currentScreenId = null;
 var formDirty = false;
+
+// ===================== MY RECORDS (Driver's own Complaints & Requests) =====================
+var recAllData = [];
+var recCurrentTab = 'all';
+var recDateFromVal = '';
+var recDateToVal = '';
 
 var allBoxIds = ['splash','loginBox','contactBox','langBox','homeBox','typeMenuBox','complaintCategoryBox','complaintFormBox',
 'requestCategoryBox','routeShiftFormBox','menameFormBox','absenceFormBox','iqamaFormBox','accommodationFormBox',
@@ -2301,22 +2420,150 @@ function submitFurther() {
 
 function showMyRecords() {
   goToScreen('myRecordsBox');
-  document.getElementById('myRecordsTable').innerText = t('checking');
+  recCurrentTab = 'all';
+  recDateFromVal = ''; recDateToVal = '';
+  document.querySelectorAll('.rec-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('recTab_all').classList.add('active');
+  document.getElementById('recDateFrom').value = '';
+  document.getElementById('recDateTo').value = '';
+  document.getElementById('recDatePanel').classList.add('hidden');
+  document.getElementById('recCards').innerHTML = '';
+  document.getElementById('recCardsEmpty').classList.add('hidden');
+  recLoadData();
+}
+
+function recLoadData() {
   Promise.all([
     callAPI('getMyComplaints', { empId: currentUser.empId }),
     callAPI('getMyRequests', { empId: currentUser.empId })
   ]).then(function(results) {
     var complaints = results[0] || [];
     var requests = results[1] || [];
-    var combined = [];
-    complaints.forEach(function(c){ combined.push({ id: c.id, type: "Complaint", category: c.category, status: c.status }); });
-    requests.forEach(function(r){ combined.push({ id: r.id, type: "Request", category: r.category, status: r.status }); });
-    if (combined.length === 0) { document.getElementById('myRecordsTable').innerText = t('noRecords'); return; }
-    var html = "<table><tr><th>"+t('colId')+"</th><th>"+t('colType')+"</th><th>"+t('colCategory')+"</th><th>"+t('colStatus')+"</th></tr>";
-    combined.forEach(function(c){ html += "<tr><td>"+c.id+"</td><td>"+c.type+"</td><td>"+c.category+"</td><td class='status-"+c.status+"'>"+c.status+"</td></tr>"; });
-    html += "</table>";
-    document.getElementById('myRecordsTable').innerHTML = html;
-  }).catch(function(){ document.getElementById('myRecordsTable').innerText = "Connection error."; });
+    recAllData = complaints.concat(requests);
+    recRender();
+  }).catch(function() {
+    recAllData = [];
+    recRender();
+  });
+}
+
+function recGetFiltered() {
+  var list = recAllData.slice();
+  if (recCurrentTab === 'requests') { list = list.filter(function(r){ return r.recordType === 'request'; }); }
+  else if (recCurrentTab === 'complaints') { list = list.filter(function(r){ return r.recordType === 'complaint'; }); }
+
+  var from = recDateFromVal, to = recDateToVal;
+  if (from || to) {
+    list = list.filter(function(r) {
+      var dRaw = r.recordType === 'request' ? r.date1 : r.date;
+      if (!dRaw) return false;
+      var dd = new Date(dRaw);
+      if (isNaN(dd.getTime())) return false;
+      if (from && dd < new Date(from)) return false;
+      if (to && dd > new Date(to)) return false;
+      return true;
+    });
+  }
+  list.sort(function(a, b) {
+    var da = new Date((a.recordType === 'request' ? a.date1 : a.date) || a.dateSubmitted || 0);
+    var db = new Date((b.recordType === 'request' ? b.date1 : b.date) || b.dateSubmitted || 0);
+    return db - da;
+  });
+  return list;
+}
+
+function recComputeStats(list) {
+  var totalReq = 0, pendingReq = 0, totalComp = 0, pendingComp = 0;
+  list.forEach(function(r) {
+    if (r.recordType === 'request') { totalReq++; if (r.status !== 'Resolved') pendingReq++; }
+    else { totalComp++; if (r.status !== 'Resolved') pendingComp++; }
+  });
+  document.getElementById('recStatReq').innerText = totalReq;
+  document.getElementById('recStatReqPending').innerText = pendingReq;
+  document.getElementById('recStatComp').innerText = totalComp;
+  document.getElementById('recStatCompPending').innerText = pendingComp;
+}
+
+// Renders each record as a professional-sounding one-line summary (no ID shown) that
+// expands, tap-to-toggle, into full details - Description, Against, Assigned To, dates,
+// attachment, and a Delete option so a driver can remove their own submitted entry.
+function recRender() {
+  var list = recGetFiltered();
+  recComputeStats(list);
+  var wrap = document.getElementById('recCards');
+  wrap.innerHTML = '';
+  list.forEach(function(r) {
+    var dateVal = r.recordType === 'request' ? r.date1 : r.date;
+    var typeLabel = r.recordType === 'complaint' ? 'Complaint' : 'Request';
+    var card = document.createElement('div');
+    card.className = 'rec-card';
+    var badgeClass = (r.status === 'Resolved') ? 'rec-badge resolved' : 'rec-badge';
+    var msgText = r.reason ? esc(r.reason) : (r.category ? esc(r.category) : '(No details given)');
+
+    var bodyRows = '';
+    bodyRows += '<div class="kv"><b>Description:</b> ' + (esc(r.description) || '&mdash;') + '</div>';
+    if (r.recordType === 'complaint') { bodyRows += '<div class="kv"><b>Against:</b> ' + (esc(r.againstName) || '&mdash;') + '</div>'; }
+    bodyRows += '<div class="kv"><b>Assigned To:</b> ' + (esc(r.assignedTo) || '&mdash;') + '</div>';
+    bodyRows += '<div class="kv"><b>Date Submitted:</b> ' + (esc(fmtAdminDate(r.dateSubmitted)) || '&mdash;') + '</div>';
+    bodyRows += '<div class="kv"><b>Date Resolved:</b> ' + (esc(fmtAdminDate(r.dateResolved)) || '&mdash;') + '</div>';
+    if (r.attachmentLink) { bodyRows += '<div class="kv"><b>Attachment:</b> <a href="' + esc(r.attachmentLink) + '" target="_blank" rel="noopener">View</a></div>'; }
+    bodyRows += '<div class="rec-delete">&#128465; Delete This ' + typeLabel + '</div>';
+
+    card.innerHTML =
+      '<div class="rec-card-head">' +
+        '<div><div class="meta">' + typeLabel + ' &middot; ' + esc(fmtAdminDate(dateVal)) + '</div>' +
+        '<div class="msg">' + msgText + '</div></div>' +
+        '<div class="r"><span class="' + badgeClass + '">' + (esc(r.status) || 'Pending') + '</span><span class="rec-chev">&#9656;</span></div>' +
+      '</div>' +
+      '<div class="rec-card-body">' + bodyRows + '</div>';
+
+    card.querySelector('.rec-card-head').addEventListener('click', function() {
+      card.classList.toggle('open');
+    });
+    card.querySelector('.rec-delete').addEventListener('click', function(e) {
+      e.stopPropagation();
+      recDeleteRecord(r.recordType, r.id);
+    });
+    wrap.appendChild(card);
+  });
+  document.getElementById('recCardsEmpty').classList.toggle('hidden', list.length > 0);
+}
+
+function recSetTab(tab) {
+  recCurrentTab = tab;
+  document.querySelectorAll('.rec-tab').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('recTab_' + tab);
+  if (btn) btn.classList.add('active');
+  recRender();
+}
+
+function recToggleDatePanel() {
+  document.getElementById('recDatePanel').classList.toggle('hidden');
+}
+function recOnDateChange() {
+  recDateFromVal = document.getElementById('recDateFrom').value;
+  recDateToVal = document.getElementById('recDateTo').value;
+  recRender();
+}
+function recClearDates() {
+  recDateFromVal = ''; recDateToVal = '';
+  document.getElementById('recDateFrom').value = '';
+  document.getElementById('recDateTo').value = '';
+  recRender();
+}
+
+// Driver self-service delete - only ever removes the driver's own record (the backend
+// double-checks ownership by empId too, so this can't be used to delete anyone else's).
+function recDeleteRecord(type, id) {
+  if (!confirm('Kya aap wakai is ' + (type === 'complaint' ? 'complaint' : 'request') + ' ko delete karna chahte hain? Ye wapis nahi ho sakega.')) return;
+  callAPI('deleteMyRecord', { type: type, id: id, empId: currentUser.empId }).then(function(res) {
+    if (res && res.success) {
+      recAllData = recAllData.filter(function(r){ return !(String(r.id) === String(id) && r.recordType === type); });
+      recRender();
+    } else {
+      alert((res && res.error) || 'Delete failed. Please try again.');
+    }
+  }).catch(function(){ alert('Connection error. Please try again.'); });
 }
 
 function showAllComplaints() {

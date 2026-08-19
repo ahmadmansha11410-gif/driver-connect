@@ -41,6 +41,8 @@
   h1, h2, h3 { font-family: 'Poppins', 'Inter', sans-serif; margin: 0 0 6px; }
   @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
   .card {
+    position: relative;
+    z-index: 2;
     background: rgba(24,25,28,0.72);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
@@ -106,6 +108,19 @@
   .field-label { text-align: left; font-size: 12.5px; color: var(--gray); margin-top: 8px; margin-bottom: -2px; font-weight: 500; }
   .welcome { color: var(--maroon); font-size: 15px; margin-bottom: 18px; font-weight: 500; }
   .menu-btn { background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); }
+  .menu-list { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+  .menu-row-btn {
+    display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px;
+    padding: 13px 15px; margin: 0; box-shadow: none; cursor: pointer; color: var(--text);
+    font-weight: 600; font-size: 14.5px;
+  }
+  .menu-row-btn:hover { background: rgba(255,255,255,0.09); }
+  .menu-row-btn:active { transform: scale(0.98); }
+  .menu-row-icon {
+    width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 17px; background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)); color: white;
+  }
   .checkbox-row { text-align: left; font-size: 14.5px; margin: 10px 0; }
   .checkbox-row input { width: auto; margin-right: 6px; }
   table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
@@ -177,7 +192,7 @@
   }
   #adminDashBox {
     display: flex; flex-direction: column; position: relative; width: 100%; max-width: 100%;
-    height: 100vh; margin: 0; padding: 0; border-radius: 0; box-shadow: none; overflow: hidden;
+    height: 100vh; height: 100dvh; margin: 0; padding: 0; border-radius: 0; box-shadow: none; overflow: hidden;
     background: #101113; color: var(--adm-text); text-align: left; animation: none;
     font-family: 'Inter', Arial, sans-serif;
   }
@@ -380,14 +395,28 @@
   }
 
   @media (max-width: 640px) {
-    #adminDashBox { height: 100vh; overflow: hidden; }
+    #adminDashBox { height: 100vh; height: 100dvh; overflow: hidden; }
     .admin-content { display: none !important; }
     .admin-mobile-ui { display: flex; flex-direction: column; position: relative; height: 100%; z-index: 1; }
     .admin-menu { top: 58px; }
   }
+
+  /* Decorative bus (with its natural shadow/reflection) fixed low on the driver-facing screens.
+     Sits behind the cards in stacking order (placed first in the DOM) - the Admin Dashboard,
+     which comes later in the DOM and is fully opaque, naturally covers it when it's on screen. */
+  #driverBusDecor {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none;
+    display: flex; justify-content: flex-end; padding: 0 14px 12px;
+  }
+  #driverBusDecor img {
+    width: 190px; max-width: 46vw; height: auto; opacity: 0.92;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.55));
+  }
 </style>
 </head>
 <body>
+
+<div id="driverBusDecor"><img src="admin-bus.png" alt=""></div>
 
 <div id="splash" class="card">
   <img src="icon-192.png" alt="Driver Connect">
@@ -946,8 +975,8 @@ var SUPER_ADMIN_OWNER_ID = '114101372';
 // Each screen's "parent" screen, used when the browser/hardware Back is pressed with no history state
 var parentOf = {
   contactBox: 'loginBox', langBox: 'homeBox', typeMenuBox: 'homeBox',
-  complaintCategoryBox: 'typeMenuBox', complaintFormBox: 'complaintCategoryBox',
-  requestCategoryBox: 'typeMenuBox',
+  complaintCategoryBox: 'homeBox', complaintFormBox: 'complaintCategoryBox',
+  requestCategoryBox: 'homeBox',
   routeShiftFormBox: 'requestCategoryBox', menameFormBox: 'requestCategoryBox', absenceFormBox: 'requestCategoryBox',
   iqamaFormBox: 'requestCategoryBox', accommodationFormBox: 'requestCategoryBox', fingerprintFormBox: 'requestCategoryBox',
   emergencyFormBox: 'requestCategoryBox', vacationFormBox: 'requestCategoryBox', contractFormBox: 'requestCategoryBox',
@@ -961,7 +990,8 @@ var translations = {
   English: {
     gearHome:"Home", gearLanguage:"Change Language", gearLogout:"Logout",
     forgotBtn:"Forgot Password?", forgotTitle:"Forgot Password?", forgotDesc:"Please contact the admin to reset your password:",
-    welcomePrefix:"Welcome, ", complaintRequestBtn:"Complaint/Request", trackComplaintsBtn:"Track My Complaints & Requests",
+    welcomePrefix:"Welcome, ", complaintRequestBtn:"Complaint/Request", trackComplaintsBtn:"My Records",
+    fileComplaintBtn:"File a Complaint", submitRequestBtn:"Submit a Request",
     viewAllBtn:"View All Complaints", manageUsersBtn:"Manage Users", manageUsersSoon:"Coming soon", viewDeptBtn:"View Department Complaints",
     typeTitle:"Complaint or Request?", complaintBtn:"Complaint", requestBtn:"Request", categoryTitle:"Select Complaint Category",
     catListener:"Listener Team's Complaint", catTeamLeader:"Team Leader's Complaint",
@@ -1020,7 +1050,8 @@ var translations = {
   Urdu: {
     gearHome:"ہوم", gearLanguage:"زبان تبدیل کریں", gearLogout:"لاگ آؤٹ",
     forgotBtn:"پاسورڈ بھول گئے؟", forgotTitle:"پاسورڈ بھول گئے؟", forgotDesc:"براہ کرم پاسورڈ ری سیٹ کے لیے ایڈمن سے رابطہ کریں:",
-    welcomePrefix:"خوش آمدید، ", complaintRequestBtn:"شکایت/درخواست", trackComplaintsBtn:"میری شکایات اور درخواستیں دیکھیں",
+    welcomePrefix:"خوش آمدید، ", complaintRequestBtn:"شکایت/درخواست", trackComplaintsBtn:"میرے ریکارڈز",
+    fileComplaintBtn:"شکایت درج کریں", submitRequestBtn:"درخواست جمع کروائیں",
     viewAllBtn:"تمام شکایات دیکھیں", manageUsersBtn:"یوزرز کا انتظام", manageUsersSoon:"جلد آئے گا", viewDeptBtn:"ڈیپارٹمنٹ کی شکایات دیکھیں",
     typeTitle:"شکایت یا درخواست؟", complaintBtn:"شکایت", requestBtn:"درخواست", categoryTitle:"شکایت کی قسم منتخب کریں",
     catListener:"لسنر ٹیم کی شکایت", catTeamLeader:"ٹیم لیڈر کی شکایت",
@@ -1079,7 +1110,8 @@ var translations = {
   Arabic: {
     gearHome:"الرئيسية", gearLanguage:"تغيير اللغة", gearLogout:"تسجيل الخروج",
     forgotBtn:"نسيت كلمة المرور؟", forgotTitle:"نسيت كلمة المرور؟", forgotDesc:"يرجى التواصل مع المسؤول لإعادة تعيين كلمة المرور:",
-    welcomePrefix:"مرحباً، ", complaintRequestBtn:"شكوى/طلب", trackComplaintsBtn:"متابعة شكاواي وطلباتي",
+    welcomePrefix:"مرحباً، ", complaintRequestBtn:"شكوى/طلب", trackComplaintsBtn:"سجلاتي",
+    fileComplaintBtn:"تقديم شكوى", submitRequestBtn:"تقديم طلب",
     viewAllBtn:"عرض جميع الشكاوى", manageUsersBtn:"إدارة المستخدمين", manageUsersSoon:"قريباً", viewDeptBtn:"عرض شكاوى القسم",
     typeTitle:"شكوى أم طلب؟", complaintBtn:"شكوى", requestBtn:"طلب", categoryTitle:"اختر نوع الشكوى",
     catListener:"شكوى فريق المستمعين", catTeamLeader:"شكوى قائد الفريق",
@@ -1138,7 +1170,8 @@ var translations = {
   Hindi: {
     gearHome:"होम", gearLanguage:"भाषा बदलें", gearLogout:"लॉग आउट",
     forgotBtn:"पासवर्ड भूल गए?", forgotTitle:"पासवर्ड भूल गए?", forgotDesc:"कृपया पासवर्ड रीसेट के लिए एडमिन से संपर्क करें:",
-    welcomePrefix:"स्वागत है, ", complaintRequestBtn:"शिकायत/अनुरोध", trackComplaintsBtn:"मेरी शिकायतें और अनुरोध देखें",
+    welcomePrefix:"स्वागत है, ", complaintRequestBtn:"शिकायत/अनुरोध", trackComplaintsBtn:"मेरे रिकॉर्ड",
+    fileComplaintBtn:"शिकायत दर्ज करें", submitRequestBtn:"अनुरोध सबमिट करें",
     viewAllBtn:"सभी शिकायतें देखें", manageUsersBtn:"यूज़र प्रबंधन", manageUsersSoon:"जल्द आ रहा है", viewDeptBtn:"विभाग की शिकायतें देखें",
     typeTitle:"शिकायत या अनुरोध?", complaintBtn:"शिकायत", requestBtn:"अनुरोध", categoryTitle:"शिकायत की श्रेणी चुनें",
     catListener:"लिसनर टीम की शिकायत", catTeamLeader:"टीम लीडर की शिकायत",
@@ -1197,7 +1230,8 @@ var translations = {
   Indonesian: {
     gearHome:"Beranda", gearLanguage:"Ubah Bahasa", gearLogout:"Keluar",
     forgotBtn:"Lupa Password?", forgotTitle:"Lupa Password?", forgotDesc:"Silakan hubungi admin untuk mereset password Anda:",
-    welcomePrefix:"Selamat datang, ", complaintRequestBtn:"Keluhan/Permintaan", trackComplaintsBtn:"Lacak Keluhan & Permintaan Saya",
+    welcomePrefix:"Selamat datang, ", complaintRequestBtn:"Keluhan/Permintaan", trackComplaintsBtn:"Catatan Saya",
+    fileComplaintBtn:"Ajukan Keluhan", submitRequestBtn:"Ajukan Permintaan",
     viewAllBtn:"Lihat Semua Keluhan", manageUsersBtn:"Kelola Pengguna", manageUsersSoon:"Segera hadir", viewDeptBtn:"Lihat Keluhan Departemen",
     typeTitle:"Keluhan atau Permintaan?", complaintBtn:"Keluhan", requestBtn:"Permintaan", categoryTitle:"Pilih Kategori Keluhan",
     catListener:"Keluhan Tim Pendengar", catTeamLeader:"Keluhan Team Leader",
@@ -1574,8 +1608,12 @@ function buildMenu(role) {
   var menu = document.getElementById('menuArea');
   menu.innerHTML = "";
   if (role === "Driver") {
-    menu.innerHTML += '<button class="menu-btn" onclick="showTypeMenu()">' + t('complaintRequestBtn') + '</button>';
-    menu.innerHTML += '<button class="menu-btn secondary" onclick="showMyRecords()">' + t('trackComplaintsBtn') + '</button>';
+    menu.innerHTML +=
+      '<div class="menu-list">' +
+      '<button class="menu-row-btn" onclick="showComplaintCategory()"><span class="menu-row-icon">&#9888;</span>' + t('fileComplaintBtn') + '</button>' +
+      '<button class="menu-row-btn" onclick="showRequestCategory()"><span class="menu-row-icon">&#128203;</span>' + t('submitRequestBtn') + '</button>' +
+      '<button class="menu-row-btn" onclick="showMyRecords()"><span class="menu-row-icon">&#128100;</span>' + t('trackComplaintsBtn') + '</button>' +
+      '</div>';
   } else {
     menu.innerHTML += '<button class="menu-btn" onclick="showAllComplaints()">' + t('viewAllBtn') + '</button>';
     menu.innerHTML += '<button class="menu-btn secondary" onclick="alert(\'' + t('manageUsersSoon') + '\')">' + t('manageUsersBtn') + '</button>';

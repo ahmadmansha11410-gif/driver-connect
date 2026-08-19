@@ -239,7 +239,7 @@
   }
   .admin-tabsrow .admin-action-btn:hover { background: var(--adm-accent-dark); }
 
-  .admin-table-wrap { flex: 1 1 auto; overflow: auto; padding: 0 16px 16px; }
+  .admin-table-wrap { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 0 16px 16px; }
   table.admin-table { width: 100%; min-width: 980px; border-collapse: collapse; font-size: 12.5px; background: var(--adm-panel); border-radius: 8px; }
   table.admin-table th { background: var(--adm-accent); color: white; padding: 9px 8px; text-align: left; font-weight: 700; white-space: nowrap; position: sticky; top: 0; z-index: 5; }
   table.admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--adm-text); white-space: nowrap; }
@@ -255,18 +255,121 @@
   .admin-footer img.admin-logo-img { height: 46px; width: auto; opacity: 0.97; }
   .admin-footer img.admin-bus-img { width: 210px; max-width: 42vw; height: auto; opacity: 0.97; }
 
+  /* ===================== MOBILE APP-STYLE DASHBOARD (shown only under 640px) ===================== */
+  .admin-mobile-ui { display: none; }
+  .admin-mob-header {
+    position: relative; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 12px 14px; background: var(--adm-dark); border-bottom: 2px solid var(--adm-line);
+  }
+  .admin-mob-brand { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: 1px; color: var(--adm-accent); font-size: 14px; }
+  .admin-mob-avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--adm-accent); color: white;
+    display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; flex-shrink: 0;
+  }
+  .admin-mob-profile-panel {
+    position: absolute; top: 100%; left: 12px; right: 12px; z-index: 55; margin-top: 6px;
+    background: #2f3136; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 4px 14px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  }
+  .admin-mob-profile-panel.hidden { display: none !important; }
+  .admin-mob-profile-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 8px 0; font-size: 12.5px; color: var(--adm-text-dim); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .admin-mob-profile-row:last-child { border-bottom: none; }
+  .admin-mob-profile-row b { color: var(--adm-text); font-weight: 700; }
+  .admin-mob-profile-row .admin-wa-link { text-decoration: none; font-size: 15px; margin-left: 6px; }
+
+  .admin-mob-kpi { flex-shrink: 0; display: flex; gap: 10px; padding: 12px 14px 10px; overflow-x: auto; }
+  .admin-mob-kpi-chip {
+    flex-shrink: 0; min-width: 108px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 9px 13px; cursor: pointer;
+  }
+  .admin-mob-kpi-chip:first-child { background: linear-gradient(135deg, var(--adm-accent), var(--adm-accent-dark)); border: none; }
+  .admin-mob-kpi-chip:first-child .num, .admin-mob-kpi-chip:first-child .lbl { color: white; }
+  .admin-mob-kpi-chip .num { font-size: 18px; font-weight: 800; color: var(--adm-text); }
+  .admin-mob-kpi-chip .lbl { font-size: 10px; color: var(--adm-text-dim); margin-top: 2px; }
+  .admin-mob-kpi-chip.hidden { display: none !important; }
+
+  .admin-mob-search { flex-shrink: 0; padding: 0 14px 10px; }
+
+  .admin-mob-filters { position: relative; flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 0 14px 12px; }
+  .admin-tab-m { padding: 6px 13px; font-size: 11.5px; }
+  .admin-mob-date-btn {
+    margin-left: auto; width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; flex-shrink: 0;
+  }
+  .admin-mob-datepanel {
+    position: absolute; top: calc(100% + 6px); right: 14px; z-index: 55; background: #2f3136;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 14px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 8px; min-width: 190px;
+  }
+  .admin-mob-datepanel.hidden { display: none !important; }
+  .admin-mob-datepanel label { font-size: 11.5px; color: var(--adm-text-dim); display: flex; flex-direction: column; gap: 4px; }
+  .admin-mob-datepanel input[type="date"] {
+    background: #34363c; border: 1px solid rgba(255,255,255,0.15); color: var(--adm-text); border-radius: 8px;
+    padding: 6px 8px; font-size: 12.5px;
+  }
+
+  .admin-mob-cards { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 14px 10px; display: flex; flex-direction: column; gap: 9px; }
+  .admin-mob-card { background: rgba(24,25,28,0.9); border: 1px solid rgba(255,255,255,0.08); border-radius: 13px; overflow: hidden; }
+  .admin-mob-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 13px; cursor: pointer; }
+  .admin-mob-card-head .l { min-width: 0; flex: 1; }
+  .admin-mob-card-head .l .emp { font-size: 10.5px; color: var(--adm-text-dim); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .admin-mob-card-head .l .title {
+    font-size: 13.5px; font-weight: 700; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .admin-mob-card-head .r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .admin-mob-badge {
+    font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 10px;
+    background: rgba(179,70,140,0.25); color: #e28fc8; white-space: nowrap;
+  }
+  .admin-mob-badge.resolved { background: rgba(63,147,184,0.25); color: #7fd0ef; }
+  .admin-mob-chev { font-size: 11px; color: var(--adm-text-dim); transition: transform 0.15s; display: inline-block; }
+  .admin-mob-card.open .admin-mob-chev { transform: rotate(90deg); }
+  .admin-mob-card-body {
+    display: none; padding: 0 13px 13px; font-size: 11.5px; color: var(--adm-text-dim);
+    line-height: 1.55; border-top: 1px solid rgba(255,255,255,0.07); margin-top: 2px; padding-top: 10px;
+  }
+  .admin-mob-card.open .admin-mob-card-body { display: block; }
+  .admin-mob-card-body .kv { margin-bottom: 5px; }
+  .admin-mob-card-body .kv b { color: var(--adm-text); font-weight: 700; }
+  .admin-mob-card-body .kv a { color: #6fc3e0; }
+  #adminCardsEmptyM { text-align: center; padding: 20px; color: var(--adm-text-dim); font-size: 13px; }
+  #adminCardsEmptyM.hidden { display: none !important; }
+
+  .admin-mob-footer-strip {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: #101113;
+  }
+  .admin-mob-footer-strip img.admin-logo-img-m { height: 24px; width: auto; opacity: 0.95; }
+  .admin-mob-footer-strip img.admin-bus-img-m { width: 100px; max-width: 34vw; height: auto; opacity: 0.95; }
+
+  .admin-mob-bottomnav {
+    flex-shrink: 0; height: 62px; background: rgba(16,17,19,0.98); border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: space-around; position: relative;
+  }
+  .admin-mob-navitem { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--adm-text-dim); font-size: 9.5px; font-weight: 600; cursor: pointer; }
+  .admin-mob-navitem .ic { font-size: 18px; }
+  .admin-mob-navitem.admin-mob-fab {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--adm-accent); color: white;
+    align-items: center; justify-content: center; margin-top: -24px; box-shadow: 0 4px 14px rgba(179,70,140,0.5);
+  }
+  .admin-mob-navitem.admin-mob-fab .ic { font-size: 19px; }
+
+  .admin-mob-speeddial { position: absolute; right: 16px; bottom: 76px; z-index: 55; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .admin-mob-speeddial.hidden { display: none !important; }
+  .admin-mob-mini {
+    width: 40px; height: 40px; border-radius: 50%; background: rgba(24,25,28,0.97);
+    border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  }
+
   @media (max-width: 640px) {
-    #adminDashBox { height: auto; overflow: visible; }
-    .admin-content { height: auto; overflow: visible; }
-    .admin-topbar { font-size: 13px; }
-    .admin-frozen-top { position: sticky; top: 0; z-index: 40; }
-    .admin-sticky2 { position: sticky; top: var(--admin-frozen-top-h, 95px); z-index: 35; background: rgba(16,17,19,0.98); }
-    .admin-table-wrap { flex: none; overflow-x: auto; overflow-y: visible; padding-bottom: 84px; }
-    table.admin-table th { top: 0; }
-    table.admin-table { min-width: 820px; font-size: 11.5px; }
-    .admin-footer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 8px 14px; }
-    .admin-footer img.admin-logo-img { height: 32px; }
-    .admin-footer img.admin-bus-img { width: 140px; }
+    #adminDashBox { height: 100vh; overflow: hidden; }
+    .admin-content { display: none !important; }
+    .admin-mobile-ui { display: flex; flex-direction: column; position: relative; height: 100%; z-index: 1; }
+    .admin-menu { top: 58px; }
   }
 </style>
 </head>
@@ -328,6 +431,14 @@
 <!-- ===================== ADMIN / SUPER ADMIN / SUPER USER DASHBOARD ===================== -->
 <div class="hidden" id="adminDashBox">
   <div class="admin-bgphoto"></div>
+
+  <div class="admin-menu hidden" id="adminMenu">
+    <div class="admin-menu-item" onclick="adminGoToDriverHome()">Home</div>
+    <div class="admin-menu-item" id="adminAuthorityMenuItem" onclick="adminAuthorityClick()">Change Authority</div>
+    <div class="admin-menu-item" onclick="adminLogoutClick()">Logout</div>
+  </div>
+
+  <!-- ============ DESKTOP / TABLET VIEW (unchanged) ============ -->
   <div class="admin-content">
 
     <div class="admin-frozen-top">
@@ -337,16 +448,11 @@
         <div class="admin-searchbar-wrap">
           <div class="admin-searchbar">
             <span class="admin-search-icon">&#128269;</span>
-            <input type="text" id="adminSearchInput" placeholder="" autocomplete="off" onkeydown="if(event.key==='Enter'){adminSearch();}" oninput="adminShowSuggestions()">
-            <button onclick="adminSearch()">&#9654;</button>
+            <input type="text" id="adminSearchInput" placeholder="" autocomplete="off" onkeydown="if(event.key==='Enter'){adminSearch('adminSearchInput');}" oninput="adminShowSuggestions('adminSearchInput','adminSuggest')">
+            <button onclick="adminSearch('adminSearchInput')">&#9654;</button>
           </div>
           <div class="admin-suggest hidden" id="adminSuggest"></div>
         </div>
-      </div>
-      <div class="admin-menu hidden" id="adminMenu">
-        <div class="admin-menu-item" onclick="adminGoToDriverHome()">Home</div>
-        <div class="admin-menu-item" id="adminAuthorityMenuItem" onclick="adminAuthorityClick()">Change Authority</div>
-        <div class="admin-menu-item" onclick="adminLogoutClick()">Logout</div>
       </div>
     </div>
 
@@ -372,8 +478,8 @@
         <button class="admin-tab" id="adminTab_requests" onclick="adminSetTab('requests')">Requests</button>
         <button class="admin-tab" id="adminTab_complaints" onclick="adminSetTab('complaints')">Complaints</button>
         <button class="admin-tab" id="adminTab_all" onclick="adminSetTab('all')">All</button>
-        <span>Date From <input type="date" id="adminDateFrom" onchange="renderAdminTable()"></span>
-        <span>To Date <input type="date" id="adminDateTo" onchange="renderAdminTable()"></span>
+        <span>Date From <input type="date" id="adminDateFrom" onchange="adminOnDateChange('d')"></span>
+        <span>To Date <input type="date" id="adminDateTo" onchange="adminOnDateChange('d')"></span>
         <button class="admin-action-btn" onclick="adminSaveChangesPlaceholder()">Save Changes</button>
         <button class="admin-action-btn" onclick="adminExportPlaceholder()">Export Data</button>
         <button class="admin-action-btn" onclick="alert('WhatsApp bhejna agla update mein aayega.')">Send Data By WhatsApp</button>
@@ -397,6 +503,80 @@
     <div class="admin-footer">
       <img class="admin-logo-img" src="admin-logo.png" alt="M3 AR Presents">
       <img class="admin-bus-img" src="admin-bus.png" alt="">
+    </div>
+
+  </div>
+
+  <!-- ============ MOBILE APP-STYLE VIEW (shown only under 640px) ============ -->
+  <div class="admin-mobile-ui" id="adminMobileUI">
+
+    <div class="admin-mob-header">
+      <span class="admin-hamburger" onclick="toggleAdminMenu()">&#9776;</span>
+      <div class="admin-mob-brand">DRIVER CONNECT</div>
+      <div class="admin-mob-avatar" onclick="adminToggleProfilePanel()">&#128100;</div>
+
+      <div class="admin-mob-profile-panel hidden" id="adminMobProfilePanel">
+        <div class="admin-mob-profile-row"><span>Name</span><b id="adminProfNameM">-</b></div>
+        <div class="admin-mob-profile-row"><span>Nationality</span><b id="adminProfNationalityM">-</b></div>
+        <div class="admin-mob-profile-row"><span>Mobile</span><span><b id="adminProfMobileM">-</b><a class="admin-wa-link hidden" id="adminProfWhatsAppM" href="#" target="_blank">&#128241;</a></span></div>
+        <div class="admin-mob-profile-row"><span>Designation</span><b id="adminProfDesignationM">-</b></div>
+        <div class="admin-mob-profile-row"><span>Current Status</span><b id="adminProfStatusM">-</b></div>
+        <div class="admin-mob-profile-row"><span>Joining Date</span><b id="adminProfJoiningM">-</b></div>
+        <div class="admin-mob-profile-row"><span>LWD Date</span><b id="adminProfLWDM">-</b></div>
+      </div>
+    </div>
+
+    <div class="admin-mob-kpi">
+      <div class="admin-mob-kpi-chip" onclick="adminSetTab('requests')"><div class="num" id="adminStatReqM">00</div><div class="lbl">Total Requests</div></div>
+      <div class="admin-mob-kpi-chip" onclick="adminSetTab('requests')"><div class="num" id="adminStatReqPendingM">00</div><div class="lbl">Pending Requests</div></div>
+      <div class="admin-mob-kpi-chip admin-comp-only-m" id="adminStatCompWrapM" onclick="adminSetTab('complaints')"><div class="num" id="adminStatCompM">00</div><div class="lbl">Total Complaints</div></div>
+      <div class="admin-mob-kpi-chip admin-comp-only-m" id="adminStatCompPendingWrapM" onclick="adminSetTab('complaints')"><div class="num" id="adminStatCompPendingM">00</div><div class="lbl">Pending Complaints</div></div>
+    </div>
+
+    <div class="admin-mob-search">
+      <div class="admin-searchbar-wrap">
+        <div class="admin-searchbar">
+          <span class="admin-search-icon">&#128269;</span>
+          <input type="text" id="adminSearchInputM" placeholder="" autocomplete="off" onkeydown="if(event.key==='Enter'){adminSearch('adminSearchInputM');}" oninput="adminShowSuggestions('adminSearchInputM','adminSuggestM')">
+          <button onclick="adminSearch('adminSearchInputM')">&#9654;</button>
+        </div>
+        <div class="admin-suggest hidden" id="adminSuggestM"></div>
+      </div>
+    </div>
+
+    <div class="admin-mob-filters">
+      <button class="admin-tab admin-tab-m" id="adminTabM_requests" onclick="adminSetTab('requests')">Requests</button>
+      <button class="admin-tab admin-tab-m admin-comp-only-m" id="adminTabM_complaints" onclick="adminSetTab('complaints')">Complaints</button>
+      <button class="admin-tab admin-tab-m admin-comp-only-m" id="adminTabM_all" onclick="adminSetTab('all')">All</button>
+      <span class="admin-mob-date-btn" onclick="adminToggleDatePanel()">&#128197;</span>
+
+      <div class="admin-mob-datepanel hidden" id="adminMobDatePanel">
+        <label>Date From <input type="date" id="adminDateFromM" onchange="adminOnDateChange('m')"></label>
+        <label>To Date <input type="date" id="adminDateToM" onchange="adminOnDateChange('m')"></label>
+        <button class="admin-action-btn" onclick="adminClearDates()">Clear Dates</button>
+      </div>
+    </div>
+
+    <div class="admin-mob-cards" id="adminCardsM"></div>
+    <div id="adminCardsEmptyM">No records found.</div>
+
+    <div class="admin-mob-footer-strip">
+      <img class="admin-logo-img-m" src="admin-logo.png" alt="M3 AR Presents">
+      <img class="admin-bus-img-m" src="admin-bus.png" alt="">
+    </div>
+
+    <div class="admin-mob-bottomnav">
+      <div class="admin-mob-navitem" onclick="adminMobNavHome()"><span class="ic">&#8962;</span>Home</div>
+      <div class="admin-mob-navitem" onclick="adminMobNavStats()"><span class="ic">&#128200;</span>Stats</div>
+      <div class="admin-mob-navitem admin-mob-fab" onclick="adminToggleSpeedDial()"><span class="ic">+</span></div>
+      <div class="admin-mob-navitem" onclick="adminExportPlaceholder()"><span class="ic">&#128203;</span>Export</div>
+      <div class="admin-mob-navitem" onclick="adminToggleProfilePanel()"><span class="ic">&#128100;</span>Profile</div>
+    </div>
+
+    <div class="admin-mob-speeddial hidden" id="adminSpeedDial">
+      <div class="admin-mob-mini" onclick="adminSaveChangesPlaceholder()" title="Save Changes">&#128190;</div>
+      <div class="admin-mob-mini" onclick="adminExportPlaceholder()" title="Export Data">&#128203;</div>
+      <div class="admin-mob-mini" onclick="alert('WhatsApp bhejna agla update mein aayega.')" title="Send WhatsApp">&#128241;</div>
     </div>
 
   </div>
@@ -1391,6 +1571,9 @@ function buildMenu(role) {
 // ===================== ADMIN / SUPER ADMIN / SUPER USER DASHBOARD =====================
 var adminAllData = [];         // combined Complaints + Requests, refreshed from the sheet on load/search
 var adminCurrentTab = 'all';   // 'requests' | 'complaints' | 'all'
+var adminSearchQuery = '';     // kept in sync between the desktop search box and the mobile search box
+var adminDateFromVal = '';     // kept in sync between the desktop date filters and the mobile date filters
+var adminDateToVal = '';
 
 function esc(v) {
   if (v === undefined || v === null) return '';
@@ -1411,11 +1594,13 @@ function initAdminDashboard(push) {
   document.getElementById('adminAuthorityMenuItem').innerText = isOwner ? 'Change Authority' : 'Request to Admin for Authority';
 
   if (currentUser.role === 'Super User') {
-    // Super User only ever sees Requests - hide the Complaints/All tabs and the complaint stat tiles.
+    // Super User only ever sees Requests - hide the Complaints/All tabs and the complaint stat tiles
+    // (both the desktop versions and their mobile app-style equivalents).
     document.getElementById('adminTab_complaints').classList.add('hidden');
     document.getElementById('adminTab_all').classList.add('hidden');
     document.getElementById('adminStatCompWrap').classList.add('hidden');
     document.getElementById('adminStatCompPendingWrap').classList.add('hidden');
+    document.querySelectorAll('.admin-comp-only-m').forEach(function(el){ el.classList.add('hidden'); });
     adminCurrentTab = 'requests';
   } else {
     adminCurrentTab = 'all';
@@ -1423,10 +1608,17 @@ function initAdminDashboard(push) {
   document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.remove('active'); });
   var activeTabBtn = document.getElementById('adminTab_' + adminCurrentTab);
   if (activeTabBtn) activeTabBtn.classList.add('active');
+  var activeTabBtnM = document.getElementById('adminTabM_' + adminCurrentTab);
+  if (activeTabBtnM) activeTabBtnM.classList.add('active');
 
-  document.getElementById('adminSearchInput').value = '';
-  document.getElementById('adminDateFrom').value = '';
-  document.getElementById('adminDateTo').value = '';
+  adminSearchQuery = ''; adminDateFromVal = ''; adminDateToVal = '';
+  ['adminSearchInput','adminSearchInputM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+  ['adminDateFrom','adminDateFromM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+  ['adminDateTo','adminDateToM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('adminMobProfilePanel').classList.add('hidden');
+  document.getElementById('adminMobDatePanel').classList.add('hidden');
+  document.getElementById('adminSpeedDial').classList.add('hidden');
+
   loadAdminData();
   adminSyncStickyOffset();
 }
@@ -1465,11 +1657,11 @@ function getAdminFilteredData() {
   if (adminCurrentTab === 'requests') { list = list.filter(function(r){ return r.recordType === 'request'; }); }
   else if (adminCurrentTab === 'complaints') { list = list.filter(function(r){ return r.recordType === 'complaint'; }); }
 
-  var q = (document.getElementById('adminSearchInput').value || '').trim();
+  var q = adminSearchQuery;
   if (q) { list = list.filter(function(r){ return String(r.empId) === q; }); }
 
-  var from = document.getElementById('adminDateFrom').value;
-  var to = document.getElementById('adminDateTo').value;
+  var from = adminDateFromVal;
+  var to = adminDateToVal;
   if (from || to) {
     list = list.filter(function(r) {
       var dRaw = r.recordType === 'request' ? r.date1 : r.date;
@@ -1504,6 +1696,11 @@ function computeAdminStats(list) {
   document.getElementById('adminStatReqPending').innerText = pendingReq;
   document.getElementById('adminStatComp').innerText = totalComp;
   document.getElementById('adminStatCompPending').innerText = pendingComp;
+  // Same numbers, mirrored into the mobile KPI chips.
+  document.getElementById('adminStatReqM').innerText = totalReq;
+  document.getElementById('adminStatReqPendingM').innerText = pendingReq;
+  document.getElementById('adminStatCompM').innerText = totalComp;
+  document.getElementById('adminStatCompPendingM').innerText = pendingComp;
 }
 
 function renderAdminTable() {
@@ -1533,6 +1730,48 @@ function renderAdminTable() {
     tbody.appendChild(tr);
   });
   document.getElementById('adminTableEmpty').classList.toggle('hidden', list.length > 0);
+
+  renderAdminCardsMobile(list);
+}
+
+// Mobile app-style view: each record is a card that expands/collapses in place when tapped -
+// Reason, Description, Against Name and Assigned To all show inline, no side-scrolling table.
+function renderAdminCardsMobile(list) {
+  if (!list) { list = getAdminFilteredData(); }
+  var wrap = document.getElementById('adminCardsM');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  list.forEach(function(r, idx) {
+    var dateVal = r.recordType === 'request' ? r.date1 : r.date;
+    var card = document.createElement('div');
+    card.className = 'admin-mob-card';
+    var badgeClass = (r.status === 'Resolved') ? 'admin-mob-badge resolved' : 'admin-mob-badge';
+    var titleText = r.reason ? esc(r.reason) : '(No reason given)';
+
+    var bodyRows = '';
+    bodyRows += '<div class="kv"><b>Description:</b> ' + (esc(r.description) || '&mdash;') + '</div>';
+    if (r.recordType === 'complaint') { bodyRows += '<div class="kv"><b>Against:</b> ' + (esc(r.againstName) || '&mdash;') + '</div>'; }
+    bodyRows += '<div class="kv"><b>Assigned To:</b> ' + (esc(r.assignedTo) || '&mdash;') + '</div>';
+    bodyRows += '<div class="kv"><b>Date Submitted:</b> ' + (esc(fmtAdminDate(r.dateSubmitted)) || '&mdash;') + '</div>';
+    bodyRows += '<div class="kv"><b>Date Resolved:</b> ' + (esc(fmtAdminDate(r.dateResolved)) || '&mdash;') + '</div>';
+    if (r.attachmentLink) { bodyRows += '<div class="kv"><b>Attachment:</b> <a href="' + esc(r.attachmentLink) + '" target="_blank" rel="noopener">View</a></div>'; }
+
+    card.innerHTML =
+      '<div class="admin-mob-card-head">' +
+        '<div class="l"><span class="emp">#' + esc(r.empId) + ' &middot; ' + esc(r.category) + ' &middot; ' + esc(fmtAdminDate(dateVal)) + '</span>' +
+        '<div class="title">' + titleText + '</div></div>' +
+        '<div class="r"><span class="' + badgeClass + '">' + (esc(r.status) || 'Pending') + '</span><span class="admin-mob-chev">&#9656;</span></div>' +
+      '</div>' +
+      '<div class="admin-mob-card-body">' + bodyRows + '</div>';
+
+    card.querySelector('.admin-mob-card-head').addEventListener('click', function(e) {
+      if (e.target && e.target.tagName === 'A') return; // let the attachment link open normally
+      card.classList.toggle('open');
+      adminLoadProfile(r.empId);
+    });
+    wrap.appendChild(card);
+  });
+  document.getElementById('adminCardsEmptyM').classList.toggle('hidden', list.length > 0);
 }
 
 function adminSetTab(tab) {
@@ -1540,22 +1779,39 @@ function adminSetTab(tab) {
   document.querySelectorAll('.admin-tab').forEach(function(b){ b.classList.remove('active'); });
   var btn = document.getElementById('adminTab_' + tab);
   if (btn) btn.classList.add('active');
+  var btnM = document.getElementById('adminTabM_' + tab);
+  if (btnM) btnM.classList.add('active');
   renderAdminTable();
 }
 
-function adminSearch() {
-  var q = (document.getElementById('adminSearchInput').value || '').trim();
-  document.getElementById('adminSuggest').classList.add('hidden');
+// inputId/... let the same function serve both the desktop search box and the mobile search box -
+// whichever one the admin used, the other stays in sync automatically.
+function adminSearch(inputId) {
+  inputId = inputId || 'adminSearchInput';
+  var inputEl = document.getElementById(inputId);
+  var q = ((inputEl && inputEl.value) || '').trim();
+  adminSearchQuery = q;
+  ['adminSearchInput','adminSearchInputM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = q; });
+  var sb = document.getElementById('adminSuggest'); if (sb) sb.classList.add('hidden');
+  var sbM = document.getElementById('adminSuggestM'); if (sbM) sbM.classList.add('hidden');
   renderAdminTable();
   if (q) { adminLoadProfile(q); }
 }
 
 // Live "Google style" suggestions dropdown - shows matching Employee IDs/names as the admin types,
-// no need to press Enter or the search button.
-function adminShowSuggestions() {
-  var box = document.getElementById('adminSuggest');
-  var q = (document.getElementById('adminSearchInput').value || '').trim().toLowerCase();
-  if (!q) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+// no need to press Enter or the search button. Works identically for the desktop and mobile search boxes.
+function adminShowSuggestions(inputId, boxId) {
+  inputId = inputId || 'adminSearchInput';
+  boxId = boxId || 'adminSuggest';
+  var inputEl = document.getElementById(inputId);
+  var box = document.getElementById(boxId);
+  if (!inputEl || !box) return;
+  var raw = (inputEl.value || '').trim();
+  adminSearchQuery = raw;
+  ['adminSearchInput','adminSearchInputM'].forEach(function(id){ if (id !== inputId) { var el = document.getElementById(id); if (el) el.value = raw; } });
+
+  var q = raw.toLowerCase();
+  if (!q) { box.classList.add('hidden'); box.innerHTML = ''; renderAdminTable(); return; }
 
   var seen = {};
   var matches = [];
@@ -1580,49 +1836,112 @@ function adminShowSuggestions() {
 }
 
 function adminPickSuggestion(empId) {
-  document.getElementById('adminSearchInput').value = empId;
-  document.getElementById('adminSuggest').classList.add('hidden');
+  adminSearchQuery = empId;
+  ['adminSearchInput','adminSearchInputM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = empId; });
+  var sb = document.getElementById('adminSuggest'); if (sb) sb.classList.add('hidden');
+  var sbM = document.getElementById('adminSuggestM'); if (sbM) sbM.classList.add('hidden');
   renderAdminTable();
   adminLoadProfile(empId);
 }
 
-// Hide the suggestions dropdown and the hamburger menu when the admin taps/clicks anywhere else.
+// Hide the suggestions dropdowns, the hamburger menu, the mobile profile panel, the mobile date
+// panel and the mobile speed-dial when the admin taps/clicks anywhere else.
 document.addEventListener('click', function(e) {
-  var suggestBox = document.getElementById('adminSuggest');
-  var searchWrap = e.target && e.target.closest ? e.target.closest('.admin-searchbar-wrap') : null;
-  if (suggestBox && !suggestBox.classList.contains('hidden') && !searchWrap) {
-    suggestBox.classList.add('hidden');
-  }
+  var target = e.target;
+  var closest = target && target.closest ? target.closest.bind(target) : function(){ return null; };
+
+  ['adminSuggest','adminSuggestM'].forEach(function(id) {
+    var box = document.getElementById(id);
+    if (box && !box.classList.contains('hidden') && !closest('.admin-searchbar-wrap')) { box.classList.add('hidden'); }
+  });
+
   var menuBox = document.getElementById('adminMenu');
-  var withinMenuArea = e.target && e.target.closest ? e.target.closest('.admin-menu, .admin-hamburger') : null;
-  if (menuBox && !menuBox.classList.contains('hidden') && !withinMenuArea) {
+  if (menuBox && !menuBox.classList.contains('hidden') && !closest('.admin-menu, .admin-hamburger')) {
     menuBox.classList.add('hidden');
+  }
+
+  var profPanel = document.getElementById('adminMobProfilePanel');
+  if (profPanel && !profPanel.classList.contains('hidden') && !closest('.admin-mob-profile-panel, .admin-mob-avatar')) {
+    profPanel.classList.add('hidden');
+  }
+
+  var datePanel = document.getElementById('adminMobDatePanel');
+  if (datePanel && !datePanel.classList.contains('hidden') && !closest('.admin-mob-datepanel, .admin-mob-date-btn')) {
+    datePanel.classList.add('hidden');
+  }
+
+  var speedDial = document.getElementById('adminSpeedDial');
+  if (speedDial && !speedDial.classList.contains('hidden') && !closest('.admin-mob-speeddial, .admin-mob-fab')) {
+    speedDial.classList.add('hidden');
   }
 });
 
 function adminLoadProfile(empId) {
   callAPI('getDriverProfile', { empId: empId }).then(function(res) {
     var waLink = document.getElementById('adminProfWhatsApp');
+    var waLinkM = document.getElementById('adminProfWhatsAppM');
     if (res && res.success) {
-      document.getElementById('adminProfName').innerText = res.name || '-';
-      document.getElementById('adminProfNationality').innerText = res.nationality || '-';
-      document.getElementById('adminProfMobile').innerText = res.mobile || '-';
-      document.getElementById('adminProfDesignation').innerText = res.designation || '-';
-      document.getElementById('adminProfStatus').innerText = res.currentStatus || '-';
-      document.getElementById('adminProfJoining').innerText = fmtAdminDate(res.joiningDate) || '-';
-      document.getElementById('adminProfLWD').innerText = fmtAdminDate(res.lwdDate) || '-';
+      var vals = {
+        Name: res.name || '-', Nationality: res.nationality || '-', Mobile: res.mobile || '-',
+        Designation: res.designation || '-', Status: res.currentStatus || '-',
+        Joining: fmtAdminDate(res.joiningDate) || '-', LWD: fmtAdminDate(res.lwdDate) || '-'
+      };
+      Object.keys(vals).forEach(function(key) {
+        var d = document.getElementById('adminProf' + key); if (d) d.innerText = vals[key];
+        var m = document.getElementById('adminProf' + key + 'M'); if (m) m.innerText = vals[key];
+      });
       var digits = (res.mobile || '').replace(/[^0-9]/g, '');
-      if (digits) { waLink.href = 'https://wa.me/' + digits; waLink.classList.remove('hidden'); }
-      else { waLink.classList.add('hidden'); }
+      [waLink, waLinkM].forEach(function(link) {
+        if (!link) return;
+        if (digits) { link.href = 'https://wa.me/' + digits; link.classList.remove('hidden'); }
+        else { link.classList.add('hidden'); }
+      });
     } else {
-      ['adminProfName','adminProfNationality','adminProfMobile','adminProfDesignation','adminProfStatus','adminProfJoining','adminProfLWD']
-        .forEach(function(id){ document.getElementById(id).innerText = '-'; });
-      waLink.classList.add('hidden');
+      ['Name','Nationality','Mobile','Designation','Status','Joining','LWD'].forEach(function(key) {
+        var d = document.getElementById('adminProf' + key); if (d) d.innerText = '-';
+        var m = document.getElementById('adminProf' + key + 'M'); if (m) m.innerText = '-';
+      });
+      if (waLink) waLink.classList.add('hidden');
+      if (waLinkM) waLinkM.classList.add('hidden');
     }
   });
 }
 
 function toggleAdminMenu() { document.getElementById('adminMenu').classList.toggle('hidden'); }
+
+// ---- Mobile app-style dashboard: date filter popup, profile panel, speed-dial, bottom nav ----
+function adminOnDateChange(source) {
+  var fromEl = document.getElementById(source === 'm' ? 'adminDateFromM' : 'adminDateFrom');
+  var toEl = document.getElementById(source === 'm' ? 'adminDateToM' : 'adminDateTo');
+  adminDateFromVal = fromEl ? fromEl.value : '';
+  adminDateToVal = toEl ? toEl.value : '';
+  ['adminDateFrom','adminDateFromM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = adminDateFromVal; });
+  ['adminDateTo','adminDateToM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = adminDateToVal; });
+  renderAdminTable();
+}
+
+function adminClearDates() {
+  adminDateFromVal = ''; adminDateToVal = '';
+  ['adminDateFrom','adminDateFromM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+  ['adminDateTo','adminDateToM'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
+  renderAdminTable();
+}
+
+function adminToggleDatePanel() { document.getElementById('adminMobDatePanel').classList.toggle('hidden'); }
+function adminToggleProfilePanel() { document.getElementById('adminMobProfilePanel').classList.toggle('hidden'); }
+function adminToggleSpeedDial() { document.getElementById('adminSpeedDial').classList.toggle('hidden'); }
+
+function adminMobNavHome() {
+  // Same rule as the "Home" menu item - stays right here on the dashboard, just scrolls the list to top.
+  var cards = document.getElementById('adminCardsM');
+  if (cards) cards.scrollTop = 0;
+}
+function adminMobNavStats() {
+  // Super User only ever has the Requests tab available - everyone else jumps back to "All".
+  adminSetTab(currentUser && currentUser.role === 'Super User' ? 'requests' : 'all');
+  var cards = document.getElementById('adminCardsM');
+  if (cards) cards.scrollTop = 0;
+}
 
 function adminGoToDriverHome() {
   // Per Modern Bus Co. requirements, "Home" just closes the menu and keeps the admin on

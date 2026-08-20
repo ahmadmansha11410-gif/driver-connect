@@ -217,15 +217,30 @@
   #splash { text-align: center; color: var(--maroon); margin-top: 120px; }
   #splash img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 4px 20px rgba(110,42,86,0.2); }
 
-  .bus-track { position: relative; width: 100%; height: 30px; margin: 14px 0 2px; overflow: hidden; }
-  .bus-track img { position: absolute; top: 3px; left: 2%; height: 24px; width: auto; animation: busDriveBig 2.2s ease-in-out infinite; }
-  @keyframes busDriveBig {
-    0%   { left: 2%;  transform: scaleX(1); }
-    45%  { left: 46%; transform: scaleX(1); }
-    50%  { left: 46%; transform: scaleX(-1); }
-    95%  { left: 2%;  transform: scaleX(-1); }
-    100% { left: 2%;  transform: scaleX(1); }
+  /* Full-screen loading animation (splash screen only) - bus drives in from the right,
+     crosses the whole viewport, exits left, then comes back the other way, on a loop.
+     position:fixed on the track means it spans the true screen width, not just the card. */
+  #busAnimTrack { position: fixed; left: 0; bottom: 14%; width: 100vw; height: 56px; overflow: visible; z-index: 3; pointer-events: none; }
+  #busAnimTrack.hidden { display: none !important; }
+  .bus-anim-unit { position: absolute; top: 0; left: 0; display: inline-block; animation: busCrossScreen 3.2s linear infinite; }
+  .bus-anim-unit img { display: block; height: 52px; width: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45)); }
+  @keyframes busCrossScreen {
+    0%   { transform: translateX(105vw) scaleX(-1); }
+    48%  { transform: translateX(-32vw) scaleX(-1); }
+    50%  { transform: translateX(-32vw) scaleX(1); }
+    98%  { transform: translateX(105vw) scaleX(1); }
+    100% { transform: translateX(105vw) scaleX(-1); }
   }
+  .bus-headlight {
+    position: absolute; right: 4%; bottom: 32%; width: 6px; height: 6px; border-radius: 50%;
+    background: #fff6c8; animation: busHeadlightBlink 0.6s ease-in-out infinite;
+  }
+  .bus-headlight-2 { right: 8%; bottom: 36%; width: 5px; height: 5px; animation-delay: 0.05s; }
+  @keyframes busHeadlightBlink {
+    0%, 100% { opacity: 0.35; box-shadow: 0 0 2px 1px rgba(255,230,120,0.35); }
+    50%      { opacity: 1;    box-shadow: 0 0 7px 3px rgba(255,230,120,0.95); }
+  }
+
   .mini-bus-track { position: relative; display: inline-block; width: 95px; height: 14px; vertical-align: middle; margin-right: 6px; overflow: hidden; }
   .mini-bus-track img { position: absolute; top: 0; left: 2%; height: 12px; width: auto; animation: busDriveMini 2.2s ease-in-out infinite; }
   @keyframes busDriveMini {
@@ -639,13 +654,25 @@
 </head>
 <body>
 
-<div id="driverBusDecor"><img src="admin-bus.png" alt=""></div>
+<div id="driverBusDecor" class="hidden"><img src="admin-bus.png" alt=""></div>
 
 <div id="splash" class="card">
   <img src="icon-192.png" alt="Driver Connect">
   <h2 style="margin-top:16px;">Driver Connect</h2>
-  <div class="bus-track"><img src="bus.png" alt="Bus loading"></div>
   <p style="color:var(--gray); font-size:13px;">Loading...</p>
+</div>
+
+<!-- Full-width loading animation: the bus drives in from the right (headlights blinking),
+     crosses the entire screen, exits off the left, then re-enters from the left and crosses
+     back to the right - a continuous loop, like a real bus arriving/leaving. Kept as a sibling
+     of #splash (not nested inside it) and position:fixed, so it spans the true viewport width
+     instead of being boxed in by the splash card. Shown/hidden together with #splash. -->
+<div id="busAnimTrack">
+  <div class="bus-anim-unit">
+    <img src="bus.png" alt="">
+    <span class="bus-headlight"></span>
+    <span class="bus-headlight bus-headlight-2"></span>
+  </div>
 </div>
 
 <div id="creatorCredit" class="hidden">
@@ -1860,10 +1887,12 @@ window.addEventListener('popstate', function(e) {
 window.addEventListener('load', function() {
   if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
   var session = loadSession();
-  var SPLASH_MIN_MS = 1300;
+  var SPLASH_MIN_MS = 3300; // long enough to see the bus cross the screen and come back once
   var CREDIT_MS = 800;
   setTimeout(function() {
     document.getElementById('splash').classList.add('hidden');
+    document.getElementById('busAnimTrack').classList.add('hidden');
+    document.getElementById('driverBusDecor').classList.remove('hidden'); // was hidden during the splash bus animation to avoid two buses overlapping on screen
     document.getElementById('creatorCredit').classList.remove('hidden');
     setTimeout(function() {
       document.getElementById('creatorCredit').classList.add('hidden');
